@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <title>钱款去向</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+		<div id="loading-template"></div>
+		<div class="wrap" id="wrap">
+			<main class="main">
+				<div class="main-body" id="main-body" v-cloak>
+					<div class="account-container fs11" v-if="money_detail.gold">
+						<div class="info-list gray1">
+							<p class="clearfix">
+								<span class="red1 fr">{{'￥'+money_detail.gold}}</span>
+								<span class="">退款金额</span>
+							</p>
+							<p class="clearfix">
+								<span class="fr black2">{{money_detail.way}}</span>
+								<span class="">退还账户</span>
+							</p>
+						</div>
+						<div class="refund-group mt10">
+							<div class="item" v-if="money_detail.one" :class="{current:money_detail.two==null||!money_detail.two}">
+								<div class="title clearfix"  v-if="money_detail.one">
+									<span class="icon"></span>
+									<span class="fr">{{formatDate(new Date(money_detail.one.time*1000))}}</span>
+									<span class="info">{{money_detail.one.title}}</span>
+								</div>
+							</div>
+							<div class="item clearfix" v-if="money_detail.two" :class="{current:money_detail.ok==null||!money_detail.ok}">
+								<div class="title clearfix">
+									<span class="icon"></span>
+									<span class="fr">{{formatDate(new Date(money_detail.two.time*1000))}}</span>
+									<span class="info">{{money_detail.two.title}}</span>
+								</div>
+								<div class="detail fs11">
+									{{money_detail.two.text}}
+								</div>
+							</div>
+							<div class="item current" v-if="money_detail.ok">
+								<div class="title clearfix">
+									<span class="icon"></span>
+									<span class="fr">{{formatDate(new Date(money_detail.ok.time*1000))}}</span>
+									<span class="info">{{money_detail.ok.title}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>		
+		</div>
+		<script src="dist/money_direction.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>

@@ -1,0 +1,257 @@
+body {
+  margin: 0;
+}
+.banner {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+.banner>img {
+  height: 100%;
+  width: 100%;
+}
+.act-hint {
+  position: absolute;
+  width: 100%;
+  height: 3.5rem;
+  top: 0;
+  /*background: #000;
+  opacity: 0.4;*/
+  background: url(../images/newyear/act-hint-bg.png);
+}
+.hint-txt {
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  line-height: 3.5rem;
+  height: 3.5rem;
+  margin: 0 0 0 1.0rem;
+  float: left;
+}
+.t-countdown {
+  display: inline-block;
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 3.5rem;
+  height: 3.5rem;
+  margin: 0 0 0 1.8rem;
+  font-weight: 700;
+}
+.t-cell {
+  display: inline-block;
+  float: left;
+  border: 0.1rem solid #fff;
+  height: 2.5rem;
+  width: 1.2rem;
+  margin-top: 0.4rem;
+  line-height: 2.5rem;
+  text-align: center;
+  font-weight: 400;
+  font-family: "微软雅黑 Bold", "微软雅黑 Regular",
+  font-feature-settings: 'kern' 1;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+.t-unit {
+  display: inline-block;
+  float: left;
+  margin: 0 1px;
+}
+.act-rule {
+  background: url(../images/newyear/act-rule-bg.png);
+  position: absolute;
+  top: 4.5rem;
+  right: 0;
+  height: 2.0rem;
+  line-height: 2.0rem;
+  width: 6.0rem;
+  padding-left: 1.0rem;
+  background-size: cover;
+}
+.act-rule a{
+  font-size: 0.8rem;
+  color: #fff;
+  font-weight: 400;
+  text-decoration: none;
+}
+.hbyg {
+  width: 12rem;
+  margin-left: -5.0rem;
+  position: absolute;
+  left: 50%;
+  bottom: 1.0rem;
+  background: #cf7e07;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+.miaosha-title, .youxuan-title {
+  background-color: rgba(181,6,61,1);
+  border: 1px solid rgba(181,6,61,1);
+  text-align: center;
+  padding: 0.8rem 0;
+  color: #fff;
+}
+.miaosha-title {
+  position: relative;
+}
+.miaosha-more {
+  position: absolute;
+  right: 1.8rem;
+  top: 0.5rem;
+  font-size: 0.8rem;
+  background: #ddb33d;
+  border: solid 1px #ddb33d;
+  border-radius: 1.0rem;
+  padding: 2px 5px;
+  color: #fff;
+  text-decoration: none;
+}
+.miaosha-nav {
+  background: rgb(255,0,0);
+}
+.swiper-wrapper {
+  list-style-type: none;
+  padding: 1.0rem 0 0 0;
+  width: 9.5rem!important;
+  margin-bottom: 1.0rem;
+  margin-left: 0.2rem;
+}
+.swiper-slide {
+  width: 7.5rem;
+  margin: 0 0px;
+  background-color: #fff;
+}
+.swiper-slide img {
+  width: 7.5rem;
+  height: 9rem;
+}
+.gray {
+  color: #999;
+}
+.red {
+  color: #f00;
+}
+.goods-name,.gprice {
+  margin: 0;
+  padding: 0;
+  /*text-overflow:ellipsis;
+  overflow:hidden;*/
+  white-space: nowrap;
+  font-size: 1.0rem;
+}
+.cg {
+  color: #3e3434f0;
+}
+.center {
+  text-align: center;
+}
+.miaosha-tab {
+  display: flex;
+  justify-content: flex-start;
+}
+.miaosha-item {
+  background: #8e0909;
+  color: #fff;
+  padding: 0px 1.0rem;
+  height: 2.5rem;
+  cursor: pointer;
+  text-align: center;
+}
+.miaosha-item:nth-child(n+1) {
+  margin-left: 2px;
+}
+.miaosha-item.active {
+  background: inherit;
+  padding: 0;
+  width: 20%;
+}
+
+.miaosha-item p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 1.0rem;
+}
+.miaosha-item .in {
+  background: #ddb33d;
+  border: solid 1px #ddb33d;
+  border-radius: 1.0rem;
+  font-size: 0.9rem;
+/*  width: 70%;
+  margin: 0 15%;*/
+  text-align: center;
+  line-height: 1.2rem;
+  display: inline-block;
+  padding: 0 3px;
+}
+.youxuan-block {
+  padding-top: 0.8rem;
+  background: #e4b56f73;
+  height: auto;
+  min-height: 45rem;
+  overflow: scroll;
+}
+.youxuan-list {
+  padding: 2px 2px;
+  text-align: center;
+  height: auto;
+  min-height: 13.5rem;
+}
+.youxuan-ad {
+  width: 66%;
+  height: 13rem;
+  display: inline-block;
+  float: left;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.youxuan-ad img {
+  width: 100%;
+  height: 100%;
+}
+.youxuan-item {
+  width: 33%;
+  height: 13em;
+  display: inline-block;
+  float: left;
+  margin-left: 1px;
+  background: #fff;
+  position: relative;
+}
+.youxuan-item img {
+  width: 100%;
+  height: 9rem;
+}
+.ablock p{
+  margin: 0;
+  padding: 0 0 0 2px;
+  word-wrap: normal;
+  text-align: left;
+  font-size: 1.0rem;
+/*  position: absolute;*/
+}
+.ablock .goods-name {
+  text-align: center;
+}
+.pri {
+  bottom: 0.5rem;
+}
+.cg {
+  bottom: 1.7rem;
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  display:-webkit-box; 
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2; 
+}
+.goods-name {
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  text-decoration: none;
+  color: #000;
+}
+.ablock {
+  display: block;
+}

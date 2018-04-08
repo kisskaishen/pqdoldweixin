@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <!--城市地址控件-->
+	    <script src="assets/area.js?v=416b73f00fd1"></script>
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div class="adr-form-group form-group fs12">
+					<div class="item clearfix">
+						<span class="title w4em">
+							收件人
+						</span>
+						<div class="input-box">
+							<input id="name_input" type="text" :value="address_data.consignee" placeholder="请输入收件人姓名">
+						</div>
+					</div>
+					<div class="item clearfix">
+						<span class="title w4em">
+							联系电话
+						</span>
+						<div class="input-box">
+							<input id="phone_input" type="text" :value="address_data.mobile" placeholder="请输入联系电话">
+						</div>
+					</div>
+					<div class="item clearfix" @click="show_adr_dialog()">
+						<span class="title w4em">
+							所在地区
+						</span>
+						<div class="input-box">
+							<div id="city_input" class="ml5" :adr-data="address_data.address_base?address_data.address_base:''">
+								{{address_data.address_base?address_data.address_base:'请选择所在地区'}}
+							</div>
+						</div>
+					</div>
+					<div class="item clearfix">
+						<span class="title w4em">
+							详细地址
+						</span>
+						<div class="input-box">
+							<input id="adr_input" type="text" :value="address_data.address" placeholder="街道、小区">
+						</div>
+					</div>
+					<div class="item tr gray1">
+						<input type="checkbox" class="checkbox" id="init-set">
+						<label for="init-set">设为默认地址</label>
+					</div>
+					<div class="btn-item" id="save-btn">
+						<span class="btn tap fs13" >保存</span>
+					</div>
+				</div>
+			</div>
+		</main>		
+	</div>
+	<div class="hint-dialog" id="hint-dialog">
+		<p class="fs13">输入有误！</p>
+	</div>
+
+	<div class="adr-dialog fs11" id="adr-dialog">
+		<div class="mask" @click="hide_adr_dialog()"></div>
+		<div class="box-body tc">
+			<div class="adr-group">
+				<div class="item" v-for="(item,index) in province_data" :adr-data="item" @click="province_select(item,$event)" :class="{active:province_name==item}">
+				{{item}}
+			</div>
+			</div>
+			<div class="adr-group">
+				<div class="item" v-for="(item,index) in city_data" :adr-data="item" @click="city_select(item,$event)" :class="{active:city_name==item}">
+					{{item}}
+				</div>
+			</div>
+			<div class="adr-group">
+				<div class="item" v-for="(item,index) in area_data" :adr-data="item" @click="area_select(item,$event)" :class="{active:area_name==item}">
+					{{item}}
+				</div>
+			</div>
+		</div>
+		<div class="footing tc" @click="hide_adr_dialog()">
+			<span class="btn fs14">确定</span>
+		</div>
+	</div>
+
+
+	<script src="dist/adr_edit.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>

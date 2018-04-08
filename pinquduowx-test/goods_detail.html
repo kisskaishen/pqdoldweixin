@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta id="meta-description" name="description" content="拼趣多"/>
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js" data-api="wx"></script>
+	    <!--<script src="dist/jweixin-1.2.0.js" data-api="wx"></script>-->
+
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+		<script type="text/javascript">
+            window.onpageshow = function(event){
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            }
+		</script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap" style="display:block;">
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div class="good-detail-page tl" v-cloak>
+					<!-- 轮播图 start-->
+				    <div class="focus-pic swiper-container" id="focus-pic" >
+				        <div class="swiper-wrapper" >
+				            <div class="swiper-slide" v-for="i in data.banner" style="width: 100%;height:auto;overflow: hidden">
+				            	<a><img v-bind:src="i.origin" ></a>
+				            </div>
+				        </div>
+				        <div class="swiper-pagination"></div>
+				    </div>
+				    <!-- 轮播图 end-->
+					<!--商品状态 start-->
+				    <div class="intro-bar clearfix">
+				    	<span class="fr black3 fs9">累计销量：<span>{{data_expand.sales}}</span>件</span>
+						<span class="red1 fs13">￥{{data.prom_price}}</span>
+						<span class="black3 fs10 ml5">￥<del>{{data.market_price}}</del></span>
+				    </div>
+					<!--商品状态 end-->
+					<!--服务 start-->
+					<div class="sv-group clearfix fs9 gray4">
+			    		<span class="item" v-for="item in data.goods_service">
+			    			<img style="width: 1.2rem;vertical-align:middle;margin-right: 0.2rem;" src="images/treaty_checked@2x.png" alt=""></i>{{item.title}}
+			    		</span>
+					</div>
+					<!--服务 end-->
+					<!--商品详情 start-->
+				    <div class="intro-detail">
+				    	<p class="title fs13"><img v-if="data_expand.icon_src" :src="data_expand.icon_src" alt="" style="width: 4.2rem;margin-right: 1rem;">{{data.goods_name}}</p>
+				    	<p class="content gray4 mt10 fs11" style=" word-wrap:break-word ">
+				    		{{data.goods_remark}}
+				    	</p>
+				    </div>
+					<!--商品详情 end-->
+
+			    	<div class="hint-bar fs10 gray1" v-if="data.prom==0">
+						<p >
+							支付开团并邀请其他人参团，人数不足自动退款
+						</p>
+						<!--<p v-else>-->
+							<!--支付开团并邀请-->
+							<!--<strong class="fs12 red1">{{parseInt(data.goods.prom-1)}}</strong>-->
+							<!--人参团，人数不足自动退款-->
+						<!--</p>-->
+			    	</div>
+			    	<div class=" fs11 tl " id="prom-group" v-if="group_buy">
+						<div class="item clearfix" v-for="(item,index) in group_buy" style="border-bottom:none;padding: 0 1rem 1rem 1rem ;background-color:#fff;">
+							<div class="clearfix" style="display: flex; background-color:#eaeaea;border-radius: 2rem; height: 4rem">
+								<img :src="item.photo" alt="" class="fl" style="flex: 2; width: 4rem; height: 4rem;margin-right: 1rem;display: block;border-radius: 2rem;">
+								<!--<span class="fl fs10"style="display: block; height:4rem;width:6rem;line-height: 4rem;">{{item.user_name}}</span>-->
+								<!---->
+								<!--<div class="fr" style="height: 4rem;">-->
+									<!--<p style="height: 2rem;line-height:2rem;margin-top:.2rem;"><span class="fs10 gray1 ml5">还差<span class="red1">{{item.prom_mens}}人</span>成团</span></p>-->
+									<!--<p class="fr black3" style="font-size: 0.8rem;margin-right:1rem;">剩余<span class="timed">00:00:00</span>结束</p>-->
+								<!--</div>-->
+								<div class="fl" style="flex: 10;height: 100%;padding-top:.6rem;">
+									<p style="font-size: 1rem;height: 50%;overflow: hidden;width: 100%">{{item.user_name}}</p>
+									<p style="height: 50%;padding-top:.2rem; "><span v-if="data.is_special==6" style="background-color:#0BD0CE;color: #f6f6f6;color: #f6f6f6;padding: .2rem;margin-right:.2rem;">{{item.goods_num+'免'+item.free}}</span><span style="font-size: .8rem" v-else>还差<span style="color: red">{{item.prom_mens}}人</span>成团，</span><span class=" black3" style="font-size: 0.8rem;margin-right:1rem;">剩余<span class="timed">00:00:00</span>结束</span></p>
+								</div>
+								<a class="fr" v-bind:href="'prom_regiment.html?prom_id='+item.id" class="border-btn fr " style="flex:3;color:white;font-size:1rem;text-align:center;line-height:4rem;display: block;width: 6rem;height:4rem;border-top-right-radius: 2rem;border-bottom-right-radius: 2rem;background-color:red;" v-if="data.is_special!=8">参与拼单</a>
+								<a class="fr" v-bind:href="'prom_regiment.html?prom_id='+item.id" class="border-btn fr " style="flex:3;color:white;font-size:1rem;text-align:center;line-height:4rem;display: block;width: 6rem;height:4rem;border-top-right-radius: 2rem;border-bottom-right-radius: 2rem;background-color:red;" v-else>为我助力</a>
+
+							</div>
+						</div>
+			    	</div>
+					<!--为我点赞流程 start-->
+					<div class=" clearfix"
+						 style="padding: 0 1rem 1rem 1rem;border-top:1px solid #f6f6f6; background-color: #fff;" v-if="data.is_special==8">
+						<a href="likes_process.html" class="clearfix" style="display: block">
+							<p class="clearfix"
+							   style="padding: .5rem;height: 1.2rem;line-height: 1.2rem;margin-bottom: 1rem">
+								<span class="fl" style="font-size: 1rem;color: #1e1e1e;">为我助力流程</span>
+								<span class="fl"
+									  style="font-size: .9rem;color: #bcbcbc;height:1.2rem;line-height:1.2rem;">（若人数不足将自动退款）</span>
+								<span class="fr" style="color: #bcbcbc;font-size: 1.2rem">说明&nbsp></span>
+							</p>
+							<p style="padding: .5rem;color:#bcbcbc;font-size: 0.9rem;display: flex;flex-wrap: nowrap;justify-content: space-between;font-size: .6rem">
+							<span class="fl">
+								<i class="fl"
+								   style="display: block;height:1.2rem;width:1.2rem;border-radius: .6rem;background-color:red;color: white;text-align: center;line-height:1.2rem;margin-right:.2rem;">1</i>0元开拼
+							</span >
+								<span class="fl">
+								<i class="fl"
+								   style="display: block;height:1.2rem;width:1.2rem;border-radius: .6rem;background-color:red;color: white;text-align: center;line-height:1.2rem;margin-right:.2rem;">2</i>分享好友助力
+							</span>
+								<span class="fl">
+								<i class="fl"
+								   style="display: block;height:1.2rem;width:1.2rem;border-radius: .6rem;background-color:red;color: white;text-align: center;line-height:1.2rem;margin-right:.2rem;">3</i>满人发货
+							</span>
+								<span class="fl" >
+								<i class="fl"
+								   style="display: block;height:1.2rem;width:1.2rem;border-radius: .6rem;background-color:red;color: white;text-align: center;line-height:1.2rem;margin-right:.2rem;">4</i>团长获商品
+							</span>
+							</p>
+						</a>
+					</div>
+					<!--为我点赞流程 end-->
+					<!--彩条 start-->
+			    	<div class="colourful-line"></div>
+					<!--彩条 end-->
+			    	<a class="merchant-box black1 clearfix" :href="'shop_detail.html?store_id='+data.store.id">
+			    		<span class="mt10 fr border-btn fs10">进入店铺</span>
+			    		<dl>
+			    			<dt class="mr10">
+								<img v-bind:src="data.store.store_logo" class="pic">
+			    			</dt>
+			    			<dd>
+			    				<p class="mt3 name fs12">{{data.store.store_name}}</p>
+			    				<p class="mt3 fs10 black3">累计销量：{{data_expand.store_sales}}件</p>
+			    			</dd>
+			    		</dl>
+			    	</a>
+			    	<div v-for="item in data.img_arr">
+						<img :src="item.origin" alt="" style="width: 100%; display: block">
+					</div>
+			    	<div class="buy-footer" style="width: 100%">
+			    		<div class="fixed-box" style="width: 100%">
+							<div class="clearfix">
+								<div class="left-box">
+									<a href="index.html" class="item">
+										<div class="box">
+											<i class="icon icon-1"></i>
+											<p class="fs9 title">首页</p>
+										</div>
+									</a>
+									<a @click="collect" class="item" :class="{checked: is_collect}">
+										<div class="box">
+											<i class="icon icon-2"></i>
+											<p class="fs9 title">收藏</p>
+										</div>
+									</a>
+									<a :href="'./index/index.html#/chat?storeId='+data.store.id+'&goodsId='+data.goods_id" class="item">
+										<div class="box">
+											<i class="icon icon-3"></i>
+											<p class="fs9 title">客服</p>
+										</div>
+									</a>
+								</div>
+								<div class="right-box fs11">
+									<div style="background-color:#fff;"v-show="data_expand.buy_type==1">
+										<a class="tap btn left" :data-price="data.shop_price" id="buy-s-btn" >
+											<span class="fs13">￥{{data.shop_price}}</span>
+											<br>
+											<span>单独购买</span>
+										</a>
+										<a class="tap btn right" :data-price="data.prom_price" id="buy-m-btn">
+											<span class="fs13">￥{{data.prom_price}}</span>
+											<br>
+											<span>{{parseInt(data.prom)==0?'免单拼':data.prom+'人团'}}</span>
+										</a>
+									</div >
+									<div v-if="data_expand.buy_type==0&&set_push==0" style="background-color:#009900;display: flex;height: 4rem;flex-direction: column;align-content: center;justify-content: space-between;padding: .4rem 0;" @click="setPush(data_expand.activ_category_id)">
+										<span  style="text-align: center;color: #fff" class="fs16">
+											开团提醒
+										</span>
+										<!--<span v-if="set_push==1" style="text-align: center;color: #fff" class="fs16">-->
+											<!--取消提醒-->
+										<!--</span>-->
+										<span style="text-align: center;color: #fff">
+											<span v-if="countDown.day!='0'"><span>{{countDown.day}}</span>天</span>
+											<span>{{countDown.hour}}时{{countDown.minutes}}分{{countDown.second}}秒</span>
+										</span>
+									</div>
+									<div v-if="data_expand.buy_type==0&&set_push==1" style="background-color:#f68657;display: flex;height: 4rem;flex-direction: column;align-content: center;justify-content: space-between;padding: .4rem 0;" @click="setPush(data_expand.activ_category_id)">
+
+										<span  style="text-align: center;color: #fff" class="fs16">
+											取消提醒
+										</span>
+										<span style="text-align: center;color: #fff">
+											<span v-if="countDown.day!='0'"><span>{{countDown.day}}</span>天</span>
+											<span>{{countDown.hour}}时{{countDown.minutes}}分{{countDown.second}}秒</span>
+										</span>
+									</div>
+									<div v-if="data_expand.buy_type==2" style="background-color:#c5c5c5;text-align: center;height: 4rem;line-height:4rem;color: #fff" class="fs22">
+										已售磬
+									</div>
+								</div>
+							</div>
+			    		</div>
+			    	</div>
+				</div>
+			</div>
+		</main>
+
+		<!--购买弹窗-->
+		<div class="buy dialog" id="buy-dialog" v-cloak>
+			<div class="mask"></div>
+			<div class="dialog-body">
+				<i class="close"></i>
+				<div class="dialog-container">
+					<div class="buy-header">
+						<dl>
+							<dt class="pic mr10">
+								<img :src="goodsPic?goodsPic:'images/icon_place.png?v=3af203b59a'" alt="goods_img">
+							</dt>
+							<dd>
+								<p class="fs11 title">{{data.goods_name}}</p>
+								<p class="fs12 mt10 red1 clearfix">
+									￥<span id="price">{{price}}</span>
+								</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="select-box tl">
+						<!--款式-->
+						<div class="select-group mt5" :select_spec_id="0" v-for="item in data.filter_spec">
+							<div class="heading fs11 gray1">{{item.title}}</div>
+							<div class="clearfix mt">
+								<span class="item fs10 " v-for="(option,index) in item.items" :spec_id="option.item_id" :pic-src="option.src" >{{option.item}}</span>
+							</div>
+						</div>
+						<div class="select-group">
+							<div class="heading clearfix fs11 gray1">
+								<span class="fl mt7">数量</span>
+								<span v-if="data.is_special==6||data.is_special==7||data.is_special==8">
+									<span class="fr mt7 mr10">x1</span>
+								</span>
+								<span v-else>
+									<span class="fr countBox ml10" id="countBox">
+										<span class="fl count-btn" @click="buy_count>1?(buy_count-=1):(buy_count-=0)">-</span>
+										<input type="text" :value="buy_count" disabled="disabled">
+										<span class="fr count-btn" @click="buy_count+=1">+</span>
+									</span>
+								</span>
+							</div>
+						</div>
+						<br>
+						<br>
+					</div>
+				</div>
+				<div v-if="prom_type=='undefined'">
+					<a href="javascript:;" id="buy-btn" class="tap btn fs14">立即购买</a>
+				</div>
+				<div v-if="prom_type==0">
+					<a href="javascript:;" id="buy-btn" class="tap btn fs14">立即参团</a>
+				</div>
+			</div>
+		</div>
+		<div class="hint-dialog" id="hint-dialog">
+			<p class="fs14">{{hint_info}}</p>
+		</div>
+	</div>
+	<!--关注弹窗-->
+	<div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;background:rgba(0,0,0,.8);display: none;justify-content: center;align-items: center;z-index: 9999;" id="isSubscrible">
+		<div style="width: 24rem">
+			<img src="images/中奖关注.png" alt="" style="width: 100%">
+		</div>
+	</div>
+	<!--下载app弹窗-->
+	<div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;display: none;z-index: 9999;" id="loadMask">
+		<div style="width: 100%;height: 100%;background:rgba(0,0,0,.8);display: flex;justify-content: center;align-items: center;" id="cur" >
+			<div style="width: 25.6rem;height:9.2rem;background-color:#fff;border-radius: .5rem;position: relative" id="loadContent">
+				<img src="images/关闭x2.png" alt="" style="position: absolute;top: -1rem;right: -1rem;width: 2rem" id="close">
+				<p style="font-size: 1.2rem;text-align: center;margin-top:1.5rem;margin-bottom:2rem;">此玩法为拼趣多APP专属！</p>
+				<p style="display: flex;justify-content: center;align-items: center"><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.jumper.spellgroup" style="width: 60%;display: block"><img src="images/立即下载x2.png" alt="" style="width: 100%"></a></p>
+			</div>
+		</div>
+	</div>
+	<script src="dist/goods_detail.js?v=d56037db1f74d92730a1?v=519bd58ce7998a230f05"></script>
+	</body>
+</html>

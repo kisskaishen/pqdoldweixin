@@ -1,0 +1,356 @@
+body {
+  margin: 0;
+}
+.banner {
+  width: 100%;
+  /*height: 200px;*/
+  position: relative;
+}
+.banner>img {
+  height: 100%;
+  width: 100%;
+}
+.act-hint {
+  position: absolute;
+  width: 100%;
+  height: 2.5rem;
+  top: 0;
+  background: #EE311C;
+  opacity: 0.7;
+  /*background: #000;
+  opacity: 0.4;*/
+  /*background: url(/images/newyear/act-hint-bg.png);*/
+}
+.hint-txt {
+    color: #fff;
+    display: inline-block;
+    font-size: 1.1rem;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    margin: 0 0 0 1.0rem;
+    float: left;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+}
+.t-countdown {
+  display: inline-block;
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0 0 0 1.8rem;
+  font-weight: 400;
+  position: absolute;
+  top: 0;
+  right: 0;
+  right: 0.5rem;
+}
+.t-cell {
+display: inline-block;
+    float: left;
+    margin-top: 0.4rem;
+    text-align: center;
+    font-weight: 700;
+    font-family: "微软雅黑 Bold", "微软雅黑 Regular";
+    font-feature-settings: 'kern' 1;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+    background: #E33414;
+    border: solid 1px #E33414;
+    border-radius: 3px;
+    padding: 0.2rem;
+    font-size: 1.0rem;
+    color: #ffffff;
+    opacity: 0.8;
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.t-unit {
+    display: inline-block;
+    float: left;
+    margin: 0.7rem 0.6rem;
+    color: #fff;
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+.act-rule {
+    position: absolute;
+    top: 6.4rem;
+    right: 0;
+    height: 2.2rem;
+    line-height: 2.2rem;
+    width: 5.45rem;
+    padding-left: 1.0rem;
+    background-size: cover;
+    background-color: #fff;
+    opacity: 0.3;
+    border-top-left-radius: 1.0rem;
+    border-bottom-left-radius: 1.0rem;
+}
+.act-rule-txt{
+    font-size: 1.0rem;
+    position: absolute;
+    top: 6.45rem;
+    right: 0.5rem;
+    opacity: 0.8;
+    text-decoration: none;
+    height:2.2rem;
+    line-height: 2.2rem;
+    margin: 0;
+    padding: 0;
+}
+.act-rule-txt a {
+    color: #fff;
+    font-weight: 400;
+    text-decoration: none;
+}
+.hbyg {
+  width: 12rem;
+  margin-left: -5.0rem;
+  position: absolute;
+  left: 50%;
+  bottom: 1.0rem;
+  background: #cf7e07;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+.miaosha-title, .youxuan-title {
+  background-color: rgba(181,6,61,1);
+  border: 1px solid rgba(181,6,61,1);
+  text-align: center;
+  padding: 0.8rem 0;
+  color: #fff;
+}
+.miaosha-title {
+  position: relative;
+}
+.miaosha-more {
+  position: absolute;
+  right: 1.8rem;
+  top: 0.5rem;
+  font-size: 0.8rem;
+  background: #ddb33d;
+  border: solid 1px #ddb33d;
+  border-radius: 1.0rem;
+  padding: 2px 5px;
+  color: #fff;
+  text-decoration: none;
+}
+.miaosha-nav {
+  /*background: rgb(255,0,0);*/
+    background-image: url(/images/newyear/huichang_msbg.png);
+    background-size: 100%, 100%;
+    padding: 0 0.8rem;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-color: #df0600;
+}
+.swiper-wrapper {
+  list-style-type: none;
+  padding: 1.0rem 0 0 0;
+ /* width: 8.5rem!important;*/
+  margin-bottom: 1.0rem;
+  margin-left: 0.2rem;
+}
+.swiper-slide {
+  width: 7.8rem;
+  margin: 0 0.8rem 0 0;
+  background-color: #fff;
+}
+.swiper-slide img {
+  width: 7.8rem;
+  height: 7.8rem;
+}
+.ms-price {
+  margin-bottom: 0.2rem!important;
+}
+.gray {
+  color: #999;
+}
+.red {
+  color: #f00;
+}
+.yx-tuan {
+  font-size: 0.9rem;
+  text-decoration: line-through;
+}
+.goods-name,.gprice {
+  margin: 0;
+  padding: 0;
+  /*text-overflow:ellipsis;
+  overflow:hidden;*/
+  white-space: nowrap;
+  font-size: 1.0rem;
+}
+.cg {
+  color: #3e3434f0;
+}
+.center {
+  text-align: center;
+}
+.miaosha-tab {
+  display: flex;
+  justify-content: flex-start;
+}
+.miaosha-item {
+  background: #dc4911;
+  color: #fff;
+  /*padding: 0px 1.0rem;*/
+  height: 4.5rem;
+  cursor: pointer;
+  text-align: center;
+  width: 20%;
+  float: left;
+  box-sizing: border-box;
+  padding: 0.5rem 0;
+}
+.miaosha-item:nth-child(n+1) {
+  /*margin-left: 2px;*/
+}
+.miaosha-item.active {
+  background: inherit;
+  width: 20%;
+}
+
+.miaosha-item p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.miaosha-item .ms-time {
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+.miaosha-item .ms-txt {
+    font-size: 0.9rem;
+    transform: scale(0.8);
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+.miaosha-item .in {
+  border-radius: 1.0rem;
+  font-size: 0.9rem;
+  text-align: center;
+  display: inline-block;
+  color: #FF9800;
+  background: #fff;
+  padding: 0.2rem;
+  transform: scale(0.8);
+  font-weight: 400;
+}
+.youxuan-block {
+    background: #df0600;
+    height: auto;
+    min-height: 45rem;
+    /*overflow: scroll;*/
+    padding: 0.4rem;
+    margin-top: -2px;
+}
+.youxuan-list {
+    text-align: center;
+    min-height: 74rem;
+    height: auto;
+    border: solid 0.4rem #f8581c;
+    border-radius: 3px;
+    margin-bottom: 2.5rem;
+    background: #fff;
+}
+.youxuan-list:nth-last-child(1) {
+    margin-bottom: 0.5rem;
+}
+.youxuan-ad {
+  width: 66.6%;
+  height: 12rem;
+  display: inline-block;
+  float: left;
+}
+.youxuan-ad img {
+  width: 100%;
+  height: 100%;
+}
+.youxuan-item {
+  width: 33.3%;
+  height: 12em;
+  display: inline-block;
+  float: left;
+  background: #fff;
+  position: relative;
+  margin-left: 0;
+  top: 0.2rem;
+}
+.youxuan-item:nth-child(3n+2){
+  /*margin-left: 5%;*/
+}
+.youxuan-item:nth-child(3n+4){
+  /*margin-left: 5%;*/
+}
+.youxuan-item img {
+  width: 100%;
+  height: 100%;
+}
+.youxuan-item .ablock {
+  /*padding: 1.0rem 1.0rem;*/
+  /*padding: 2.5rem 0;*/
+  margin: 1.5rem;
+}
+.ablock p{
+    margin: 0;
+    padding: 0 0 0 2px;
+    word-wrap: normal;
+    text-align: left;
+    font-size: 1.0rem;
+    /* position: absolute; */
+    margin-top: 0.2rem;
+    text-align: center;
+    white-space: nowrap;
+}
+.ablock .goods-name {
+  text-align: center;
+  font-size: 1.2rem;
+}
+.pri {
+  bottom: 1.0rem;
+  position: absolute;
+  width: 100%;
+}
+.cg {
+  bottom: 1.7rem;
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  display:-webkit-box; 
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2; 
+}
+.goods-name {
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  text-decoration: none;
+  color: #000;
+}
+.ablock {
+  display: block;
+}
+.pg {
+  color: #EB0101;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.psg {
+  color: #EB0101;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.money-sign {
+  color: #EB0101;
+}
+.money-sign-t {
+  font-size: 0.9rem;
+  display: inline-block;
+      transform: scale(0.75);
+    margin-right: -0.2rem;
+}

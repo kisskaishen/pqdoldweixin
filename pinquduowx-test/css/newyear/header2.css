@@ -1,0 +1,29 @@
+.bgred {
+  background: rgba(245, 16, 39, 1);
+}
+.center {
+  text-align: center;
+}
+.header {
+  color: #fff;
+  font-size: 18px;
+  height: 3rem;
+  line-height: 3rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.header a {
+  display: inline-block;
+  float: left;
+}
+.header img {
+    height: 20px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
+.header span {
+  display: inline-block;
+  margin-left: -20px;
+}

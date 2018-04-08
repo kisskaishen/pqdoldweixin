@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+      <meta name="wap-font-scale" content="no" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <title>拼趣多</title>
+      <link rel="stylesheet" href="/css/base.css?v=2156a6538c">
+      <link rel="stylesheet" href="/css/newyear/huichang.css?v=4f91c346f4">
+      <link rel="stylesheet" href="/css/newyear/header.css?v=8875d77ef9">
+      <link rel="stylesheet" href="css/page.css?v=816dde6f94">
+      <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+      <link rel="stylesheet" href="css/swiper.min.css?v=f271fa3348">
+      <!--qq/微信 功能性api-->
+      <script src="dist/jweixin-1.0.0.js?v=ad021d4c5353" data-api="wx"></script>
+      <script src="dist/qqShare.js?v=d85faaad5c5c" data-api="qq"></script>
+  </head>
+  <body>
+  <header class="header bgred center">
+      <a href="javascript:history.back();"><img src="/images/newyear/arrow-left.png"></a>
+      <span>活动会场</span>
+  </header>
+  <div id="loading-template" ></div>
+  <!-- banner -->
+  <div class="wrap" id="wrap">
+    <div class="banner" id="banner">
+      <img src="/images/newyear/nianhuo-banner2.jpg">
+      <div :class="act_hint_class">
+        <p class="hint-txt">{{activity_hint}}</p>
+        <p class="t-countdown">
+          <span class="t-cell day">{{days[0]}}</span><span class="t-cell day">{{days[1]}}</span><span class="t-unit">天</span>
+          <span class="t-cell hour">{{hours[0]}}</span><span class="t-cell hour">{{hours[1]}}</span><span class="t-unit">时</span>
+          <span class="t-cell minute">{{minutes[0]}}</span><span class="t-cell minute">{{minutes[0]}}</span><span class="t-unit">分</span>
+          <span class="t-cell second">{{seconds[0]}}</span><span class="t-cell second">{{seconds[1]}}</span><span class="t-unit">秒</span>
+        </p>
+      </div>
+      <div :class="act_rule_class">
+        <a href="newyear_rule.html">活动规则</a>
+      </div>
+      <a class="hbyg" href="/pinquduowx-test/index/#/redPacket">
+        <p style="font-weight:700">领红包</p>
+        <!-- <p>下一场开始时间:{{hb_nexttime}}</p> -->
+      </a>
+    </div>
+
+    <main class="main">
+      <div class="main-body" id="main-body">
+        <!-- 限时秒杀 -->
+        <div class="miaosha-block">
+          <div class="miaosha-title">
+             — 限时秒杀 —
+             <a href="/pinquduowx-test/index/#/seckill" class="miaosha-more">更多秒杀</a>
+          </div>
+          <div class="miaosha-nav">
+            <div class="miaosha-tab">
+              <div v-for="(item,index) in kill_show_time" :class="index == active_index ? 'miaosha-item active' : 'miaosha-item'" @click="tab_time(item,index)">
+                 <p>{{item.time_name}}</p>
+                 <p :class="item.status == 1 ? 'in' : ''">{{item.status == 1 ? '抢购中' : '即将开抢'}}</p>
+              </div>
+            </div>
+            <div class="swiper-container nav_scroll" id="cat-nav-scroll" style="margin:0 0.8rem 0 0.6rem">
+                <ul class="swiper-wrapper" id="nav_list">
+                  <li v-for="item in kill_goods_data" class="swiper-slide" style="width:7.8rem;">
+                    <a :href="'goods_detail.html?goods_id=' + item.goods_id" class="tap ablock">
+                        <img :src="item.original_img">
+                        <p class="goods-name center">{{item.goods_name}}</p>
+                        <p class="gprice"><span class="price red">￥{{item.prom_price}}</span> <span class="price gray">￥{{item.market_price}}</span></p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 精品优选 -->
+        <div class="youxuan-block page-good-group" id="page-good-group" v-cloak>
+          <div class="youxuan-title">
+             — 精品优选 —
+          </div>
+          <div class="youxuan-list" v-for="goods_block in youxuan_goods">
+            <div class="youxuan-ad">
+              <a href="/pinquduowx-test/index/#/double12Son?id=11">
+                <img :src="youxuan_goods.youxuan_adimg ? youxuan_goods.youxuan_adimg : '/images/newyear/youxuan-ad.jpg'">
+              </a>
+            </div>
+            <!-- 7个 -->
+            <div class="youxuan-item" v-for="item in goods_block.youxuan_goods_data">
+              <a :href="'goods_detail.html?goods_id=' + item.goods_id" class="tap ablock">
+                <img :src="item.original_img">
+                <p class="cg">{{item.goods_name}}</p>
+                <p class="pri"><span class="price red">￥{{item.prom_price}}</span> <span class="tuan gray">{{item.prom}}人团</span></p>
+              </a>
+            </div>
+          </div>
+      </main>
+      <div class="hint-dialog" id="hint-dialog">
+          <p class="fs14 tc">{{hint_info}}</p>
+      </div>
+    </div>
+  </body>
+  <script>
+  </script>
+  <script src="/dist/newyear_huichang.js?v=5ea31d808d54427dc325"></script>
+</html>

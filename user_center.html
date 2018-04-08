@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css">
+	    <link rel="stylesheet" href="css/page.css">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+		<script type="text/javascript" src="./customer/javascript/dist/webim.config.js"></script>
+		<script type="text/javascript" src='./customer/sdk/dist/strophe-1.2.8.min.js'></script>
+		<script src='http://downloads.easemob.com/downloads/cdn/websdk-1.4.12.js'></script>
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+
+	<div class="wrap" id="wrap">
+		<main class="main" id="main">
+			<div class="login-group form-group" id="login-group">
+				<div class="item clearfix">
+					<span class="title">
+						<i class="icon mb"></i>
+					</span>
+					<div class="input-box">
+						<input type="text" placeholder="请输入手机号" id="mobile-input">
+					</div>
+				</div>
+				<div class="item clearfix">
+					<span class="title">
+						<i class="icon yzm"></i>
+					</span>
+					<div class="input-box yzm">
+						<div class="input">
+							<input type="text" placeholder="验证码" id="yzm-input">
+						</div>
+						<span class="yzm-btn fs12" id="yzm-btn">获取验证码</span>
+					</div>
+				</div>
+				<div class="treaty-item">
+					<div class="clearfix">
+						<i class="select-box checked"></i>
+						我已阅读并同意<a href="#" class="red1">《拼趣多用户协议》</a>
+					</div>
+				</div>
+				<div class="btn-item">
+					<span class="btn tap fs15 disabled" id="login-btn">立即登录</span>
+				</div>
+				<!-- <div class="other-hall tc mt15">
+					<p class="fs13 gray3">其他方式登录</p>
+					<div class="mt10">
+						<a href="/login/auth/qq" class="tap icon qq"></a>
+						<a href="/login/auth/qq" class="tap icon wx"></a>
+						<a href="/login/auth/qq" class="tap icon wb"></a>
+					</div>
+				</div> -->
+			</div>
+			<div class="user-center" id="user-center">
+				<div class="user-header">
+					<div class="userId-box" id="login-hall">
+						<a style="color:#fff;" >
+							<dl class="fs12 tc">
+								<dt>
+									<div class="pic">
+										<img v-bind:src="user_data.head_pic" alt="">
+									</div>
+								</dt>
+								<dd>
+									<div>
+										{{user_data.user_name}}
+									</div>
+								</dd>
+							</dl>
+						</a>
+					</div>
+					<div class="nav-group tc clearfix fs10">
+						<a href="customer/msg_group.html" class="item login-hall-item">
+							<span class="item-box" style="position: relative">
+								<i class="icon"></i>
+								<p class="title">我的消息</p>
+								<i style="position: absolute;height: 1.6rem;width: 1.6rem;border-radius: .8rem;background-color:#f13d3c;right: .6rem;top: -.6rem;line-height:1.6rem;text-align: center" v-if="news>0">{{news}}</i>
+							</span>
+						</a>
+						<a href="./index/index.html#/myCoupon" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">我的优惠券</p>
+							</span>
+						</a>
+						<a href="my_freeprom.html" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">我的免单</p>
+							</span>
+						</a>
+						<a href="my_prom.html" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">我的拼团</p>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="order-hall" id="order-hall">
+					<a href="goods_order.html" class="heading clearfix black3">
+						<span class="fl fs12">全部订单</span>
+						<span class="fr gray3 more">&nbsp;&nbsp;&nbsp;</span>
+					</a>
+					<div class="nav-group tc clearfix fs10">
+						<a href="goods_order.html?id=1" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">拼团中</p>
+								<span class="mark fs10" :class="{show:parseInt(order_status.in_prom)}">{{order_status.in_prom}}</span>
+							</span>
+						</a>
+						<a href="goods_order.html?id=2" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">待发货</p>
+								<span class="mark fs10" :class="{show:parseInt(order_status.daifahuo)}">{{order_status.daifahuo}}</span>
+							</span>
+						</a>
+						<a href="goods_order.html?id=3" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">待收货</p>
+								<span class="mark fs10" :class="{show:parseInt(order_status.daishouhuo)}">{{order_status.daishouhuo}}</span>
+							</span>
+						</a>
+						<a href="goods_order.html?id=4" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">待付款</p>
+								<span class="mark fs10" :class="{show:parseInt(order_status.daifukuan)}">{{order_status.daifukuan}}</span>
+							</span>
+						</a>
+						<a href="goods_order.html?id=6" class="item login-hall-item">
+							<span class="item-box">
+								<i class="icon"></i>
+								<p class="title">退款/售后</p>
+							</span>
+						</a>
+					</div>
+				</div>
+				<!--<a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.jumper.spellgroup" class="app-ad mt5">-->
+					<!--<img :src="app_banner">-->
+				<!--</a>-->
+				<div class="hall-group fs12 mt5">
+					<a href="my_likes.html" class="item login-hall-item tap">
+						<div class="item-box">
+							<i class="icon fl"></i>
+							<span class="title">为我助力</span>
+						</div>
+					</a>
+					<a href="goods_collection.html" class="item login-hall-item tap">
+						<div class="item-box">
+							<i class="icon fl"></i>
+							<span class="title">我的收藏</span>
+						</div>
+					</a>
+					<a href="index/index.html#/editorAdr" class="item login-hall-item tap">
+						<div class="item-box">
+							<i class="icon fl"></i>
+							<span class="title">收货地址</span>
+						</div>
+					</a>
+					<a href="help.html" class="item tap">
+						<div class="item-box">
+							<i class="icon fl"></i>
+							<span class="title">常见问题</span>
+						</div>
+					</a>
+				</div>
+				<p class="tc gray1 mt30" id="exit-login-btn">
+					<span class="fs10">退出登录</span>
+				</p>
+			</div>
+		</main>
+
+
+		<footer class="footer" id="footer">
+			<nav class="nav-group clearfix">
+				<a href="index.html" class="item">
+					<div class="box">
+						<i class="icon icon-1"></i>
+						<p class="fs9 title">首页</p>
+					</div>
+				</a>
+				<a href="ranking.html" class="item">
+					<div class="box">
+						<i class="icon icon-2"></i>
+						<p class="fs9 title">排行榜</p>
+					</div>
+				</a>
+				<a href="qualityFruit.html?nav" class="item">
+					<div class="box">
+						<i class="icon icon-3"></i>
+						<p class="fs9 title">品质水果</p>
+					</div>
+				</a>
+				<a href="seek.html" class="item">
+					<div class="box">
+						<i class="icon icon-4"></i>
+						<p class="fs9 title">搜索</p>
+					</div>
+				</a>
+				<a href="javascript:;" class="item active">
+					<div class="box">
+						<i class="icon icon-5"></i>
+						<p class="fs9 title">个人中心</p>
+					</div>
+				</a>
+			</nav>
+		</footer>
+		<!-- <a href="./index/index.html#/active" style="position: fixed;top: 40rem;right: 0;z-index: 999999;width: 7rem;"  >
+			<img src="./images/main_double11@2x.png" alt="" style="width: 100%">
+		</a> -->
+	</div>
+	<script type="text/javascript" src="dist/user_center.js?v=5ea31d808d54427dc325"></script>
+
+	</body>
+</html>

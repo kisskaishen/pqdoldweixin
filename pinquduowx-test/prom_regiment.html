@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+		<div id="loading-template"></div>
+		<div class="wrap" id="wrap">
+			<main class="main">
+				<!--<a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.jumper.spellgroup" class="app-ad">-->
+					<!--<img src="images/prom_app_banner.jpg?v=765ab8cb75">-->
+				<!--</a>-->
+				<div class="main-body" id="main-body" v-cloak>
+					<div class="joinGroup-container tl fs11" >
+						<!--商品详情-->
+						<div class="good-header">
+							<a class="black2 clearfix" :href="'goods_detail.html?goods_id='+data.goods.goods_id">
+								<img :src="data.goods.original" alt="" class="pic mr10">
+								<div class="intro fs11">
+									<p class="fs12 mt5">{{data.goods.goods_name}}</p>
+									<p style="text-decoration: line-through">{{'￥'+data.goods.market_price}}</p>
+									<p class="mt10 gray1">
+										<span v-if="data.goods.is_special==6" style="background-color:#1bd1a5;padding: .2rem;color: #f6f6f6">{{data.prom+'免'+data.free}}</span>
+										<span v-else style="background-color:#1bd1a5;padding: .2rem;color: #f6f6f6">{{data.prom+'人团'}}</span>
+										<span class="red1">￥{{data.price}}</span>
+										<span class="fr">{{'已售出'+data.goods.sales+'件'}}</span>
+									</p>
+								</div>
+							</a>
+						</div>
+						<!--拼单流程 star-->
+
+						<div class=" clearfix" style="padding: 0 1rem 1rem 1rem;border-top:1px solid #f6f6f6; background-color: #fff;" v-if="data.goods.is_special!=8">
+							<a href="group_process.html" class="clearfix" style="display: block">
+								<p class="clearfix" style="padding: .5rem;height: 1.2rem;line-height: 1.2rem;margin-bottom: 1rem" >
+									<span class="fl" style="font-size: 1rem;color: #1e1e1e;">拼单流程</span>
+									<span class="fl" style="font-size: .9rem;color: #bcbcbc;height:1.2rem;line-height:1.2rem;">（若人数不足将自动退款）</span>
+									<span class="fr" style="color: #bcbcbc;font-size: 1.2rem">说明&nbsp></span>
+								</p>
+								<p style="padding: .5rem;color:#bcbcbc;font-size: 0.9rem">
+							<span class="fl" style="margin-right: 2rem;">
+								<i class="fl" style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;" >1</i>支付开团/参团
+							</span>
+									<span class="fl" style="margin-right: 2rem;">
+								<i class="fl" style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;" >2</i>邀请参团
+							</span>
+									<span class="fl" style="margin-right: 2rem;">
+								<i class="fl" style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;" >3</i>人满成团
+							</span>
+								</p>
+							</a>
+						</div>
+						<!--拼单流程 end -->
+						<!--为我点赞流程 start-->
+						<div class=" clearfix"
+							 style="padding: 0 1rem 1rem 1rem;border-top:1px solid #f6f6f6; background-color: #fff;" v-else>
+							<a href="likes_process.html" class="clearfix" style="display: block">
+								<p class="clearfix"
+								   style="padding: .5rem;height: 1.2rem;line-height: 1.2rem;margin-bottom: 1rem">
+									<span class="fl" style="font-size: 1rem;color: #1e1e1e;">为我助力流程</span>
+									<span class="fl"
+										  style="font-size: .9rem;color: #bcbcbc;height:1.2rem;line-height:1.2rem;">（若人数不足将自动退款）</span>
+									<span class="fr" style="color: #bcbcbc;font-size: 1.2rem">说明&nbsp></span>
+								</p>
+								<p style="padding: .5rem;color:#bcbcbc;font-size: 0.9rem">
+							<span class="fl" style="margin-right: 2rem;">
+								<i class="fl"
+								   style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;">1</i>0元开团
+							</span>
+									<span class="fl" style="margin-right: 1rem;">
+								<i class="fl"
+								   style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;">2</i>邀请好友参团
+							</span>
+									<span class="fl" style="margin-right: 1rem;">
+								<i class="fl"
+								   style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;">3</i>团满发货
+							</span>
+									<span class="fl" style="margin-right: 1rem;">
+								<i class="fl"
+								   style="display: block;height:1rem;width:1rem;border-radius: .5rem;background-color:#bcbcbc;color: white;text-align: center;line-height:1rem;">4</i>团长获商品
+							</span>
+								</p>
+							</a>
+						</div>
+						<!--为我点赞流程 end-->
+						<!--拼单介绍 start-->
+						<div class="group-detail" style="padding:1rem 0 0 0;">
+							<div class="persons" style="background-color:#fff;">
+								<div style="overflow: hidden ;height: 5.7rem;padding: 1rem">
+									<div :style="style">
+									<span class="pic" v-for="(item,index) in prom_num" style="padding-top: 1rem;">
+										<img src="images/mmexport1494904011503.jpg" v-if="index==0" alt="" style="height:1rem;width: 1.5rem; position: absolute;top: .3rem;left:1.05rem;border-radius: 0">
+										<img :src="item.head_pic?item.head_pic:'images/unkown.png'" alt="" >
+									</span>
+									</div>
+								</div>
+								<p style="text-align: center;margin-top: 1rem;" v-if="data.is_successful==0">
+									您还需要邀请<span style="color: red">{{data.prom-peopleNum}}</span>名好友来参团
+								</p>
+								<p class="mt7" id="timed-count" style="text-align: center;height: 2rem;line-height:2rem;margin-bottom:2rem;" v-if="data.is_successful==0"></p>
+								<p v-if="data.is_successful==1" style="text-align: center;margin:1rem 0">团已满！</p>
+								<div class="full-btn-item " style="position: relative;height: auto;margin-bottom:1rem;padding: 1rem" >
+									<!--已成团或已结束-->
+									<a  href="javascript:;" @click="go_prom('再开一团')" v-if="data.is_successful==1||timeOut" class="btn tap fs14 disabled" style="padding: 1rem;margin: 1rem 0;border-radius: 1rem;margin-bottom:4rem;">
+										再开一团
+									</a>
+									<a v-else-if="data.not==0&&data.goods.is_special!=8" href="javascript:;" class="btn tap fs14" @click="go_prom('我要参团')" style="display: block;height:8rem;width:8rem;line-height:8rem;padding: 0;border-radius: 8rem;margin: 0 auto;" v-cloak>
+										我要参团
+									</a>
+									<a v-else-if="data.not==0&&data.goods.is_special==8" href="javascript:;" class="btn tap fs14" @click="go_prom('我要参团')" style="display: block;height:8rem;width:8rem;line-height:8rem;padding: 0;border-radius: 8rem;margin: 0 auto;" v-cloak>
+										帮忙助力
+									</a>
+									<!--未成团-->
+									<a v-else-if="(data.not!=0&&data.goods.is_special!=8)||(data.not==1&&data.goods.is_special==8)" href="javascript:;" class="btn tap fs14" @click="go_prom('我要分享')" style="display: block;height:8rem;width:8rem;line-height:8rem;padding: 0;border-radius: 8rem;margin: 0 auto;" v-cloak>
+										我要分享
+									</a>
+									<a v-else-if="data.not==2&&data.goods.is_special==8" href="javascript:;" class="btn tap fs14" @click="go_prom('我要开团')" style="display: block;height:8rem;width:8rem;line-height:8rem;padding: 0;border-radius: 8rem;margin: 0 auto;" v-cloak>
+										我要开团
+									</a>
+
+								</div>
+							</div>
+
+							<!--订单信息-->
+							<div class="intro-box mt10" v-if="data.is_successful==1||timeOut">
+								<div class="join-person-group mt15" style="background-color:#fff;padding:.5rem 0;width:100%;margin: 0">
+									<div class="item clearfix" v-for="(item,index) in data.join_num" style="position: relative; background-color:#fff;border-radius: 3.2rem;color: #1e1e1e;padding: 0 1rem 0 0;margin: 1rem;box-shadow: 0 0 .2rem .1rem pink;border: none">
+										<img class="pic fl mr5" :src="item.head_pic" alt="">
+										<p class="clearfix">
+											<span v-if="index==0" class="fr">开团</span>
+											<span v-else  class="fr">参团</span>
+											<span class="fr fs8" style="margin-right: 1rem;">
+												{{item.addtime}}
+											</span>
+											<span class="fl name ellipsis" >{{item.name}}</span>
+											<img src="" alt="" v-if="">
+										</p>
+										<img src="images/free_icon.png" alt="" v-if="item.is_free!=0" class="pic" style="position: absolute;top:0;left: 6rem;">
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--拼单介绍 end-->
+					</div>
+					<nav id="cat_nav"style="width: 100%;background-color:#fff;" >
+						<ul class="clearfix" style="display: flex;width: 100%;padding: 1rem 2rem">
+							<li v-for="(item,index) in entrance" style="width: 20%;padding: 0 0.6rem">
+								<a v-bind:href="links[item.type]" :data-id="item.id" @click="nav_fn(index)" class="tap" style="text-decoration: none;color: #1e1e1e;display: block;text-align: center">
+									<img :src="item.cat_img" class="icon" alt="" style="width:70%">
+									<p class="title fs6 ellipsis" style="text-align: center">{{item.cat_name}}</p>
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<!--服务-->
+					<div class="sv-group clearfix fs9 gray4" style="background-color:#fff;margin-bottom:.2rem;margin-top:.2rem;">
+			    		<span class="item fl" v-for="item in data.goods.security" style="height: 3rem;line-height:3rem;">
+			    			<img style="width: 1.5rem;vertical-align:middle;margin-right: 0.2rem;margin-right:.2rem;" src="images/treaty_checked@2x.png" alt=""></i>{{item.type}}
+			    		</span>
+					</div>
+					<div class="page-good-group">
+						<ul class="clearfix">
+							<li v-for="item in like_goods_data">
+								<a :href="'goods_detail.html?goods_id='+item.goods_id" class="tap">
+									<div class="pic" style="display: flex;justify-content: center;align-items: center">
+										<img :src="item.original" @error="img_error('images/lazy_400x400.jpg?v=7b5f26051e',$event)" alt="" style="width:100%;">
+									</div>
+									<div class="title fs11">
+										{{item.goods_name}}
+									</div>
+									<div class="footing clearfix">
+										<div class="fl price fs10">
+											<span class="red1 fs11">￥{{item.prom_price}}</span>
+											<span class="gray1">{{item.prom==0?'免单拼':item.prom+'人团'}}</span>
+										</div>
+										<!-- <span class="btn mt10 fr"></span> -->
+									</div>
+								</a>
+							</li>
+						</ul>
+						<p class="more-hint tc gray1" id="more-hint">
+							{{load_hint}}
+						</p>
+					</div>
+					<div class="hint-dialog" id="hint-dialog">
+						<p class="fs13">{{hint_info}}</p>
+					</div>
+					<!--分享弹窗-->
+					<!-- <div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color:#000;opacity: 0.8;display: none" id="shareMask">
+						<div>
+							<img src="images/分享箭头_2.png" alt="" style="position: absolute;right: 3rem;top: -4.5rem;height: 27.8rem">
+							<p style="color: #fff;font-size: 2rem;text-align: center;margin-top:20rem;">还差<span style="color: red">{{data.prom-data.join_num}} || 0</span>人，赶快邀请好友来参团</p>
+						</div>
+					</div> -->
+				</div>
+
+			</main>
+
+		</div>
+
+		<!--下载app弹窗-->
+		<div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;display: none" id="loadMask">
+			<div style="width: 100%;height: 100%;background:rgba(0,0,0,.8);display: flex;justify-content: center;align-items: center;" id="cur" >
+				<div style="width: 25.6rem;height:9.2rem;background-color:#fff;border-radius: .5rem;position: relative" id="loadContent">
+					<img src="images/关闭x2.png" alt="" style="position: absolute;top: -1rem;right: -1rem;width: 2rem" id="close">
+					<p style="font-size: 1.2rem;text-align: center;margin-top:1.5rem;margin-bottom:2rem;">此玩法为拼趣多APP专属！</p>
+					<p style="display: flex;justify-content: center;align-items: center"><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.jumper.spellgroup" style="width: 60%;display: block"><img src="images/立即下载x2.png" alt="" style="width: 100%"></a></p>
+				</div>
+			</div>
+		</div>
+		<!--分享成功弹窗-->
+		<!-- <div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;display: none" id="shareCompleteMask">
+			<div style="width: 100%;height: 100%;background:rgba(0,0,0,.8);display: flex;justify-content: center;align-items: center;">
+				<div style="width: 80%;height: 25.6rem;background:url('images/组 5.png') no-repeat top left ;background-size:contain ;" id="shareCompleteBox">
+					<p style="font-size: 1.6rem;text-align: center;margin-top:1.5rem;"><img src="images/fengxiang2.png" alt="" style="width: 1.6rem;margin-right:.5rem;">分享成功</p>
+					<p style="margin-top:2rem;text-align: center;margin-bottom:2rem;font-size: 1.2rem">继续分享才能提高成团率获得奖品哦</p>
+					<div class="clearfix">
+						<a href="javascript:;" style="display: block;border-radius: .4rem;width: 9rem;height: 3rem;border: .15rem solid #000;float: left;font-size: 1.4rem;color:#fff;text-align: center;border-color: red;background-color:red;line-height: 3rem;margin-left: 2rem" id="continueShare">继续分享</a>
+						<a href="index.html" style="display: block;border-radius: .4rem;width: 9rem;height: 3rem;border: .15rem solid #000;float: right;font-size: 1.4rem;color:red;text-align: center;border-color: red;line-height:3rem;margin-right:2rem;">拼趣多首页</a>
+					</div>
+					<p style="text-align: center;margin-top:1.5rem;display: flex;justify-content: center;align-items: center">
+						<span style="display: block;width: 6rem;border: .05rem solid darkgrey;"></span>
+						<span style="font-size: 1.2rem;color: red;padding: 0 1rem">温馨提示</span>
+						<span style="display: block;width: 6rem;border: .05rem solid darkgrey;"></span>
+					</p>
+					<p style="text-align: center;font-size: 1.2rem;margin-top: .5rem">>.<</p>
+					<p style="text-align: center;font-size: 1.2rem;margin-top: .5rem1">99%的人都选择前往拼趣多首页寻找好货</p>
+				</div>
+				<!--<img src="images/组%205.png" alt="" style="width: 80%">-->
+			</div>
+		</div> -->
+		<!--关注弹窗-->
+		<!--<div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;display: none" id="isSubscrible">-->
+			<!--<div style="width: 100%;height: 100%;background:rgba(0,0,0,.8);display: flex;justify-content: center;align-items: center;">-->
+				<!--<div style="width: 24rem">-->
+					<!--<img src="images/为我点赞关注.png" alt="" style="width: 100%">-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<script src="dist/regiment.js?v=519bd58ce7998a230f05"></script>
+	</body>
+</html>

@@ -1,0 +1,13 @@
+
+
+   //应用的APPID 
+   $app_id = "101393174"; 
+
+   //应用的APPKEY 
+   $app_secret = "931bb8335b2c74bf79a299ec86c633c1"; 
+
+
+  
+	
+
+	

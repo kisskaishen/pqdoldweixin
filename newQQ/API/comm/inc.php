@@ -1,0 +1,2 @@
+<?php die('forbidden'); ?>
+{"appid":"101393174","appkey":"931bb8335b2c74bf79a299ec86c633c1","callback":"https://wx.pinquduo.cn/newQQ/user/get_user_info.php","scope":"get_user_info,add_share,add_topic","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"root","database":"test"}

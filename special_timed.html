@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div class="swiper-container rush-group" id="rush-scroll" v-cloak>
+					<ul class="swiper-wrapper tc">
+						<li class="swiper-slide item" :class="{active:active==index}" v-for="(item,index) in times_data" @click="tab_time(item,$event)">
+							<p class="fs16"><strong>{{item.datetime.substr(11,2)}}:00</strong></p>
+							<i class="icon"></i>
+							<p class="fs12 gray1">{{item.title}}</p>
+						</li>
+					</ul>
+				</div>
+				<div class="favorite order-group fs12 tl" id="goods-group" v-cloak>
+					<a class="item black1 mt5" v-for="item in goods_data" @click="start_buy(item.goods_id)">
+						<div class="pic-text clearfix">
+							<span class="fl pic">
+								<img v-bind:src="item.original_img" alt="">
+							</span>
+							<div class="intro">
+								<p class="title">{{item.goods_name}}</p>
+								<div class="clearfix mt10 fs10">
+									<span class="fl price">
+										<span>{{item.prom}}人团 <span class="red">￥{{item.prom_price}}</span></span>
+										<br>
+										<span class="gray1 fs9">单买价格：￥{{item.shop_price}}</span>
+									</span>
+									<span class="fl mt3">
+										<span class="fs9 red">剩余{{Math.ceil((1-item.sales/item.store_count)*100)+'%'}}</span>
+										<span class="line-box mt3" style="border-color:#F13D3C">
+											<span class="line" v-bind:style="'width:'+(100-Math.ceil((item.sales/item.store_count)*100))+'%'">
+
+											</span>
+										</span>
+									</span>
+									<span class="fr btn mt5 ml15"></span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<p class="more-hint tc gray1" id="more-hint">
+						{{load_hint}}
+					</p>
+				</div>
+			</div>
+		</main>
+		<div class="hint-dialog" id="hint-dialog">
+	        <p class="fs14 tc">{{hint_info}}</p>
+	    </div>	
+	</div>
+
+	<script src="dist/special_timed.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+.bgred {
+  background: rgba(245, 16, 39, 1);
+}
+.center {
+  text-align: center;
+}
+.header {
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 0;
+}
+.header a {
+  display: inline-block;
+  float: left;
+}
+.header img {
+  height: 25px;
+  padding: 0 10px;
+}
+.header span {
+  display: inline-block;
+  margin-left: -20px;
+}

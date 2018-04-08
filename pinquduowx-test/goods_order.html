@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	    <style type="text/css">
+	    	.buttonTip {
+	    		display: flex;
+	    		justify-content: flex-end;
+	    		align-items: center;
+	    		align-content: center;
+	    	}
+	    	.buttonTip button {
+	    		padding: 2px 4px;
+	    		border: 1px solid #dd1b1b;
+	    		border-radius: 4px;
+	    		color: #dd1b1b;
+	    		background-color: #fff;
+	    	}
+	    	.buttonTip button a {
+	    		color: #dd1b1b;
+	    	}
+	    </style>
+	</head>
+	<body>
+ 
+	<div id="loading-template"></div>
+
+	<div class="wrap" id="wrap" v-cloak>
+		<nav class="top-nav">
+			<div class="plays_tab order_tab">
+				<div class="swiper-container nav_scroll" id="tabScroll">
+			        <ul class="swiper-wrapper" id="nav_list">
+			            <li class="swiper-slide">全部</li>
+			            <li class="swiper-slide">拼团中</li>
+			            <li class="swiper-slide">待发货</li>
+			            <li class="swiper-slide">待收货</li>
+			            <li class="swiper-slide">待付款</li>
+			            <li class="swiper-slide">已完成</li>
+			        </ul>
+		        </div>
+			</div>
+		</nav>
+		<main class="main">
+			<div class="main-body" id="main-body" v-cloak>
+				<div class="order-group fs11 tl" id="order-group">
+					<dl class="item mt5" v-for="item in order_data">
+						<dt class="clearfix">
+							<i class="icon fl mr5"><img :src="item.order_info.store_logo" alt=""></i>
+							<span class="fl name">{{item.store_info.store_name}}</span>
+							<span class="fr red">{{item.order_info.order_state_str}}</span>
+						</dt>
+						<dd>
+							<a :href="'order_detail.html?order_id='+item.order_info.order_id" class="pic-text clearfix" style="display: block">
+								<span class="fl pic">
+									<img :src="item.order_info.goods_img" alt="">
+								</span>
+								<div class="intro">
+									<p class="title">
+										{{item.order_info.goods_name}}
+									</p>
+									<p class="mt10 gray1">
+										{{item.order_info.spec_key_name}}
+									</p>
+								</div>
+								<span class="count gray1 red">¥{{item.order_info.goods_price}}</span>
+								<span class="count gray1" style="top: 2.4rem;text-decoration: line-through;color: #838383;">¥{{item.order_info.market_price}}</span>
+								<span class="count gray1" style="top: 3.8rem">x{{item.order_info.num}}</span>
+								<span class="count gray1 red" style="top: 5.2rem">{{item.order_info.order_service_str}}</span>
+								
+							</a>
+
+							<p class="fs10" style="display: block;margin-top:.4rem;text-align: end;color: #363636;">
+								共计{{num}}件商品，合计<span class="red">￥<span class="fs14">{{item.order_info.order_amount}}</span></span>元(含运费¥0.00)
+							</p>
+							<p class="fs10 buttonTip" style="display: block;margin-top:.4rem;text-align: end">
+								<button v-if="item.show_operate_icon.show_cancel == '1'" @click="cancel_order(item.order_info.order_id)">取消订单</button>
+								<button v-if="item.show_operate_icon.show_confirm == '1'" @click="confirm_receiving(item.order_info.order_id)">确认收货</button>
+								<button v-if="item.show_operate_icon.show_delay == '1'" @click="delay_receiving(item.order_info.order_id)">延长收货</button>
+								<button v-if="item.show_operate_icon.show_delivery == '1'"><a :href="'logistics_detail.html?order_id='+item.order_info.order_id">查看物流</a></button>
+								<button v-if="item.show_operate_icon.show_pay == '1'"><a :href="'order_detail.html?order_id='+item.order_info.order_id">去支付</a></button>
+								<button v-if="item.show_operate_icon.show_remind == '1'" @click="remind(item.order_info.order_id)">提醒发货</button>
+							</p>
+						</dd>
+			<!--			<div v-if="item.order_type==1||item.order_type==3||item.order_type==10">
+							<dd class="footing fs10 tr" v-if="item.order_type==10||item.order_type==1">
+								<span class="border-btn btn" @click="cancel_order(item)">取消订单</span>
+								<a class="border-btn btn red-btn ml5" :href="'order_detail.html?order_id='+item.order_id+'&user_id='+user_id">立即支付</a>
+							</dd>
+							<dd class="footing fs10 tr" v-if="item.order_type==3||item.order_type==15">
+								<a class="btn border-btn" @click="delay_receiving(item.order_id)">延长收货</a>
+								<a class="btn border-btn" :href="'logistics_detail.html?order_id='+item.order_id">查看物流</a>
+								<a class="btn border-btn red-btn" @click="confirm_receiving(item.order_id)">确认收货</a>
+							</dd>
+						</div> -->
+					</dl>
+					
+					<p class="more-hint tc gray1" id="more-hint">
+						{{load_hint}}
+					</p>
+				</div>
+			</div>
+		</main>
+		<!--对话框弹窗-->
+		<div class="dialog prompt" id="order-dialog">
+			<div class="mask"></div>
+			<div class="dialog-body">
+				<div class="dialog-container tc">
+					<div class="dialog-header fs14">提示</div>
+					<div class="content fs12">
+						<div class="cell">
+							{{dialog_hint}}
+						</div>
+					</div>
+					<div class="container-footing">
+						<div class="btn-group clearfix fs13">
+							<span class="btn">取消</span>
+							<span class="btn red1">确定</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--对话框弹窗 end-->
+		<div class="hint-dialog" id="hint-dialog">
+			<p class="fs11">{{order_hint}}</p>
+		</div>
+	</div>
+	<script src="dist/goods_order.js?v=519bd58ce7998a230f05"></script>
+	</body>
+</html>

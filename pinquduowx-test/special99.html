@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body" id="main-body" v-cloak>
+				<!-- 焦点图 start-->
+			    <div class="focus-pic swiper-container">
+			        <div class="swiper-wrapper">
+			            <div class="swiper-slide">
+			            	<a href="#">
+			            		<img v-bind:src="data_result.banner.ad_code">
+			            	</a>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- 焦点图 end-->
+
+				<div class="special-goods-group fs12 clearfix">
+					<a :href="'special99_group.html?id='+item.id" class="item tap" v-for="item in data_result.banner2">
+						<img class="pic mr5" v-bind:src="item.img" alt="">
+						<div class="intro">
+							<p class="black1 mt5">{{item.name}}</p>
+							<p class="fs10">{{item.introduction}}</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="page-good-group mt5" id="page-good-group">
+					<ul class="clearfix">
+						<li v-for="item in data_result.goods.items">
+							<a v-bind:href="'goods_detail.html?goods_id='+item.goods_id" class="tap">
+								<div class="pic">
+									<img v-bind:src="item.original" alt="">
+								</div>
+								<div class="title fs12">
+									{{item.goods_name}}
+								</div>
+								<div class="footing clearfix">
+									<div class="fl price fs10">
+										<span>{{item.prom}}人团</span>
+										<span class="red1">￥{{item.prom_price}}</span>
+										<!-- <br>
+										<p class="mt3 gray1 fs10">单买价格：{{item.market_price}}</p> -->
+									</div>
+									<!-- <span class="btn mt10 fr"></span> -->
+								</div>
+							</a>
+						</li>
+					</ul>
+					<p class="more-hint tc gray1" id="more-hint" style="padding:1rem;">上拉加载更多</p>
+				</div>
+
+			</div>
+		</main>
+
+	</div>
+	<!-- <a href="./index/index.html#/active" style="position: fixed;top: 40rem;right: 0;z-index: 999999;width: 7rem;"  >
+		<img src="./images/main_double11@2x.png" alt="" style="width: 100%">
+	</a> -->
+		<script src="dist/special99.js?v=519bd58ce7998a230f05"></script>
+	</body>
+</html>

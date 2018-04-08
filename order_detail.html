@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+    <meta name="wap-font-scale" content="no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <title>拼趣多</title>
+    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+    <!--qq/微信 功能性api-->
+    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .hint-bar {
+            position: relative;
+            background-color: #e02e24 !important;
+            padding: 32px !important;
+        }
+
+        .hint-bar .fs12 {
+            font-size: 20px;
+        }
+
+        .hint-bar img {
+            width: 52px;
+            height: 52px;
+            position: absolute;
+            right: 48px;
+            top: 50%;
+            margin-top: -26px;
+        }
+
+        .title .count span {
+            display: block;
+            margin-bottom: 4px;
+            text-align: right;
+        }
+
+        .title .count .money {
+            color: #dd1b1b;
+            font-size: 16px
+        }
+
+        .title .count .oldMoney {
+            color: #838383;
+            font-size: 13px;
+            text-decoration: line-through;
+        }
+
+        .title .count .numTxt {
+            color: #838383;
+            font-size: 10px
+        }
+
+        .chooseShow {
+            position: fixed;
+            left: 0;
+            right: 0
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .6);
+        }
+
+        .chooseDiv {
+            position: fixed;
+            width: 300px;
+            height: 180px;
+            left: 50%;
+            margin-left: -150px;
+            top: 50%;
+            margin-top: -90px;
+            border-radius: 20px;
+            background-color: #fff;
+        }
+
+        .chooseDiv p {
+            background-color: red;
+            color: #fff;
+            width: 200px;
+            height: 60px;
+            line-height: 60px;
+            margin: 20px auto;
+            text-align: center;;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading-template"></div>
+<div class="wrap" id="wrap">
+    <main class="main">
+        <div class="main-body" id="main-body" v-cloak>
+            <div class="order-detail-container">
+                <div class="hint-bar">
+                    <p class="fs12">{{order_info.order_state_str}}</p>
+                    <p class="mt5 fs10 timed" v-if="order_info.count_down_time>0">还剩余<span
+                            style="background-color:#1e1e1e;margin: 0 .1rem">{{day}}</span>天<span
+                            style="background-color:#1e1e1e;margin: 0 .1rem">{{hour}}</span>小时自动确认</p>
+                    <img src="./images/redBao.png">
+                </div>
+                <div class="adr-group list-group fs12">
+                    <ul>
+                        <li class="tap item checked">
+                            <a>
+                                <i class=" fl mr10"
+                                   style="margin-top:.7rem;width: 1.8rem;height:2rem;background-image:url(./images/icon_address@2x.png);background-repeat:no-repeat;"></i>
+                                <div class="adr-intro gray1">
+                                    <p>
+                                        <span>收货人：{{order_info.consignee}}</span>
+                                        <span>
+												{{order_info.mobile}}
+											</span>
+                                    </p>
+                                    <p class="mt3">
+                                        收货地址：{{order_info.address_base}}{{order_info.address}}
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div casls="order-group fs11 tl">
+                    <dl class="item mt5">
+                        <dt class="clearfix" style="background-color:#fff;padding:10px 1rem">
+                            <a href="'shop_detail.html?store_id='+store_info.store_id" style="color: #838383;">
+                                <i class="icon fl mr5"><img :src="store_info.store_logo" alt=""
+                                                            style="height: 20px;"></i>
+                                <span class="fl name"
+                                      style="height: 20px;line-height:20px;">{{store_info.store_name}}</span>
+                                <span class="fr red" style="height: 20px;line-height:20px;color: #41d214">{{order_info.order_state_str}}</span>
+                            </a>
+                        </dt>
+                        <dd style="background-color:#fff;margin-top:.1rem;padding: 1rem" class="clearfix">
+                            <div class="pic-text " style="height: 5rem;">
+                                <a :href="'goods_detail.html?goods_id='+order_info.goods_id" class="fl pic"
+                                   style="width:25%;margin-right: 1rem;">
+                                    <img :src="order_info.goods_img" alt="" style="width:100%;">
+                                </a>
+                                <div class="intro fr" style="width: 70%">
+                                    <p class="title clearfix">
+                                        <span style="width: 80%" class="fl">{{order_info.goods_name}}</span>
+                                        <span class="count gray1 fr">
+												<span class="money">¥{{order_info.goods_price}}</span>
+												<span class="oldMoney">¥{{order_info.market_price}}</span>
+												<span class="numTxt">x{{order_info.goods_num}}</span>
+											</span>
+                                    <p class="" style="padding-top: .5rem;">{{order_info.spec_key_name}}</p>
+                                </div>
+                            </div>
+
+                        </dd>
+                        <p class="price-item fs10"
+                           style="background-color:#fff;margin: .1rem 0;padding: 1rem 2rem;display: flex;justify-content: space-between;align-content: center;align-items: center;">
+								<span>
+									实付：<span>￥<span class="fs13 red"
+                                                    style="color: red">{{order_info.order_amount}}</span></span>(免运费)
+								</span>
+                            <span v-if="order_info.show_order_service == '1'">
+									<button v-if="order_info.order_service=='0'"
+                                            style="color: #8c8c8c;border: 1px solid #8c8c8c;border-radius: 4px;padding: 2px 8px;"
+                                            @click="showChooseDiv">{{order_info.order_service_str}}</button>
+									<button v-else
+                                            style="color: #8c8c8c;border: 1px solid #8c8c8c;border-radius: 4px;padding: 2px 8px;">
+										<a :href="'./index/index.html#/refundDetail?orderId='+order_info.order_id"
+                                           style="color: #838383;">{{order_info.order_service_str}}</a>
+									</button>
+								</span>
+
+                            <!-- <p class="tr fs10" style="padding-top:1rem;">
+                                        <a class="hall-btn" :href="item.url" v-for="item in btn" style="border: .1rem solid #1e1e1e;padding: .3rem;border-radius: .3rem;margin-right:1rem;color: #1e1e1e">
+                                            {{item.title}}
+                                        </a>
+                                    </p> -->
+                        </p>
+                        <div class="chooseShow" v-if="showChoose">
+                            <div class="chooseDiv">
+                                <p>
+                                    <a :href="'after_sales_apply.html?order_id='+order_info.order_id+'&goods_name='+order_info.goods_name+'&goods_img='+order_info.goods_img+'&order_amount='+order_info.order_amount+'&isget=1'"
+                                       style="color: #fff">已收到货</a></p>
+                                <p>
+                                    <a :href="'after_sales_apply.html?order_id='+order_info.order_id+'&goods_name='+order_info.goods_name+'&goods_img='+order_info.goods_img+'&order_amount='+order_info.order_amount+'&isget=0'"
+                                       style="color: #fff">未收到货</a></p>
+                            </div>
+                        </div>
+                        <dd class="contact-footing tc">
+                            <div class="clearfix" style="padding: 1rem;background-color:#ffffff;">
+                                <a style="text-align: center;display: block;width:50%;color: #1e1e1e" class="fl"
+                                   :href="'./index/index.html#/chat?storeId='+store_info.store_id+'&goodsId='+order_info.goods_id"
+                                   class="btn tap">
+                                    <img src="images/msgred.png" class="icon" alt="" style="height:1.4rem;">
+                                    联系卖家
+                                </a>
+                                <a style="text-align: center;display: block;width: 50%;color: #1e1e1e" class="fr"
+                                   :href="'tel:'+store_info.mobile" class="btn tap">
+                                    <img src="images/callred.png" class="icon" alt="" style="height:1.4rem;">
+                                    拨打电话
+                                </a>
+                            </div>
+                        </dd>
+
+                        <dd style="background-color:#fff;margin: 1rem 0;padding: 1rem 2rem;display: flex;justify-content: space-between;align-content: center;align-items: center;color: #dd1b1b" v-if="group_info != ''">
+                            <div class="contFl">
+                                <img src="images/pintuanheader.png" width="20" height="20">
+                                <span>拼团</span>
+                                <img :src="group_info.head_pic" width="20" height="20" style="border-radius: 50%">
+                                <img src="./images/unkown.png" width="20" height="20" style="border-radius: 50%">
+                            </div>
+                            <div class="conFr">
+                                <a :href="'prom_regiment.html?prom_id='+group_info.prom_id"
+                                   style="color: #dd1b1b;border: 1px solid #dd1b1b;border-radius: 4px;padding: 4px 8px;">拼团详情</a>
+                            </div>
+                        </dd>
+
+                    </dl>
+                </div>
+                <div class="pay-options" v-if="data.order_type==10||data.order_type==1">
+                    <div v-if="oauth_pay=='qq'">
+                        <div class="single-bar clearfix mt5 payItem" @click="pay_select('qpay',$event)">
+                            <p class="fl fs11">
+                                <span class="qq-pay-icon fl mr5 show"></span>
+                                QQ钱包
+                            </p>
+                            <i class="check-icon fr" :class="{hidden:qq}"></i>
+                        </div>
+                        <div class="single-bar clearfix mt5 payItem" @click="pay_select('alipay',$event)">
+                            <p class="fl fs11">
+                                <span class="fl mr5 " style="width: 1.6rem"><img src="./images/icon_pay_zfb.png" alt=""
+                                                                                 style="width: 100%"></span>
+                                支付宝
+                            </p>
+                            <i class="check-icon fr" :class="{hidden:ali}"></i>
+                        </div>
+                    </div>
+                    <div class="single-bar clearfix mt5" v-else>
+                        <p class="fl fs11">
+                            <span class="wx-pay-icon fl mr5"></span>
+                            微信支付
+                        </p>
+                        <i class="check-icon fr"></i>
+                    </div>
+                </div>
+                <div class="info-list mt5 fs11 black3">
+                    <p>订单编号：{{order_info.order_sn}}</p>
+                    <p>支付方式：{{order_info.pay_name||'未支付'}}</p>
+                    <p>下单时间：{{order_info.add_time_format}}</p>
+                    <p v-if="order_info.confirm_time != ''">
+                        成团时间：{{order_info.confirm_time_format}}
+                    </p>
+                </div>
+
+                <div class="page-good-group mt10" id="page-goods-group" v-if="like_info.total>0">
+                    <div class="single-bar tc fs12">
+                        <p>猜你喜欢</p>
+                    </div>
+                    <ul class="clearfix mt5">
+                        <li v-for="item,index in likeList">
+                            <a :href="'goods_detail.html?goods_id='+item.goods_id" class="tap">
+                                <div class="pic" style="display: table-cell; vertical-align: middle">
+                                    <img :src="item.original"
+                                         @error="img_error('images/lazy_400x400.jpg?v=7b5f26051e',$event)" alt=""
+                                         style="vertical-align: middle">
+                                </div>
+                                <div class="title fs11">
+                                    {{item.goods_name}}
+                                </div>
+                                <div class="footing clearfix">
+                                    <div class="fl price fs10">
+                                        <span class="red1 fs11">￥{{item.prom_price}}</span>
+                                        <span class="gray1">{{item.prom==0?'免单拼':item.prom+'人团'}}</span>
+                                        <!-- <br>
+                                        <p class="mt3 gray1 fs10">单买价格：{{item.market_price}}</p> -->
+                                    </div>
+                                    <!-- <span class="btn mt10 fr"></span> -->
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="more-hint tc gray1" id="more-hint">
+                        {{load_hint}}
+                    </p>
+                </div>
+                <div class="order-footer ">
+                    <div class="fixed-box tr fs11">
+                        <a class="btn" @click="delay_receiving()" v-if="btn_info.show_delay">延长收货</a>
+                        <a class="btn" :href="'logistics_detail.html?order_id='+data.order_id"
+                           v-if="btn_info.show_delivery">查看物流</a>
+                        <a class="btn red-btn" @click="confirm_receiving()" v-if="btn_info.show_confirm">确认收货</a>
+                        <a class="btn" @click="cancel_order()" v-if="btn_info.show_cancel">取消订单</a>
+                        <a class="btn red-btn" @click="pay_order()" v-if="btn_info.show_pay">立即支付</a>
+                        <a class="btn" @click="tip_wuliu()" v-if="btn_info.show_remind">提醒发货</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!--对话框弹窗-->
+    <div class="dialog prompt" id="order-dialog">
+        <div class="mask"></div>
+        <div class="dialog-body">
+            <div class="dialog-container tc">
+                <div class="dialog-header fs14">提示</div>
+                <div class="content fs12">
+                    <div class="cell">
+                        {{dialog_hint}}
+                    </div>
+                </div>
+                <div class="container-footing">
+                    <div class="btn-group clearfix fs13">
+                        <span class="btn">取消</span>
+                        <span class="btn red1">确定</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--对话框弹窗 end-->
+    <div class="hint-dialog" id="hint-dialog">
+        <p class="fs11">{{order_hint}}</p>
+    </div>
+</div>
+<!--关注弹窗-->
+<div style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;background:rgba(0,0,0,.8);display: none;justify-content: center;align-items: center;z-index: 9999;"
+     id="isSubscrible">
+    <div style="width: 24rem">
+        <img src="images/付款后关注.png" alt="" style="width: 100%">
+    </div>
+</div>
+<script src="dist/order_detail.js?v=5ea31d808d54427dc325"></script>
+</body>
+</html>

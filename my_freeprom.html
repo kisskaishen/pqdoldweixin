@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+
+	<div class="wrap" id="wrap" v-cloak>
+		<!-- <nav class="top-nav">
+			<div class="plays_tab pt">
+				<div class="swiper-container nav_scroll" id="tabScroll">
+			        <ul class="swiper-wrapper" id="nav_list">
+			            <li class="swiper-slide"><span class="name">全部</span></li>
+			            <li class="swiper-slide"><span class="name">拼团中</span></li>
+			            <li class="swiper-slide"><span class="name">已成团</span></li>
+			            <li class="swiper-slide"><span class="name">拼团失败</span></li>
+			        </ul>
+		        </div>
+			</div>
+		</nav> -->
+		<main class="main">
+			<div class="main-body" id="main-body" v-cloak>
+				<div class="order-group fs11 tl" id="order-group">
+					<dl class="item mt5" v-for="item in order_data">
+						<dt class="clearfix">
+							<i class="icon fl mr5"><img :src="item.goodsInfo.store.store_logo" alt=""></i>
+							<span class="fl name">{{item.goodsInfo.store.store_name}}</span>
+							<span class="fr black3" style="color: #F13D3C">{{item.annotation}}</span>
+						</dt>
+						<dd>
+							<a :href="'order_detail.html?order_id='+item.order_id" class="pic-text clearfix">
+								<span class="fl pic">
+									<img :src="item.goodsInfo.original_img" alt="">
+								</span>
+								<div class="intro">
+									<p class="title">
+										{{item.goodsInfo.goods_name}}
+									</p>
+									<p class="mt10 gray1">
+										{{item.key_name}}
+									</p>
+								</div>
+							</a>
+							<span class="count gray1">x{{item.num}}</span>
+							<p class="price-item fs10">
+								退款金额：<span class="red">￥<span class="fs15">{{item.order_amount}}</span></span>
+							</p>
+						</dd>
+						<!--<dd class="footing fs10 tr" v-if="item.order_type==10||item.order_type==1">-->
+							<!--<span class="border-btn btn" @click="cancel_order(item)">取消订单</span>-->
+							<!--<span class="border-btn btn red-btn ml5" @click="pay_order(item)">立即支付</span>-->
+						<!--</dd>-->
+						<!--<dd class="footing fs10 tr" v-if="item.order_type==3||item.order_type==15">-->
+							<!--<a class="btn border-btn" @click="delay_receiving(item.order_id)">延长收货</a>-->
+							<!--<a class="btn border-btn" :href="'logistics_detail.html?order_id='+item.order_id">查看物流</a>-->
+							<!--<a class="btn border-btn red-btn" @click="confirm_receiving(item.order_id)">确认收货</a>-->
+						<!--</dd>-->
+<!-- 						<dd class="footing fs10 tr" v-if="item.order_type==4">
+							<a class="btn border-btn" :href="'after_sales_apply.html?order_id='+item.order_id+'&order_amount='+item.order_amount">
+								申请售后
+							</a>
+						</dd> -->
+						<dd class="footing fs10 tr">
+							<a class="btn border-btn" :href="'money_direction.html?order_id='+item.order_id+'&free=free'">
+								钱款去向
+							</a>
+							<a class="btn border-btn" :href="'prom_regiment.html?order_id='+item.order_id+'&prom_id='+item.prom_id">
+								查看团详情
+							</a>
+							<a class="btn border-btn" :href="'order_detail.html?order_id='+item.order_id">
+								查看订单详情
+							</a>
+						</dd>
+					</dl>
+					
+					<p class="more-hint tc gray1" id="more-hint">
+						{{load_hint}}
+					</p>
+				</div>
+			</div>
+		</main>
+		<!--对话框弹窗-->
+		<div class="dialog prompt" id="order-dialog">
+			<div class="mask"></div>
+			<div class="dialog-body">
+				<div class="dialog-container tc">
+					<div class="dialog-header fs14">提示</div>
+					<div class="content fs12">
+						<div class="cell">
+							{{dialog_hint}}
+						</div>
+					</div>
+					<div class="container-footing">
+						<div class="btn-group clearfix fs13">
+							<span class="btn">取消</span>
+							<span class="btn red1">确定</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--对话框弹窗 end-->
+		<div class="hint-dialog" id="hint-dialog">
+			<p class="fs11">{{order_hint}}</p>
+		</div>
+	</div>
+	<script src="dist/my_freeprom.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>

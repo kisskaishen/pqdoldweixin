@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+    <meta name="wap-font-scale" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>品质水果</title>
+    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+    <link rel="stylesheet" href="css/page.css?v=2de5f936b457">
+    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+    <!--qq/微信 功能性api-->
+    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+</head>
+<body>
+
+
+<div id="loading-template"></div>
+<div class="wrap" id="wrap">
+    <main class="main">
+        <div class="main-body" id="main-body">
+            <!--<div class="pic tc" id="pic_box" style="height: 12rem">-->
+            <a :href="banner.ad_link" v-if="banner!=null">
+                <img  :src="banner.ad_code"  alt=""  style="height:auto;width: 100%">
+            </a>
+            <!--</div>-->
+            <div class="page-good-group" id="page-good-group" v-cloak :style="styleObj">
+                <ul class="clearfix">
+                    <li v-for="item in goods_data">
+                        <a :href="'goods_detail.html?goods_id='+item.goods_id" class="tap">
+                            <div class="pic" style="display: flex;justify-content: center;align-items: center">
+                                <img :src="item.original" alt="">
+                            </div>
+                            <div class="title fs12" style="height: 2.8rem">
+                                {{item.goods_name}}
+                            </div>
+                            <div class="footing clearfix">
+                                <div class="fl price fs10">
+                                    <span class="red1 fs12">￥{{item.prom_price}}</span>
+                                    <span class="gray1">{{item.prom}}人团</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+                <p class="more-hint tc gray1" id="more-hint">
+                    {{load_hint}}
+                </p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer" id="footer" v-if="tab">
+        <nav class="nav-group clearfix">
+            <a href="index.html" class="item">
+                <div class="box">
+                    <i class="icon icon-1"></i>
+                    <p class="fs9 title">首页</p>
+                </div>
+            </a>
+            <a href="ranking.html" class="item">
+                <div class="box">
+                    <i class="icon icon-2"></i>
+                    <p class="fs9 title">排行榜</p>
+                </div>
+            </a>
+            <a href="javascript:;" class="item active">
+                <div class="box">
+                    <i class="icon icon-3"></i>
+                    <p class="fs9 title">品质水果</p>
+                </div>
+            </a>
+            <a href="seek.html" class="item">
+                <div class="box">
+                    <i class="icon icon-4"></i>
+                    <p class="fs9 title">搜索</p>
+                </div>
+            </a>
+            <a href="user_center.html" class="item">
+                <div class="box">
+                    <i class="icon icon-5"></i>
+                    <p class="fs9 title">个人中心</p>
+                </div>
+            </a>
+        </nav>
+    </footer>
+    <a :href="sideImg.openUrl" style="position: fixed;bottom: 0;right: 0" v-if="sideImg">
+        <div style="position: absolute;top: -15rem;right: 0;z-index: 999999;width: 7rem;"  >
+            <img :src="sideImg.logoUrl" alt="" style="width: 100%">
+        </div>
+    </a>
+</div>
+
+<script src="dist/qualityFruit.js?v=4148877751c21"></script>
+</body>
+</html>

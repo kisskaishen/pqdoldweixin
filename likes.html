@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+    <meta name="wap-font-scale" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>拼趣多-为我助力</title>
+    <link rel="stylesheet" href="css/swiper.min.css?v=f271fa3348">
+    <link rel="stylesheet" href="css/base.css?v=2156a6538c">
+    <link rel="stylesheet" href="css/page.css?v=816dde6f94">
+    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+    <script src="assets/area.js?v=416b73f00fd0"></script>
+    <!--qq/微信 功能性api-->
+    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+    <script>
+        document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/7.4+'px'
+    </script>
+    <style>
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+            color:    #999;
+        }
+        input:-moz-placeholder, textarea:-moz-placeholder {
+            color:    #999;
+        }
+        input::-moz-placeholder, textarea::-moz-placeholder {
+            color:    #999;
+        }
+        input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+            color:    #999;
+        }
+        .adr-dialog .adr-group .item {
+            font-size: 18px;
+            padding: 10px;
+        }
+        /*.head_pic {*/
+            /*width: .6rem;*/
+            /*height: .6rem;*/
+            /*border-radius: .3rem;*/
+            /*display: inline-block;*/
+            /*background-size: 100% 100%*/
+        /*}*/
+        /*.goods_img {*/
+            /*background-size: 100% 100%;*/
+            /*width: 5.9rem;*/
+            /*height: 3.68rem;*/
+            /*margin:0 .05rem;*/
+            /*border-top-right-radius:.36rem;*/
+            /*border-top-left-radius:.36rem*/
+        /*}*/
+        /*.qrcode_img{*/
+            /*background-size: 100% 100%;*/
+            /*height: 2rem;*/
+            /*width: 2rem;*/
+        /*}*/
+         [v-cloak] {
+             display: none;
+         }
+         /*.modal-open{*/
+             /*position: fixed;*/
+             /*height: 100%;*/
+             /*width: 100%;*/
+         /*}*/
+        ::-webkit-scrollbar{
+            display:none;
+        }
+        .adrEditorDialog {
+            position: absolute;
+            left: 0;
+            top:0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.8);
+            display: flex;
+            justify-content: center;
+        }
+        .dialogContent {
+            position: relative;
+            background-color: #fff;
+            margin-top:100px;
+            height: 360px;
+            width: 340px;
+            border-radius: 20px;
+            padding: 0 10px;
+        }
+        .dialogContent img {
+            position: absolute;
+        }
+        .dialogContent p {
+            height: 50px;
+            padding: 0 10px;
+            border-bottom:1px solid #eee;
+            font-size: 20px;
+            color: #999;
+        }
+        .dialogContent .title {
+            text-align: center;
+            line-height:80px;
+            height: 80px;
+            font-size: 30px;
+            color: #333;
+        }
+        .adrBaseInfo {
+            display: flex;
+        }
+        .adrBaseInfo input {
+            width: 50%;
+            font-size: 16px;
+        }
+        .adrBaseInfo .mobile {
+            padding-left:20px;
+            border-left: 1px solid #eee;
+        }
+        .area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .area span {
+            color: #999;
+        }
+        .area .rightArrow {
+            position: relative;
+            width: 14px;
+            height: 24px;
+        }
+        .area .rightArrow img {
+            width:100%;
+            height: 100%;
+        }
+        .address {
+            height: 80px;
+            border:none;
+        }
+        .address textarea {
+            padding: 20px 0;
+            height: 100%;
+            width: 100%;
+            resize: none;
+            border: none;
+            box-sizing: border-box;
+            font-family: "PingFangSC-Regular", "Helvetica", "STHeiti STXihei", "Microsoft JhengHei", "Microsoft YaHei", "Arial";
+            font-size: 16px;
+        }
+        .saveBtn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 24px;
+        }
+        .saveBtn button {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            text-align: center;
+            line-height:90px;
+            background-color: #E20025;
+            font-weight: 400;
+            color: #fff;
+        }
+        .adrSelectorDialog {
+            position: absolute;
+            left:0;
+            top:0;
+            z-index: 99999999999999;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            background-color: rgba(0,0,0,.8);
+        }
+        .adrSelectorDialogContent {
+            height: 200px;
+            width: 100%;
+            background-color: #fff;
+            font-size: 14px;
+        }
+        .adrSelectorHead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+            border-bottom:1px solid #eee;
+            padding: 0 14px;
+        }
+        .adrSelectorHead span {
+            margin: 0 4px;
+        }
+        .adrSelectorHead .selectorActive {
+            color: #E20025;
+            border-bottom: 2px solid #E20025;
+        }
+        .cancel {
+            color: #999;
+        }
+        .adrSelectorBody {
+            padding: 0 4px;
+        }
+        .adrSelectorBody .Options{
+            height: 200px;
+            overflow: scroll;
+            padding: 0 4px;
+        }
+        .adrSelectorBody .Options .Option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 42px;
+            border-bottom:1px solid #eee;
+        }
+        .adrSelectorBody .Options .Option span img {
+            height: 16px;
+        }
+        .adrSelectorBody .Options .Option .fontColor {
+            color: #E20025;
+        }
+        .showLayout {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color:rgba(0,0,0,.5);
+            z-index: 999;
+            display:flex;
+            justify-content: center;
+        }
+        iframe img {
+            display:block;
+            width:100%;
+            height:100%;
+        }
+        .swiper-slide > p {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 14px;
+            height: 40px;
+            line-height: 40px;
+        }
+        .swiper-slide > p img {
+            vertical-align: middle;
+            height: 10px;
+            width: 42px
+        }
+
+        .swiper-tip {
+            height: 40px;
+            padding:0 10px;
+            background-color:#fff;
+            margin-bottom:6px;
+        }
+
+        .swiper-tip > div {
+            height: 100%;
+            border-top:1px solid #eee;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .swiper-tip > div > div {
+            border-left:4px solid #e80b0b;
+            display: flex;
+            align-items: center;
+            justify-content:space-between;
+            width: 100%;
+            padding-left:10px;
+            font-size: 14px;
+        }
+
+        .ranking-item {
+            height: 152px !important;
+            padding: 10px !important;
+            margin-top: 10px !important;
+        }
+
+        .clearfix {
+            height: 152px;
+        }
+
+        .ranking-item dt {
+            height: 140px;
+            width: 134px;
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .ranking-item dt img {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .ranking-item dd {
+            height: 140px;
+        }
+
+        .ranking-item .intro {
+            height: 80px !important;
+            line-height: 20px !important;
+        }
+
+        .buydiv {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items:center;
+            justify-content:space-between;
+            margin-top:0px;
+        }
+
+        .origintxt {
+            text-decoration:line-through;
+            color: #ccc;
+            font-size: 12px;
+            margin-left: -24px;
+            margin-top:6px;
+        }
+
+        .gobtn {
+            background-color:rgb(255,70,78);
+            font-size: 14px;
+            text-align: center;
+            color: white;
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding:4px 12px
+        }
+        .gobtn img {
+            height: 10px;
+            vertical-align:middle;
+        }
+
+        #spec_dialog_bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            top: 0;
+            background-color: rgba(0,0,0,.6);
+            z-index: 9;
+        }
+        .spec_dialog {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-height: 600px;
+            min-height: 300px;
+            z-index: 99;
+            font-size: 14px;
+            background-color: #fff;
+            overflow: scroll;
+
+        }
+        .spec_goods {
+            display: flex;
+            justify-content: flex-start;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .goods_img img {
+            display: block;
+            width: 60px;
+            height: 60px;
+            border:1px solid #eee;
+            margin-right: 20px;
+        }
+        .goods_text span {
+            color: #f13d3c;
+        }
+        .spec_goods .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            color: #666;
+            text-align: center;
+            border: 1px solid #ccc;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+        .spec_spec {
+            padding: 10px 20px;
+        }
+
+        .spec_spec .spec {
+            margin-bottom: 20px;
+        }
+        .spec_spec .spec p {
+            color: #999;
+            text-align: left;
+        }
+        .spec_spec .spec ul {
+            display: flex;
+            flex-direction: row;
+            flex-flow: wrap;
+        }
+        .spec_spec .spec li {
+            margin-right: 20px;
+        }
+        .spec_spec .spec li span {
+            display: block;
+            padding: 4px 10px;
+            background-color: #eee;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .spec_btn {
+            width: 100%;
+            height: 50px;
+            
+        }
+        .spec_btn button {
+            background-color: #F13D3C;
+            color: #fff;
+            width: 100%;
+            line-height: 50px;
+            position: fixed;
+            bottom: 0;
+
+        }
+        .spec_spec .spec li span.spec_active {
+            background-color: #F13D3C;
+            color: #fff;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+<body style="height: auto;">
+<!-- <a href="./index/index.html#/active" style="position: fixed;top: 9rem;right: 0;z-index: 99999999999;width: 2rem;" @click="dialogCtr='redPacket';getRedPacket()" >
+    <img src="./images/main_double11@2x.png" alt="" style="width: 100%">
+</a> -->
+<!--<div id="loading-template"></div>-->
+<div class="wrap" id="wrap" style="display: block"  >
+    <main class="main" v-cloak>
+        <div class="main-body" id="main-body">
+            <img :src="banner_img" alt=""  style="height:auto;width: 100%;display: block;">
+            <!--消息滚动-->
+            <!--<input type="button"  value="点击调用java代码" onclick="window.wx.share()"/>-->
+            <!--<br/>-->
+            <!--<input type="button"  value="点击调用java代码并传递参数" onclick="window.wx.share('http://blog.csdn.net/Leejizhou')"/>-->
+
+            <div class="swiper-container" id="scroll" style="height: 40px;background-color:#fff;text-align: center;padding:0 10px;">
+                <div class="swiper-wrapper" >
+                    <div class="swiper-slide" v-for="item in scroll_data" >
+                        <p>
+                            <img src="images/new@2x.png" alt="">
+                            <span>&nbsp;恭喜 <span v-if="item.mobile">{{item.mobile}}</span><span v-else>{{item.nickname}}</span>成功获得了</span>
+                            <span style="color: rgb(255,70,78)">{{item.goods_name}}</span>
+                            <span>3秒前</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-tip">
+                <div>
+                    <div>
+                        <p>我的免单</p>
+                        <a :href="'./my_likes.html?user_id='+user_id+'&terminal='+terminal" style="font-size: 14px;color: #ccc;display: flex;align-items: center"><span>点击查看</span>&nbsp;<img src="images/right_arrows@2x.png" alt="" style="height: .22rem;width: .12rem;"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ranking-group" id="ranking-group" style="">
+                <!--<a v-bind:href="'goods_detail.html?goods_id='+item.goods_id" class="tap ranking-item" v-for="(item, index) in goodsList" style="height:2.6rem;margin-top:.04rem;padding: .2rem">-->
+                <a href="javascript:;" class="tap ranking-item" v-for="(item, index) in goodsList">
+                    <dl class="clearfix">
+                        <dt class="pic mr10">
+                            <span style="position: absolute;left: 0;right: 0;background-color:rgb(255,70,78);font-size: 14px;color: #fff;width: 80px;text-align: center;z-index: 9;">为我助力</span>
+                            <img v-bind:src="item.original" alt="" style="width: 132px;height: 132px">
+                        </dt>
+                        <dd style="padding-top:0;">
+                            <div class="intro">
+                                <p class="fs12" style="font-size: 16px;">
+                                    {{item.goods_name}}
+                                </p>
+                            </div>
+                            <p style="font-size: 14px;color: #ccc;padding-top:12px;">需<span style="color:rgb(255,70,78) ">{{item.prom}}</span>人助力</p>
+                            <div v-if="item.store_count!=0" class="buydiv">
+                                <!--<p>{{item.store_count}}</p>-->
+                                <span class="red1" style="font-size: 18px;font-weight: 600;font-family: PingFangSC-Semibold, sans-serif;
+">￥{{item.prom_price}}</span>
+                                <span class="origintxt">￥{{item.shop_price}}</span>
+                               <span v-if="item.have_prom==1">
+                                    <span v-if="terminal=='wx'" v-on:click="get_qrcode(item.have_prom_id)" class="gobtn">继续分享
+                                </span>
+                                <span v-if="terminal=='i'" v-on:click="share(item.have_prom_id)" onclick="isScrollEnabled(false)" class="gobtn">继续分享
+                                </span>
+                                <span v-if="terminal=='a'" v-on:click="share(item.have_prom_id)" onclick="window.webview.isScrollEnabled(true)" class="gobtn">继续分享
+                                </span>
+                               </span>
+                                <span v-else>
+                                     <span v-if="terminal=='wx'" v-on:click="prom_like(index)" class="gobtn"><span v-if="">马上抢</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="">
+                                </span>
+                                <span v-if="terminal=='i'" v-on:click="prom_like(index)" onclick="isScrollEnabled(false)" class="gobtn"><span v-if=""  >马上抢</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="">
+                                </span>
+                                <span v-if="terminal=='a'" v-on:click="prom_like(index)" onclick="window.webview.isScrollEnabled(true)" class="gobtn"><span v-if=""  >马上抢</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="" >
+                                </span>
+                                </span>
+                            </div>
+                            <div v-if="item.store_count==0" style="display: flex;flex-wrap: nowrap;align-items:center;justify-content:space-between;">
+                                <span class="red1" style="font-size: 20px;font-weight: 600;font-family: PingFangSC-Semibold, sans-serif;
+">￥{{item.prom_price}}</span>
+                                <span style="text-decoration:line-through;color: #ccc;font-size: 12px;margin-left: -12px;margin-top:8px;">￥{{item.shop_price}}</span>
+                                <span style="background-color:#ccc;font-size: 14px;padding:4px 12px; text-align: center;color: white;border-radius: 4px;display: inline-block;text-align: center;display: flex;align-items: center;justify-content: space-around;"><span v-if="" style="vertical-align:middle; "  >已售罄</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="" style="height: 10px;vertical-align:middle;">
+                                </span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a> 
+            </div>
+        </div>
+    </main>
+    <!--分享参团弹窗-->
+    <div id="share_dialog" style="position: fixed;top: 0;left: 0;z-index: 9999;background-color:rgba(0,0,0,.8);width: 100%;height: 100%;display: none;justify-content: center;" v-cloak>
+        <div style="width: 300px;">
+            <p v-if="terminal=='wx'" style="font-size: 22px;color: #fff;text-align: center;margin-bottom:20px;margin-top:80px;">长按保存图片，分享给好友</p>
+            <img v-if="terminal=='wx'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 0 auto;width:300px;height: 400px;border-radius: 10px;">
+            <i v-if="terminal=='wx'" @click="closeImg" style="position: absolute;display: block;width: 30px;height: 30px;border-radius: 50%;color: #fff;border: 1px solid #fff;right: 10px;top: 112px;font-size: 24px;text-align: center;">x</i>
+            <img v-if="terminal=='i'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 50px auto 0;width:300px;height: 360px;border-radius: 10px;">
+            <img v-if="terminal=='a'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 40px auto 0;width:300px;height: 360px;border-radius: 10px;">
+        </div>
+
+       <!--  <div v-if="terminal=='wx'" style="background-color:#fff;position: fixed;bottom: 0;left:0;width: 100% ;height: 2.8rem;align-items: center;padding:0.1rem 2.4rem 0 2.4rem;font-size: .26rem">
+            <p style="font-size: .32rem;text-align: center;line-height:1rem;">分享到</p>
+            <div style="display: flex;justify-content: space-around;margin-top:.2rem;">
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'share(0,'+url+')'">
+                    <img style="width: .57rem;height: .57rem" src="./images/wechat@2x.png" alt="">
+                    <p style="margin-top:.08rem;">微信</p>
+                </div>
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'share(1,'+url+')'">
+                    <img src="./images/Circle-Of-Friends@2x.png" alt="" style="width: .57rem;height: .57rem">
+                    <p style="margin-top:.08rem;">朋友圈</p>
+                </div>
+            </div>
+        </div> -->
+        <!--ios显示-->
+        <div v-if="terminal=='i'" style="background-color:#fff;position: fixed;bottom: 0;left:0;width: 100% ;height: 2.8rem;align-items: center;padding:0.1rem 2.4rem 0 2.4rem;font-size: 16px">
+            <p style="font-size:18px;text-align: center;line-height:1rem;">分享到</p>
+            <div style="display: flex;justify-content: space-around;margin-top:.2rem;">
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'share(0,'+url+')'">
+                    <img style="width: .57rem;height: .57rem" src="./images/wechat@2x.png" alt="">
+                    <p style="margin-top:.08rem;">微信</p>
+                </div>
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'share(1,'+url+')'">
+                    <img src="./images/Circle-Of-Friends@2x.png" alt="" style="width: .57rem;height: .57rem">
+                    <p style="margin-top:.08rem;">朋友圈</p>
+                </div>
+            </div>
+        </div>
+        <!--安卓显示-->
+        <div v-if="terminal=='a'" style="background-color:#fff;position: fixed;bottom: 0;left:0;width: 100% ;height: 2.8rem;align-items: center;padding:0.1rem 2.4rem 0 2.4rem;font-size: 16px">
+            <p style="font-size: 20px;text-align: center;line-height:1rem;">分享到</p>
+            <div style="display: flex;justify-content: space-around;margin-top:.2rem;">
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'window.webview.share(0,'+url+')'">
+                    <img style="width: .57rem;height: .57rem" src="./images/wechat@2x.png" alt="">
+                    <p style="margin-top:.08rem;">微信</p>
+                </div>
+                <div style="width: 1rem;display: flex;justify-content: center;flex-wrap: wrap" :onclick="'window.webview.share(1,'+url+')'">
+                    <img src="./images/Circle-Of-Friends@2x.png" alt="" style="width: .57rem;height: .57rem">
+                    <p style="margin-top:.08rem;">朋友圈</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--规格选择-->
+    <div id="spec_dialog_bg" v-if="specShow" style="display: none;">
+        <div class="spec_dialog">
+            <div class="spec_goods">
+                <div class="goods_img">
+                    <img :src="goodsList[goods_info].original_img" alt="商品图片">
+                </div>
+                <div class="goods_text">
+                    <p>{{goodsList[goods_info].goods_name}}</p>
+                    <span>{{goodsList[goods_info].prom_price}}</span>
+                </div>
+                <div class="close" v-if="terminal=='wx'" @click="closeSpecDiolog">X</div>
+                <div class="close" v-if="terminal=='i'" onclick="isScrollEnabled(true)" onclick="window.webview.isScrollEnabled(false)" @click="closeSpecDiolog">X</div>
+                <div class="close" v-if="terminal=='a'" onclick="window.webview.isScrollEnabled(false)" @click="closeSpecDiolog">X</div>
+            </div>
+        
+            <div class="spec_spec">
+                <div class="spec" >
+                    <p>{{specData[0].title}}</p>
+                    <ul>
+                        <li v-for="item,index in specData[0].items"  @click="specClick(item,index)">
+                            <span :class="{'spec_active':currentIndex == index}" >{{item.item}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="spec" v-if="specData[1]">
+                    <p>{{specData[1]?specData[1].title:''}}</p>
+                    <ul>
+                        <li v-for="item,index in specData[1].items"  @click="spec2Click(item,index)">
+                            <span :class="{'spec_active':current2Index == index}">{{item.item}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="spec_btn">
+                <button @click="buyNow">立即购买</button>
+            </div>
+        </div>
+
+    </div>
+    <!--添加收货地址-->
+    <!--add_address_dialog-->
+    <div v-show="dialogCtr!=''" id="add_address_dialog" style="position: fixed;top: 0;left: 0;z-index: 9999;background-color:rgba(0,0,0,0);width: 100%;height: 100%;justify-content: center;font-size: 18px;display: none" >
+        <div class="adrEditorDialog" v-if="dialogCtr=='adrEditorDialog'" @click.self="dialogCtr='';clearData()">
+            <!--<span></span>-->
+            <div class="dialogContent">
+                <img class="close" src="" alt="">
+                <p class="title">添加收货地址</p>
+                <p class="adrBaseInfo">
+                    <input type="text" v-model="consignee" placeholder="名字">
+                    <input type="text" v-model="mobile" placeholder="电话" class="mobile">
+                </p>
+                <p class="area" @click="dialogCtr='adrSelectorDialog';">
+                    <span>{{area}}</span>
+                    <span class="rightArrow">
+              <img src="images/right_arrows@2x.png" alt="">
+            </span>
+                </p>
+                <p class="address">
+                    <textarea type="text" v-model="address" placeholder="请填写详细街道地址"></textarea>
+                </p>
+                <p class="saveBtn">
+                    <button @click="saveAddress()">保存</button>
+                </p>
+            </div>
+        </div>
+        <div class="adrSelectorDialog" @click.self="dialogCtr='';" v-if="dialogCtr=='adrSelectorDialog'">
+            <div class="adrSelectorDialogContent">
+                <div class="adrSelectorHead">
+                    <div class="areaSelector">
+                        <span :class="[selectorActive=='provinceOptions'?'selectorActive':'']" @click="selectorActive='provinceOptions'">{{province}}</span>
+                        <span :class="[selectorActive=='cityOptions'?'selectorActive':'']"  v-if="province!='请选择'" @click="selectorActive='cityOptions'">{{city}}</span>
+                        <span :class="[selectorActive=='districtOptions'?'selectorActive':'']"  v-if="city!='请选择'" @click="selectorActive='districtOptions'">{{district}}</span>
+                    </div>
+                    <span class="cancel" @click.self="dialogCtr=''">取消</span>
+                </div>
+                <div class="adrSelectorBody">
+                    <div class="Options">
+                        <div v-show="selectorActive=='provinceOptions'" class="Option" v-for="(item,index) in provinceOptions" @click="province=item.region_name;provinceId=item.region_id;selectorActive='cityOptions'">
+                            <span :class="[provinceId==item.region_id?'fontColor':'']">{{item.region_name}}</span>
+                            <span>
+                  <img src="images/right_arrows@2x.png" alt="">
+                </span>
+                        </div>
+                        <div v-show="selectorActive=='cityOptions'" class="Option" v-for="(item,index) in cityOptions" @click="city=item.region_name;cityId=item.region_id;selectorActive='cityOptions';selectorActive='districtOptions'">
+                            <span :class="[cityId==item.region_id?'fontColor':'']">{{item.region_name}}</span>
+                            <span>
+                  <img src="images/right_arrows@2x.png" alt="">
+                </span>
+                        </div>
+                        <div v-show="selectorActive=='districtOptions'" class="Option" v-for="(item,index) in districtOptions" @click="district=item.region_name;districtId=item.region_id;area=province+city+district;dialogCtr='adrEditorDialog'">
+                            <span :class="[districtId==item.region_id?'fontColor':'']">{{item.region_name}}</span>
+                            <span>
+                  <img src="images/right_arrows@2x.png" alt="">
+                </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--选择收货地址弹窗-->
+    <div  style="position: fixed;bottom: 0;left: 0;z-index: 9999;background-color:rgba(0,0,0,.8);width: 100%;height: 200%;justify-content: center;font-size: 20px;display: none" id="address_select_dialog" v-cloak>
+        <div style="width: 100%;height: 250px;background-color:#fff;position: fixed;left: 0;bottom: 0;padding: 0 20px;overflow: auto">
+            <div style="height: 56px;width: 100%;padding:0 20px;position: fixed;bottom: 200px;left: 0;z-index: 999999;background-color:#fff;">
+                <p style="height: 100%;width: 100%;font-size: 24px;color:#333;text-align: center;font-weight: 600;display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #eee;">
+                    <span></span>
+                <span>
+                    选择收货地址
+                </span>
+                <span v-if="terminal=='wx'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()">
+                    <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
+                </span>
+                <span v-if="terminal=='i'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()" onclick="isScrollEnabled(true)" onclick="window.webview.isScrollEnabled(false)">
+                    <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
+                </span>
+                <span v-if="terminal=='a'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()"  onclick="window.webview.isScrollEnabled(false)">
+                    <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
+                </span>
+                </p>
+            </div>
+            <p style="height: 56px;color:#333;text-align: center;display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #eee;font-size: 18px;color: #333;margin-top:60px;" v-on:click="add_address()">
+                <span>
+                    添加收货地址
+                </span>
+                <span style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center">
+                <img src="images/right_arrows@2x.png" alt="" style="height:12px;width:7px;">
+            </span>
+            </p>
+            <p style="height: 50px;font-size: 16px;color:#333;text-align: center;display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #eee;color: #ccc;" v-for="(item,index) in data" @click="select_add(index)">
+                <span>
+                    {{item.address_base}}{{item.address}}
+                </span>
+                <span style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center">
+                <img src="images/right_arrows@2x.png" alt="" style="height: 12px;width: 7px;">
+            </span>
+            </p>
+        </div>
+    </div>
+    <!--loading图-->
+    <div  style="position: fixed;top: 0;left: 0;z-index: 9999;background-color:rgba(0,0,0,.8);width: 100%;height: 100%;justify-content: center;font-size: 20px;display: none;align-items: center"  id="loading" v-cloak>
+        <img src="./images/六边形GIF.gif" alt="" style="height:88px;width:60px ;">
+    </div>
+    <!--购买失败遮罩-->
+    <div v-if="terminal=='i'" onclick="isScrollEnabled(true)" style="display: none;background-color:rgba(0,0,0,0);position: fixed;top: 0;left: 0;z-index: 999999999;width: 100%;height: 100%"  id="uploadClose"></div>
+    <div v-if="terminal=='a'" onclick="window.webview.isScrollEnabled(false)" style="display: none;background-color:rgba(0,0,0,0);position: fixed;top: 0;left: 0;z-index: 999999999;width: 100%;height: 100%"  id="uploadClose" ></div>
+
+
+    <div id="layoutCode" :class="{showLayout:groupId}" v-if="groupId" style="display: none;">
+        <div style="height: 330px;width: 310px;background-color:#fff;border-radius:10px;display: flex;flex-direction: column;align-items: center;margin-top:110px;padding: 0 20px">
+            <span style="width: 100%;height:1.08rem;font-size:24px;color: .34rem;font-weight: bold;text-align: center;line-height:1.08rem;background-image:url('./images/装饰.png');background-size: 100% auto;background-repeat: no-repeat;background-position: center 20%;">新人验证问题</span>
+            <span style="height: 1rem;width: 100%" @click="refleshCode">
+                <img :src="newCodeImg" alt="" style="display: block;border:1px solid #eee;width:100%;height: 100%;"> 
+            </span>
+            <span style="height: .63rem;width:4.3rem;font-size: 14px;color: #ccc;margin-top:.3rem;text-align: center">输入正确答案，完成身份验证即可为好友助力成功并获得新人专享优惠券</span>
+          <!--   <span style="height:.6rem;display: flex;align-items: center">
+                <img :src="" alt="" style="height: .12rem;width:.24rem;display: block;">
+            </span> -->
+            <input v-model="code" placeholder="请输入验证码" style="height: .9rem;width: 3.9rem;border: .01rem solid #ccc;border-radius: .1rem;font-size: 20px;text-align: center;margin-top:.4rem;margin-bottom:.4rem;">
+            <span style="height: .6rem;font-size: 14px;color: #F61027;line-height:.6rem;" v-if="resMsg">{{resMsg}}</span>
+            <a href="http://wx.pinquduo.cn" style="color: #e4393c;font-size: 20px;padding-bottom: 4px">去首页>></a>
+            <span style="width: 5.2rem;height: .88rem;background-color:#F61027;text-align: center;line-height:.88rem;color: #fff;border-radius: .44rem;font-size: 20px;" @click="submitNew">
+                提交
+            </span> 
+        </div>
+    </div>
+
+</div>
+
+
+<div style="position:fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 9999999;display: none" id="hint-dialog">
+    <div style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;" >
+        <div  style="font-size: 12px;line-height:.18rem;width: 6rem;background-color:rgba(0,0,0,.6);height: .8rem;border-radius:.2rem;">
+            <p style="font-size: 18px;color: #fff;line-height:.8rem;text-align: center;">输入有误</p>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="dist/likes.js"></script> -->
+<script src="dist/likes.js?v=5ea31d808d54427dc325"></script>
+</body>
+</html>

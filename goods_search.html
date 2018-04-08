@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div class="seek-group" style="background:none;">
+					<div class="seek-header">
+						<div class="input-item active">
+							<i class="icon mr5 mt15"></i>
+							<div class="input-box gray1">
+								<form id="search-form">
+									<input type="text" class="words_input" placeholder="搜索：分类 品牌 系列 产品" id="words_input">
+									<input type="submit" value="搜索" class="search-btn tap fs13" id="search-btn">
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="search-history tl fs12" v-if="history.length!=0">
+						<dl>
+							<dt class="fs12">最近搜索</dt>
+							<dd class="tap" v-for="item in history">
+								<a :href="'goods_search_results.html?key_words='+item">{{item}}</a>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+		</main>
+		<div class="hint-dialog" id="hint-dialog">
+			<p class="fs12">{{search_hint}}</p>
+		</div>		
+	</div>
+
+		<script src="dist/goods_search.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>

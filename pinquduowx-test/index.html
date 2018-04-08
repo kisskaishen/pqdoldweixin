@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="拼趣多、拼趣多官网、网购平台、网上购物、商家入驻、一元抢购、购物商场、时尚购物、一元夺宝、淘宝众筹、拼团网">
+		<meta name="Description" content="拼趣多以实惠的价格、优质的服务和真品让用户体验更舒心。全新的购物新模式从此开始，购物不再是一个人的搜索，通过朋友、家人、同事等之间彼此分享拼团购物的娱乐方式，让购物更加高效、优质、乐趣无穷。">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta http-equiv="x-dns-prefetch-control" content="on">
+	    <link rel="dns-prefetch" href="//pinquduo.cn">
+		<link rel="dns-prefetch" href="//https://wx.pinquduo.cn">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多商城</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	    <style>
+			.parentBackTop{
+				width:48px;
+				height:48px;
+				border-radius: 50%;
+				position: fixed;
+				right:20px;
+				bottom:100px;
+				display: none;
+				background-color:#eee;
+				z-index:999;
+			}
+			.parentBackTop span{
+				position: absolute;
+				width:16px;
+				height:16px;
+				border-top:6px solid #333;
+				border-right:6px solid #333;
+				transform: rotate(-45deg);
+				left:0;
+				right:0;
+				bottom:0;
+				top:4px;
+				margin: 14px auto;
+				border-radius:4px;
+			}
+	    </style>
+	</head>
+	<body>
+	<div id="loading-template" ></div>
+	<div class="parentBackTop">
+			<span></span>
+		</div>
+	<!-- 顶部导航栏 -->
+	<div class="wrap home-lazy" id="wrap">
+		<lottery :lottery-show='true' :propsto="propsto" @hidden-dialog='hiddenDialog()' v-if='lotteryCtr' style="z-index:9999"></lottery>
+		<nav class="top-nav">
+			<div class="plays_tab">
+				<div class="swiper-container nav_scroll" id="cat-nav-scroll">
+			        <ul class="swiper-wrapper" id="nav_list">
+			            <li class="swiper-slide" v-for="(item,index) in header_data" :data-page="1" v-bind:data-id="item.id" v-on:click="tab(index,item.id,$event)">
+			            	{{item.name}}
+			            </li>
+			        </ul>
+		        </div>
+			</div>
+		</nav>
+	<!-- 首页内容主体部分 -->
+		<main class="main" id="main">
+			<div class="cat-goods-item" :class="{active:index==cat_index}">
+				<!-- 首页显示 -->
+				<div v-if="index==0">
+					<!-- 首页轮播图 -->
+					<div class="focus-pic swiper-container" id="focus-pic">
+				        <div class="swiper-wrapper">
+			            	<div class="swiper-slide" v-for="item in home_data.ad">
+								<a v-if="item.type==2" v-bind:href="item.ad_link">
+									<img :data-src="item.ad_code" lazy="true">
+								</a>
+				            	<a v-bind:href="item.ad_link==''?'javascript:;':'goods_detail.html?goods_id='+item.ad_link">
+				            		<img :data-src="item.ad_code" lazy="true">
+			            		</a>
+				            </div>
+				        </div>
+				        <div class="swiper-pagination"></div>
+				    </div>
+					<!-- 首页导航 -->
+				    <nav class="icon-nav-group" id="cat_nav">
+						<ul class="clearfix">
+							<li v-for="(item,index) in home_data.cat">
+								<a v-bind:href="links[index]" :data-id="item.id"  class="tap">
+									<img :src="item.cat_img" class="icon" alt="">
+									<p class="title fs10 ellipsis">{{item.cat_name}}</p>
+								</a>
+							</li>
+						</ul>
+				    </nav>
+					 <a :href="homeBanner.openUrl" class="mt5" style="display: block" v-if="homeBanner">
+						<img :src="homeBanner.logoUrl" alt="" style="width: 100%">
+					</a>
+					<!-- 首页商品列表 -->
+				    <div class="good-group mt5" id="home-goods-group">
+				    	<a v-for="item in goods_items" :href="'goods_detail.html?goods_id='+item.goods_id" class="item tap" style="padding: 1rem 0;">
+				    		<div class="pic tc" id="pic_box" style="height: 15rem;position: relative">
+								<img :data-src="item.original_img" lazy="true" alt=""  style="height:100%;">
+								<div v-if="item.icon_src" style="position: absolute;right: 1rem;bottom: 1rem;height: 25%">
+									<img  :src="item.icon_src" alt="" style="height: 100%" >
+								</div>
+				    		</div>
+				    		<div class="intro mt10" style="padding:0 1rem">
+				    			<p class="fs14">
+				    				{{item.goods_name}}
+				    			</p>
+				    		</div>
+				    		<div class="clearfix mt15" style="padding:0 1rem">
+								<span class="btn fr"></span>
+								<span>
+									<span class="fs12">{{item.prom}}人团</span>
+									<span class="red1 fs14"><strong>￥{{item.prom_price}}</strong></span>
+									<span class="gray1 fs12 ml10">单买价格：{{item.shop_price}}</span>
+								</span>
+				    		</div>
+				    	</a>
+				    </div>
+				</div>
+				<!-- 其他分类 -->
+				<div class="page-good-group" v-else>
+					<div class="goods-cats-group clearfix tc mt5">
+						<a class="item" v-for="(item,cat2_index) in header_data[index].cat2" :href="'cat_page.html?type=0&rank=2&id='+item.id+'&cat1_index='+(index-1)+'&cat2_index='+cat2_index" v-if="cat2_index<7">
+							<img :src="item.img" alt="">
+							<p class="title fs11">{{item.name}}</p>
+						</a>
+						<a class="item" :href="'cat_page.html?type=0&id='+header_data[index].id+'&cat1_index='+(index-1)">
+							<img src="images/classMore@3x.png">
+							<p class="title">更多</p>
+						</a>
+					</div>
+					<ul class="clearfix mt5 page-goods-list">
+						<li v-for="item in cat_goods_data">
+							<a v-bind:href="'goods_detail.html?goods_id='+item.goods_id" class="tap">
+								<div class="pic" style="display: flex;justify-content: center;align-items: center;background-image:none;position: relative">
+									<img :data-src="item.original" lazy="true" alt="" style="width:100%;" @error="img_error('images/lazy_400x400.jpg?v=7b5f26051e',$event)">
+									<div v-if="item.icon_src" style="position: absolute;right: 1rem;bottom: 1rem;height: 12.5%">
+										<img  :src="item.icon_src" alt="" style="height: 100%;width: auto">
+									</div>
+								</div>
+								<div class="title fs11" style="height: 2.8rem">
+									{{item.goods_name}}
+								</div>
+								<div class="footing clearfix">
+									<div class="fl price fs11">
+										<span class="red1">￥{{item.prom_price}}</span>
+										<span class="gray1 ml5 fs9">{{item.prom==0?'免单拼':item.prom+'人团'}}</span>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		    <p class="more-hint tc gray1" id="more-hint"></p>
+		</main>
+
+		<footer class="footer" id="footer">
+			<nav class="nav-group clearfix">
+				<a href="javascript:;" class="item active">
+					<div class="box">
+						<i class="icon icon-1"></i>
+						<p class="fs9 title">首页</p>
+					</div>
+				</a>
+				<a href="ranking.html" class="item">
+					<div class="box">
+						<i class="icon icon-2"></i>
+						<p class="fs9 title">排行榜</p>
+					</div>
+				</a>
+				<a href="qualityFruit.html?nav" class="item">
+					<div class="box">
+						<i class="icon icon-3"></i>
+						<p class="fs9 title">品质水果</p>
+					</div>
+				</a>
+				<!--<a href="prom_free.html" class="item">-->
+					<!--<i class="icon icon-3"></i>-->
+				<!--</a>-->
+				<a href="seek.html" class="item">
+					<div class="box">
+						<i class="icon icon-4"></i>
+						<p class="fs9 title">探索</p>
+					</div>
+				</a>
+				<a href="user_center.html" class="item">
+					<div class="box">
+						<i class="icon icon-5"></i>
+						<p class="fs9 title">个人中心</p>
+					</div>
+				</a>
+			</nav>
+		</footer>
+		<div class="join-group dialog" style="display:none;" id="join-group">
+			<div class="mask" id="mask"></div>
+			<div class="dialog-body">
+				<div class="dialog-container">
+					<div class="input-item tc">
+						<input type="text" id="prom-input" placeholder="请输入6位数的参团码">
+						<a href="javascript:;" id="prom-btn" class="btn fs14">参团</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div  class="hint-dialog" id="hint-dialog">
+	        <p class="fs11 tc">
+	        	{{dialog_hint}}
+	        </p>
+	    </div>
+        <div style="position: fixed;top: 0;left: 0;background-color:rgba(0,0,0,.5);height: 100vh;width:100vw;z-index: 99999999;display: flex;justify-content: center;align-items: center" v-if="dialogCtr!=''">
+            <div style="position: relative" v-if="dialogCtr=='coupon'">
+                <img src="images/not_click@2x.png" alt="" style="width:24rem ">
+                <span style="position: absolute;top: 0;right: 0;height: 2.6rem;width: 2.6rem" @click="dialogCtr=''"></span>
+                <span style="position: absolute;top: 15rem;right: 8rem;height: 3rem;width: 7rem;" @click="dialogCtr='couponOpen'"></span>
+            </div>
+            <div style="position: relative" v-if="dialogCtr=='couponOpen'">
+                <img src="images/coupon_clickinterface2.png" alt="" style="width:24rem ">
+                <span style="position: absolute;top:3.6rem;left:5rem;font-size:1.6rem;color: #ff211c">￥<span style="font-size: 3rem">{{couponInfo.coupon_money}}</span></span>
+                <div style="position: absolute;top:8.4rem;left: 5.4rem;font-size: 1rem;color: #999;line-height:1.6rem;">
+                    <p>- 全场通用券</p>
+                    <p>- 可叠加使用</p>
+                    <p>- 用户: {{userName}}</p>
+                    <p>- 有效期至：{{couponInfo.end_day}}</p>
+                </div>
+                <span style="position: absolute;top: 0;right: .6rem;height: 2.6rem;width: 2.6rem" @click="dialogCtr=''"></span>
+                <span style="position: absolute;top: 16rem;right: 8.4rem;height: 3rem;width: 7rem;" @click="dialogCtr=''" ></span>
+            </div>
+            <div style="position: relative" v-if="dialogCtr=='redPacket'&&redPacketInfo.chance_num!=0">
+                <img src="images/shareredpacket_delete@2x.png" alt="" style="width:26rem ">
+                <div style="position: absolute;top:4.6rem;left:9rem;display: flex;justify-content: center;flex-wrap: wrap;width: 8.4rem">
+                    <div style="font-size:1.6rem;color: #ff211c">￥<span style="font-size: 3rem">{{redPacketInfo.money}}</span></div>
+                    <div style="color: #FFAF8F;font-size: 1rem">剩余{{redPacketInfo.chance_num}}次分享机会</div>
+                </div>
+                <span style="position: absolute;top: 19.4rem;right: 8.7rem;height: 2.2rem;width: 8.4rem;" @click="dialogCtr='shareRedPacket';shareRedPacket()"></span>
+                <span style="position: absolute;top: 0;right: 1.3rem;height: 2.6rem;width: 2.6rem;" @click.self="dialogCtr=''"></span>
+            </div>
+			<div style="position: relative" v-if="dialogCtr=='redPacket'&&redPacketInfo.chance_num==0">
+				<img src="images/shareredpacket_home.png" alt="" style="width:26rem ">
+				<span style="position: absolute;top: 19.4rem;right: 8.7rem;height: 2.2rem;width: 8.4rem;" @click="dialogCtr='';"></span>
+				<span style="position: absolute;top: 0;right: 1.3rem;height: 2.6rem;width: 2.6rem;" @click.self="dialogCtr=''"></span>
+			</div>
+            <div style="position: absolute;right: 0;top: 0;width: 100%;height: 100%" v-if="dialogCtr=='shareRedPacket'" @click.self="dialogCtr='';shareHome()">
+                <img src="images/click_share@2x.png" alt="" style="position: absolute;right: 1rem;top: 1rem;width: 7rem">
+            </div>
+        </div>
+        <div style="position: fixed;bottom: 0;right: 0">
+			<div style="position: absolute;top: -15rem;right: 0;z-index: 999999;width: 7rem;" @click="getRedPacket" v-if="redPacketInfo.is_show==1" >
+				<img src="./images/main_shareredpacket@2x.png" alt="" style="width: 100%">
+			</div>
+		</div>
+	</div>
+	<!--<a  key ="59965b112548be2060f178bf"  logo_size="83x30"  logo_type="common"  href="http://www.anquan.org" >-->
+		<!--<script src="//static.anquan.org/static/outer/js/aq_auth.js"></script>-->
+	<!--</a>-->
+
+	<script type="text/javascript" src="dist/home.js?v=519bd58ce7998a230f05"></script>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		$(function(){
+			$(window).scroll(function(){
+			    var height = $(document).scrollTop();
+			    if(height>400){
+			        $('.parentBackTop').fadeIn();
+			    }else{
+			        $('.parentBackTop').fadeOut();
+			    }
+			})
+
+			$(".parentBackTop").on("click", function() {  
+			  $("html,body").animate({scrollTop:0},500);
+			})
+
+		})
+	</script>
+	</body>
+</html>

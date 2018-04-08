@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />-->
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+		<style>
+			.hidden{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div class="pay-container fs11" v-if="data.goods">
+
+					<a href="#" class="merchant-box black1 mt5 clearfix">
+			    		<dl>
+			    			<dt class="mr10">
+								<img :src="data.goods.store.store_logo" class="pic">
+			    			</dt>
+			    			<dd>
+			    				<p class="mt10 name">{{data.goods.store.store_name}}</p>
+			    			</dd>
+			    		</dl>
+			    	</a>
+					<!--商品详情 start-->
+					<div class="merchant-box mt5 clearfix">
+			    		<div style=" display: flex;align-items: center;overflow: hidden">
+							<img :src="data.goods.original"  style="border: none;width: 7rem;display: block">
+			    			<div style="margin-left: 1rem;flex: 1">
+			    				<p class="mt3 name">
+			    					{{data.goods.goods_name}}
+			    				</p>
+			    				<p class="mt5 name clearfix">
+			    					<p class=" gray1 fs8">
+			    						{{data.goods.key_name}}
+			    					</p>
+									<p class="fs8 " style="margin-top: .5rem;text-align: end">
+										￥{{is_prom?data.goods.prom_price:data.goods.shop_price}}/件
+									</p>
+			    					
+			    				</p>
+			    			</div>
+			    		</div>
+			    	</div>
+					<!--商品详情 end-->
+					<!--购买数量 start-->
+			    	<div class="single-bar mt5" style="margin-bottom: .5rem;">
+						<p>
+							<span>购买数量</span>
+							<span >
+								<span class="fr gray1"  v-if="data.goods.is_special==6||data.goods.is_special==7||data.goods.is_special==8">
+			    						x{{buy_count}}
+								</span>
+								<span id="buy_countBox" class="fr countBox ml10" v-else>
+				    					<span class="fl count-btn" @click="buyCount('-')">-</span>
+										<input type="text" :value="buy_count" disabled="disabled">
+										<span class="fr count-btn" @click="buyCount('+')">+</span>
+								</span>
+							</span>
+						</p>
+						<p class="tr fs11 gray1 fs8" style="margin-top:2rem;text-align: end;color: #1e1e1e">店铺合计：￥{{is_prom?((data.goods.prom_price*buy_count*100)/100).toFixed(2):((data.goods.shop_price*buy_count*100)/100).toFixed(2)}}(全场包邮)</p>
+			    	</div>
+					<!--购买数量 end-->
+					<!--地址 start-->
+					<div class="adr-group list-group" v-if="data.goods.is_special!=8">
+						<ul>
+							<li class="tap item checked">
+								<a :href="adr_group_route">
+									<i class=" fl mr10" style="margin-top:.7rem;width: 1.8rem;height:2rem;background-image:url(./images/icon_address@2x.png);background-repeat:no-repeat;"></i>
+									<div class="adr-intro gray1">
+										<div v-if="!data.user">
+											<p>
+												未登记收货地址
+											</p>
+											<p>
+												还没有收货地址哦，先添加吧
+											</p>
+										</div>
+										<div v-else>
+											<p>
+											    <span>
+											    	{{adr_data.consignee}}
+											    </span>
+												<span>{{adr_data.mobile}}</span>
+											</p>
+											<p class="mt3">{{adr_data.address_base+adr_data.address}}</p>
+										</div>
+									</div>
+									<i class="arrow"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!--地址 end-->
+			    	<a class="single-bar clearfix mt10" @click="toCoupon(2,coupon_type)">
+						<p class="fl fs11 black1">
+							店铺优惠券
+						</p>
+						<span class="gray3 ml5 fs10">
+							<span v-if="coupon_list_id!=''&&coupon_list_id!='0'">
+								{{decodeURI(coupon_name)}}
+							</span>
+							<span v-if="coupon_list_id=='0'">
+								不使用优惠券
+							</span>
+							<span v-else>
+								当前没有可用优惠券
+							</span>
+						</span>
+						<span class="fr mr15 fs11" v-if="coupon_list_id!=''&&coupon_list_id!='0'">
+							<span v-if="coupon_price>0">
+								-{{coupon_price}}
+							</span>
+						</span>
+						<i class="arrow"></i>
+			    	</a>
+					<a class="single-bar clearfix mt10" @click="toCoupon(1,pqd_coupon_type)">
+
+						<p class="fl fs11 black1">
+							平台优惠券
+						</p>
+						<span class="gray3 ml5 fs10">
+							<span v-if="pqd_coupon_list_id!=''&&pqd_coupon_list_id!='0'">
+								{{decodeURI(pqd_coupon_name)}}
+							</span>
+							<span v-if="pqd_coupon_list_id=='0'">
+								不使用优惠券
+							</span>
+							<span v-else>
+								当前没有可用优惠券
+							</span>
+						</span>
+						<span class="fr mr15 fs11" v-if="pqd_coupon_list_id!=''&&pqd_coupon_list_id!='0'">
+							<span v-if="pqd_coupon_price>0">
+								-{{pqd_coupon_price}}
+							</span>
+						</span>
+						<i class="arrow"></i>
+					</a>
+			    	<div class="launch-item mt5 fs11" v-if="data.goods.is_special==6&&prom_type!=0&&is_prom">
+						<div class="launch-header">请设置开团人数和免单人数</div>
+						<div class="drop-box">
+							<div class="heading clearfix">
+								<span class="fl">设置开团人数</span>
+								<span class="countBox fr">
+									<span class="fl count-btn" @click="prom_count>2?(prom_count-=1):(prom_count-=0)">-</span>
+									<span class="count-num-box ml5 mr5">
+										<span class="num">{{prom_count}}</span>/
+										<span class="sum">20</span>
+									</span>
+									<span class="fr count-btn" @click="prom_count<20?(prom_count+=1):(prom_count+=0)">+</span>
+								</span>
+							</div>
+							<div class="detail fs10">
+								<p>
+									1.	由团长发起拼团，参团人数和免单人数。由团长自定义，最高上限为20人（如：由团长发起4免1，单品价格为10元，则每个人付款13.33元，拼团成功后，则收取3人付款金额，获得免单才退款）。
+									<br>2.	本活动参团实付金额后置的“分”（货币单位），采用截取结算（如13.333元，则实际付款13.34元，13.355元则实际付款13.36元）。
+									<br>3.	参与本活动的用户不予退货退款。如有质量问题可接受换货。
+								</p>
+							</div>
+						</div>
+						<div class="drop-box">
+							<div class="heading clearfix">
+								<span class="fl">设置免单人数</span>
+								<span class="countBox fr">
+									<span class="fl count-btn" @click="free_count>1?(free_count-=1):(free_count-=0)">-</span>
+									<span class="count-num-box ml5 mr5">
+										<span class="num">{{free_count>=Math.min(Math.floor(prom_count/2),5)?free_count=Math.min(Math.floor(prom_count/2),5):free_count}}
+										</span>/
+										<span class="sum">{{Math.min(Math.floor(prom_count/2),5)}}</span>
+									</span>
+									<span class="fr count-btn" @click="free_count<Math.min(Math.floor(prom_count/2),5)?(free_count+=1):(free_count+=0)">+</span>
+								</span>
+							</div>
+							<div class="detail fs10">
+								<p>
+									1.免单人数由团长自定义，最高上限为5人。
+								</p>
+							</div>
+						</div>
+			    	</div>
+					<div class="pay-options">
+						<div v-if="oauth_pay=='qq'">
+							<div class="single-bar clearfix mt5 payItem" @click="pay_select('qpay',$event)" >
+								<p class="fl fs11">
+									<span class="qq-pay-icon fl mr5 show"></span>
+									QQ钱包
+								</p>
+								<i class="check-icon fr" :class="{hidden:qq}"></i>
+							</div>
+							<div class="single-bar clearfix mt5 payItem" @click="pay_select('alipay',$event)">
+								<p class="fl fs11">
+									<span class="fl mr5 " style="width: 1.6rem"><img src="./images/icon_pay_zfb.png" alt="" style="width: 100%"></span>
+									支付宝
+								</p>
+								<i class="check-icon fr" :class="{hidden:ali}"></i>
+							</div>
+						</div>
+						<div class="single-bar clearfix mt5" v-else>
+							<p class="fl fs11">
+								<span class="wx-pay-icon fl mr5"></span>
+								微信支付
+							</p>
+							<i class="check-icon fr"></i>
+						</div>
+					<!--</div>-->
+			    	<!--<div class="pay-options">-->
+				    	<!--<div class="single-bar clearfix mt5" v-if="pay_oauth=='qpay'">-->
+							<!--<p class="fl fs11">-->
+								<!--<span class="qq-pay-icon fl mr5"></span>-->
+								<!--QQ钱包-->
+							<!--</p>-->
+							<!--<i class="check-icon fr"></i>-->
+				    	<!--</div>-->
+				    	<!--<div class="single-bar clearfix mt5" v-else>-->
+							<!--<p class="fl fs11">-->
+								<!--<span class="wx-pay-icon fl mr5"></span>-->
+								<!--微信支付-->
+							<!--</p>-->
+							<!--<i class="check-icon fr"></i>-->
+				    	<!--</div>-->
+			    	</div>
+			    	<!--免单拼-->
+			    	<div class="mt20 tc gray3 fs11 gray1" v-if="data.goods.is_special==6">
+			    		<p>{{'正常拼团价格：￥'+(data.goods.prom_price)}}</p>
+			    		<p class="fs10">免单拼团价格：
+							<span class="red1"  v-if="prom_id">
+			    			￥
+								{{ (data.prom_price*data.prom/(data.prom-data.free)-coupon_price-pqd_coupon_price) | pricefilter}}
+							</span>
+							<span class="red1" v-else >
+			    			￥
+			    			{{ (data.goods.prom_price*prom_count/(prom_count-free_count)-coupon_price-pqd_coupon_price) | pricefilter}}
+			    			</span>
+
+			    		</p>
+			    	</div>
+			    	<!--正常购买-->
+			    	<div class="mt20 tc fs12 gray1" v-else>
+			    		<p class="fs11" v-if="is_prom">您需支付:￥{{(data.prom_price*buy_count-coupon_price-pqd_coupon_price).toFixed(2)<0?'0.00':(data.prom_price*buy_count-coupon_price-pqd_coupon_price).toFixed(2)}}</p>
+			    		<p class="fs11" v-else>您需支付:￥{{(data.price*buy_count-coupon_price-pqd_coupon_price).toFixed(2)<0?'0.00':(data.price*buy_count-coupon_price-pqd_coupon_price).toFixed(2)}}</p>
+			    		<p class="fs9 gray3" v-if="coupon_price!=0">
+			    			已使用优惠券
+			    		</p>
+			    	</div>
+					<div class="full-btn-item bottom">
+						<a @click="pay()" class="btn tap fs15" id="pay-btn">立即支付</a>
+					</div>
+				</div>
+			</div>
+		</main>
+		<!--优惠券选择弹窗-->
+		<!--<div class="dialog coupon" id="coupon-dialog" v-if="data.coupon">
+			<div class="mask"></div>
+			<div class="dialog-body">
+				<div class="dialog-container tc">
+					<div class="dialog-header fs14">选择优惠券</div>
+					<div class="content fs12">
+						<div class="coupon-group tl" id="coupon-group">
+							<div class="item clearfix" v-for="(item,index) in useful_coupon" @click="select_coupon(item.name,$event)" :class="{checked:coupon_name==item.name}">
+								<span class="radio-box mr5 fl"></span>
+								<span class="intro">
+									{{item.name}}
+									<span class="fs10 gray3">
+										{{item.use_start_time+'-'+item.use_end_time}}
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="container-footing">
+						<div class="btn-group clearfix fs13">
+							<span class="btn enter-btn red1" style="width:100%;">确定</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<!--优惠券选择弹窗 end-->
+		<div class="hint-dialog" id="hint-dialog">
+			<p class="fs14">{{hint_info}}</p>
+		</div>
+	</div>
+	<script src="dist/to_pay.js?v=519bd58ce7998a230f05"></script>
+	</body>
+</html>

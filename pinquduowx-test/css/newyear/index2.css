@@ -1,0 +1,47 @@
+.nh-wenan {
+  position: absolute;
+  left: 3.3rem;
+  top: 2.0rem;
+  color: red;
+  font-weight: 400;
+  font-family: 微软雅黑; }
+
+.nh-block {
+    width: 100%;
+    position: absolute;
+    left: 0rem;
+    text-align: center;
+    top: 38rem;
+}
+
+.nh-txt {
+color: red;
+    font-family: "华文彩云";
+    font-size: 2.3rem;
+    font-weight: 400;
+    position: relative;
+    top: 0.2rem;
+}
+
+.nh-gobg {
+position: absolute;
+    right: -2.8rem;
+    top: 0;
+    width: 5.5rem;
+    height: 5.5rem;
+     }
+
+.nh-gotxt {
+    color: white;
+    font-family: "Arial";
+    font-size: 3.0rem;
+    font-weight: 400;
+    position: absolute;
+    right: -2.2rem;
+    top: 0.9rem;}
+.nh-hb {
+  color: rgb(255,0,0);
+  font-family: "微软雅黑";
+  font-size: 1.8rem;
+  font-weight: 400;
+}

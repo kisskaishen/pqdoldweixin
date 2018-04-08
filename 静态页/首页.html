@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css">
+	    <link rel="stylesheet" href="css/base.css">
+	    <link rel="stylesheet" href="css/page.css">
+	    <link rel="stylesheet" href="css/dialog.css">
+	    <script src="js/zepto.min.js"></script>
+	    <script src="js/vue.min.js"></script>
+	    <script src="js/swiper.min.js"></script>
+  		<script src="js/nav_scroll.js"></script>
+	    <script src="js/active.js"></script>
+	    <script src="js/fontSize.js"></script>
+	    <script src="modules/modules.js"></script>
+	    <script src="templates/templates.js"></script>
+	</head>
+	<body>
+
+	<div class="wrap" id="wrap">
+		<nav class="top-nav">
+			<div class="plays_tab">
+				<div class="swiper-container nav_scroll" id="tabScroll">
+			        <ul class="swiper-wrapper" id="nav_list">
+			            <li class="swiper-slide" v-for="item in items" data-id="{{item.id}}">{{item.name}}</li>
+			        </ul>
+		        </div>
+			</div>
+		</nav>
+		<main class="main">
+			<div class="main-body" id="main-body">
+				<div id="main-page">
+					
+				</div>
+			</div>
+		</main>
+
+		<footer class="footer">
+			<nav class="nav-group clearfix">
+				<a href="#" class="item active">
+					<div class="box">
+						<i class="icon icon-1"></i>
+						<p class="fs10 title">首页</p>
+					</div>
+				</a>
+				<a href="#" class="item">
+					<div class="box">
+						<i class="icon icon-2"></i>
+						<p class="fs10 title">排行榜</p>
+					</div>
+				</a>
+				<a href="#" class="item">
+					<i class="icon icon-3"></i>
+				</a>
+				<a href="#" class="item">
+					<div class="box">
+						<i class="icon icon-4"></i>
+						<p class="fs10 title">探索</p>
+					</div>
+				</a>
+				<a href="#" class="item">
+					<div class="box">
+						<i class="icon icon-5"></i>
+						<p class="fs10 title">个人中心</p>
+					</div>
+				</a>
+			</nav>
+		</footer>
+
+		<div class="join-group dialog" style="display:none;">
+			<div class="mask"></div>
+			<div class="dialog-body">
+				<div class="dialog-container">
+					<div class="input-item tc">
+						<input type="text" placeholder="请输入6位数的参团码">
+						<a href="#" class="btn fs16 ml5">参团</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+		
+
+		<script>
+
+			function load_view(){
+				$.ajax({
+					type:'GET',
+					url:'https://139.196.255.40/api/Index/getHeader?ajax_get=1',//获取顶部浮动导航栏
+					dataType:'jsonp',
+					jsonp: 'jsoncallback',
+					async:true,
+					success:function(data){	
+						//头部导航
+					    var top_nav=new Vue({
+							el:'#tabScroll',
+							data:{
+								items:data
+							}
+						});
+						//滑动导航
+						scrollNav("#tabScroll");
+						//初始化显示首页
+						var page=new Vue({
+							el:'#main-page',
+							attached:function(){
+								$.ajax({
+									type:'GET',
+									url:'https://192.168.0.123/pinquduo/api/Index/home?ajax_get=1',//获取首页数据
+									dataType:'jsonp',
+									jsonp: 'jsoncallback',
+									async:true,
+									success:function(data){
+										$('#main-page').html(templates.home);
+										modules.home(data);
+										//console.log(data);
+									},
+									error: function(xhr,type){
+									    console.log('Ajax error!');
+									}
+								});
+							}
+						});
+						//切换分类页
+						(function(){
+							var items=$('#tabScroll .swiper-slide');
+							items.each(function(){
+								$(this).bind('click',function(){
+									var id=$(this).attr('data-id');
+									if($(this).index()==0){
+										$.ajax({
+											type:'GET',
+											url:'https://192.168.0.123/pinquduo/api/Index/home?ajax_get=1',//获取首页数据
+											dataType:'jsonp',
+											jsonp: 'jsoncallback',
+											async:true,
+											success:function(data){
+												$('#main-page').html(templates.home);
+												modules.home(data);
+												//console.log(data);
+											},
+											error: function(xhr,type){
+											    console.log('Ajax error!');
+											}
+										});
+									}else{
+										$.ajax({
+											type:'GET',
+											url:'https://192.168.0.123/pinquduo/api/index/getNewData?ajax_get=1&id='+id,     //获取顶部导航对应分类页
+											dataType:'jsonp',
+											jsonp: 'jsoncallback',
+											async:true,
+											success:function(data){
+												console.log(data);
+												$('#main-page').html(templates.list_page);
+												modules.list_page(data);
+											}
+										});
+									}
+								});
+							});
+						})();	
+					},
+					error: function(xhr,type){
+					    console.log('Ajax error!');
+					}
+				});
+			};
+
+
+			load_view();
+
+
+			
+
+			
+
+
+
+
+			
+			
+			
+
+
+
+
+
+			
+
+
+
+
+
+
+			
+
+			
+		    
+			
+
+
+
+			
+			
+
+
+			
+
+			
+
+
+	    </script>
+	</body>
+</html>

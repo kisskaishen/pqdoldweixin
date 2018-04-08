@@ -1,0 +1,21 @@
+body {
+  font-family: 微软雅黑;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin: 0;
+  background: #cccccc33;
+}
+p {
+  margin: 0;
+}
+#base {
+  margin: 20px;
+}
+.ax_default {
+  margin: 10px 0;
+}
+.ax_default_h3 {
+    font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+    font-weight: 700;
+    font-style: normal;
+}

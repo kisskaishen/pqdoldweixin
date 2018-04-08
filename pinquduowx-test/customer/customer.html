@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>客服-拼趣多</title>
+		<script type="text/javascript" src="./javascript/dist/webim.config.js"></script>
+		<script type="text/javascript" src='./sdk/dist/strophe-1.2.8.min.js'></script>
+		<script src='http://downloads.easemob.com/downloads/cdn/websdk-1.4.12.js'></script>
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="../css/dialog.css?v=d1ac9fceb2">
+	    <link rel="stylesheet" href="css/customer.css?v=121532507b">
+	</head>
+	<body style="height: 100%;">
+		<div class="wrap" id="wrap" style="height: 100%;">
+			<div class="customer-container" v-cloak style="height: 100%;" @scroll="loadingMore">
+				<div class="goods-info black2 tl clearfix fs11" v-if="goods_info.goods_name">
+					<img class="pic mr10" :src="goods_info.banner[0].origin">
+					<div class="intro">
+						<div class="ellipsis">{{goods_info.goods_name}}</div>
+						<div class="mt7 clearfix">
+							<span class="send-link fs10" @click="send_goods()">发送商品链接</span>
+							<p>
+								<span class="red1 fs12">￥{{goods_info.prom_price}}</span>
+								<span class="fs9 gray2">
+									{{parseInt(goods_info.prom)==0?'免单拼':goods_info.prom+'人团'}}
+								</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="msg-group" id="msg-group" :class="{pt55:goods_info.goods!=null}" @scroll="loadingMore" style="padding: 5.4rem 0 1.5rem 0;height: 100%;overflow: auto">
+					<span v-if="pageNum==1" style="font-size: .20rem;color: #ccc;display: block;text-align: center">没有更多消息了</span>
+					<div class="mt10" v-for="(msg_item,index) in msg_data" v-if="msg_item.data">
+						<!--消息时间-->
+						<div class="time-item tc">
+							<span>
+								<span class="time" v-if="index==0">
+									{{timestampFormat(msg_item.ext.time)}}
+								</span>
+								<span class="time" v-if="index>0&&parseInt(msg_item.ext.time*1000)-msg_data[index-1].ext.time*1000>2*60*1000">
+									{{timestampFormat(msg_item.ext.time)}}
+								</span>
+							</span>
+						</div>
+						<!--消息体-->
+						<div class="msg-item clearfix" :class="{receiver:msg_item.from==store_id}">
+							<img v-if="msg_item.from==store_id" class="pic" :src="store_logo"/>
+							<img v-else class="pic" :src="head_pic"/>
+							<!--富文本消息-->
+							<div v-if="msg_item.ext.goods" class="msg-box">
+								<a :href="msg_item.ext.goods.goods_share_url" style="display: flex;justify-content: space-between;color: #000;font-size: 1rem" >
+									<div style="margin-right:1rem;">
+										<img :src="msg_item.ext.goods.original" alt="" style="width: 6rem">
+									</div>
+									<div>
+										<p  style="overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;line-height:1.6rem;">{{msg_item.ext.goods.goods_name}}</p>
+										<p style="margin-top:1rem;">
+											<span style="font-size: 1.2rem;color: red">￥{{msg_item.ext.goods.prom_price}}</span>
+											<span style="color: #aaa">{{msg_item.ext.goods.prom}}人团</span>
+										</p>
+									</div>
+								</a>
+							</div>
+							<div class="msg-box" v-else>
+								{{msg_item.data}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="msg-input">
+					<form id="msg-form">
+						<textarea id="input" multiple="multiple" type="text" name="post-msg" placeholder="请输入内容">
+						</textarea>
+					</form>
+					<span class="send-btn fs12" id="send-btn" @click="send_msg()" >发送</span>
+				</div>
+			</div>	
+		</div>
+		<script src='../dist/customer.js?v=3ee5aa8aafa3'></script>
+	</body>
+</html>

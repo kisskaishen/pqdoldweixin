@@ -1,0 +1,104 @@
+Searching 70 files for "https://testapi.pinquduo.cn/api_3_0_1"
+
+/Users/qwk/Desktop/default-https/pinquduowx-test/assets/goods_order.js:
+   79  		    shareUrl: share_url,
+   80  		    link: share_url, // 分享链接
+   81: 		    imgUrl: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
+   82  		    type: '', // 分享类型,music、video或link，不填默认为link
+   83  		    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+   ..
+  119      title: '拼趣多商城',
+  120      summary: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城',
+  121:     pic: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
+  122      url: share_url
+  123  });
+  ...
+  222  					$.ajax({
+  223  						type:'POST',
+  224: 						url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_list'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&type='+index+'&ajax_get=1',//获取数据
+  225  						dataType:'jsonp',
+  226  						jsonp: 'jsoncallback',
+  ...
+  255           //    // $.ajax({
+  256           //     //    type:'POST',
+  257:          //     //    url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getCompleteBuy'+'?user_id='+user_id+'&order_id='+goodsInfo.order_id+'&ajax_get=1&version=2.0.0',//获取数据
+  258           //     //    dataType:'jsonp',
+  259           //     //    jsonp: 'jsoncallback',
+  ...
+  301  				// $.ajax({
+  302  				// 	type:'POST',
+  303: 				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_service_detail'+'?user_id='+user_id+'&order_id='+goodsInfo.order_id,//获取数据
+  304  				// 	dataType:'jsonp',
+  305  				// 	jsonp: 'jsoncallback',
+  ...
+  335  				// $.ajax({
+  336  				// 	type:'POST',
+  337: 				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/getIncreaseGoodsTime'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
+  338  				// 	dataType:'jsonp',
+  339  				// 	jsonp: 'jsoncallback',
+  ...
+  392  				// $.ajax({
+  393  				// 	type:'POST',
+  394: 				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/orderConfirm'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
+  395  				// 	dataType:'jsonp',
+  396  				// 	jsonp: 'jsoncallback',
+
+/Users/qwk/Desktop/default-https/pinquduowx-test/assets/likes.js:
+  102  
+  103  
+  104:             newCodeImg: 'https://testapi.pinquduo.cn/api_3_0_1/raisepic/captcha?user_id=' + user_id,          // 新人图形验证码
+  105              code: '',
+  106              groupId: group_id,            // 团id，true则显示新人验证，否则没有
+  ...
+  511              $.ajax({
+  512                  type: 'GET',
+  513:                 url: 'https://testapi.pinquduo.cn/api_3_0_1/raisepic/captcha_verify/group_id/' + this.groupId + '/user_id/' + this.user_id + '/captcha/' + this.code,
+  514                  data: '',
+  515                  async: true,
+
+/Users/qwk/Desktop/default-https/pinquduowx-test/assets/to_pay.js:
+   92  		    shareUrl: share_url,
+   93  		    link: share_url, // 分享链接
+   94: 		    imgUrl: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
+   95  		    type: '', // 分享类型,music、video或link，不填默认为link
+   96  		    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+   ..
+  132      title: '拼趣多商城',
+  133      summary: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城',
+  134:     pic: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
+  135      url: share_url
+  136  });
+  ...
+  266  			$.ajax({
+  267  				type:'POST',
+  268: 				url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getGenerateOrder'+location.search+'&ajax_get=1',//获取数据
+  269  				dataType:'jsonp',
+  270  				jsonp: 'jsoncallback',
+  ...
+  313  			$.ajax({
+  314  				type:'POST',
+  315: 				url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getGenerateOrder'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&ajax_get=1&version=2.0.0',//获取数据
+  316  				dataType:'jsonp',
+  317  				jsonp: 'jsoncallback',
+  ...
+  350  			$.ajax({
+  351  				type:'POST',
+  352: 				url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getUserAddressList/user_id/5838?user_id='+user_id+'&ajax_get=1&version=2.0.0',//获取数据
+  353  				dataType:'jsonp',
+  354  				jsonp: 'jsoncallback',
+  ...
+  400  			$.ajax({
+  401  				type:'POST',
+  402: 				url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getCoupon?user_id='+user_id+'&store_id='+store_id+'&goods_id='+goods_id+'&num='+self_.buy_count+'&type='+type+'&ajax_get=1&version=2.0.0',//获取数据
+  403  				dataType:'jsonp',
+  404  				jsonp: 'jsoncallback',
+  ...
+  483  			if(self_.data.goods.prom==0&&prom_type==1){
+  484  				//免单拼开团
+  485: 				var payScriptUrl='https://testapi.pinquduo.cn/api_3_0_1/Purchase/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&prom='+self_.prom_count+'&free='+self_.free_count+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1&version=2.0.0&wxv=2';
+  486  			}else{
+  487: 				var payScriptUrl='https://testapi.pinquduo.cn/api_3_0_1/Purchase/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1&version=2.0.0&wxv=2';
+  488  			};
+  489  			//使用优惠券
+
+17 matches across 3 files

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>物流信息</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap">
+		<main class="main">
+			<div class="main-body fs11" id="main-body">
+				<div class="account-container" v-if="wuliu_info.logistics_name">
+					<div class="logistics-header">
+						<dl class="clearfix tl">
+							<dt class="fl mr10">
+								<img :src="wuliu_img" alt="" class="logo">
+							</dt>
+							<dd class="gray1">
+								<p class="black2 fs14">{{'物流公司：'+wuliu_info.logistics_name}}</p>
+								<p class="mt3">{{'物流单号：'+wuliu_info.shipping_order}}</p>
+								<p>{{'物流电话：'+wuliu_info.logistics_mobile}}</p>
+								<!-- <p>{{'物流状态：'+wuliu_info.logistics_mobile}}</p> -->
+							</dd>
+						</dl>
+					</div>
+					<div class="refund-group mt10">
+						<div class="item" v-for="(item,index) in wuliu_detail" :class="{current:index==0}" v-if="wuliu_detail!=null">
+							<div class="title gray3 clearfix">
+								<span class="icon"></span>
+								<span class="info black2 fs11">{{item.context}}</span>
+								<p class="mt5">
+									<span class="info">{{item.time}}</span>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-if="nodata">
+					<p class="gray1 tc">
+						<br>
+						暂无物流信息
+					</p>
+				</div>
+			</div>
+		</main>		
+	</div>
+	<script src="dist/logistics_detail.js?V=5ea31d808d54427dc325"></script>
+	</body>
+</html>

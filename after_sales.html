@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	    <title>拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+
+	<div class="wrap" id="wrap" v-cloak>
+		<!-- <nav class="top-nav">
+			<div class="plays_tab pt">
+				<div class="swiper-container nav_scroll" id="tabScroll">
+			        <ul class="swiper-wrapper" id="nav_list">
+			            <li class="swiper-slide"><span class="name">全部</span></li>
+			            <li class="swiper-slide"><span class="name">拼团中</span></li>
+			            <li class="swiper-slide"><span class="name">已成团</span></li>
+			            <li class="swiper-slide"><span class="name">拼团失败</span></li>
+			        </ul>
+		        </div>
+			</div>
+		</nav> -->
+		<main class="main">
+			<div class="main-body" id="main-body" v-cloak>
+				<div class="order-group fs11 tl" id="order-group">
+					<dl class="item mt5" v-for="item in order_data">
+						<dt class="clearfix">
+							<i class="icon fl mr5"><img :src="item.goodsInfo.store.store_logo" alt=""></i>
+							<span class="fl name">{{item.goodsInfo.store.store_name}}</span>
+							<span class="fr red">{{item.annotation}}</span>
+						</dt>
+						<dd>
+							<a :href="'order_detail.html?order_id='+item.order_id" class="pic-text clearfix">
+								<span class="fl pic">
+									<img :src="item.goodsInfo.original_img" alt="">
+								</span>
+								<div class="intro">
+									<p class="title">
+										{{item.goodsInfo.goods_name}}
+									</p>
+									<p class="mt10 gray1">
+										{{item.key_name}}
+									</p>
+								</div>
+							</a>
+							<span class="count gray1">x{{item.num}}</span>
+							<p class="price-item fs10">
+								退款单，退款金额：<span class="red">￥<span class="fs15">{{item.order_amount}}</span></span>
+							</p>
+						</dd>
+						<dd class="footing tr" v-if="item.order_type==10">
+							<span class="border-btn btn">取消订单</span>
+							<span class="border-btn btn red-btn ml5">立即支付</span>
+						</dd>
+					</dl>
+					
+					<p class="more-hint tc gray1" id="more-hint">
+						{{load_hint}}
+					</p>
+				</div>
+			</div>
+		</main>
+	</div>
+	<script src="dist/after_sales.js?v=5ea31d808d54427dc325"></script>
+	</body>
+</html>
