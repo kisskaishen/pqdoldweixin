@@ -26,11 +26,11 @@
 	<div class="wrap" id="wrap">
 		<main class="main">
 			<div class="main-body fs11" id="main-body">
-				<div class="account-container">
-					<div class="logistics-header" v-if="wuliu_info.logistics_name!=''">
+				<div class="account-container" v-if="wuliu_info.logistics_name">
+					<div class="logistics-header">
 						<dl class="clearfix tl">
 							<dt class="fl mr10">
-								<img :src="wuliu_order_info.goods_img" alt="" class="logo">
+								<img :src="wuliu_img" alt="" class="logo">
 							</dt>
 							<dd class="gray1">
 								<p class="black2 fs14">{{'物流公司：'+wuliu_info.logistics_name}}</p>
@@ -41,7 +41,7 @@
 						</dl>
 					</div>
 					<div class="refund-group mt10">
-						<div class="item" v-for="(item,index) in wuliu_detail" :class="{current:index==0}" v-if="nodata!=null">
+						<div class="item" v-for="(item,index) in wuliu_detail" :class="{current:index==0}" v-if="wuliu_detail!=null">
 							<div class="title gray3 clearfix">
 								<span class="icon"></span>
 								<span class="info black2 fs11">{{item.context}}</span>
@@ -61,6 +61,6 @@
 			</div>
 		</main>		
 	</div>
-	<script src="dist/logistics_detail.js?v=519bd58ce7998a230f05"></script>
+	<script src="dist/logistics_detail.js?V=3e31ff8d38b0f59934f0"></script>
 	</body>
 </html>

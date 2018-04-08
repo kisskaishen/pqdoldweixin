@@ -454,13 +454,13 @@ new Vue({
 		},
 		pay: function(){
 			var self_ = this;
-			if(self_.isPayClick){
-				self_.isPayClick = false
-				alert('已点击，3s后重试！')
-				setTimeout(()=>{
-            		self_.isPayClick = true
-            	},3000)
-            }
+            // if(self_.isPayClick){
+				// self_.isPayClick = false
+				// alert('已点击，3s后重试！')
+				// setTimeout(()=>{
+            // 		self_.isPayClick = true
+            // 	},3000)
+            // }
 			self_.isPayClick = true;
 			var openid = cookie.get('openid')||0;//获取微信/qq openid
 			if(self_.data.user==null){

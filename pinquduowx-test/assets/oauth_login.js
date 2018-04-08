@@ -25,8 +25,9 @@ var oauth = {
 };
 module.exports = function(routeString){
 	// 获取当前页面的地址栏信息
-	var href= location.href;
-
+	var href = location.href;
+	// cookie.set('href',href)
+	console.log('href存储成功')
     console.log('第三方登陆调取成功');
     console.log(href);
     if (routeString==''||routeString==undefined||routeString==null) {
@@ -39,7 +40,7 @@ module.exports = function(routeString){
 		//去掉原来的cookie将所有用户都去重新第三方登录 2017-08-24 温立涛
 		if(!cookie.get('user_id')){
 			// location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdbc22996638a2c73&redirect_uri=https://wx.pinquduo.cn&response_type=code&scope=snsapi_userinfo&state=123&connect_redirect=1#wechat_redirect";
-			location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdbc22996638a2c73&redirect_uri=https%3a%2f%2fwx.pinquduo.cn/pinquduowx-test%2fwechat%2flogin.php%3f"+routeString+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+			location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdbc22996638a2c73&redirect_uri=http%3a%2f%2fwx.pinquduo.cn%2fpinquduowx-test%2fwechat%2flogin.php%3f"+routeString+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 		}
 	}else if(oauth.isQQ()){
 		if(!cookie.get('user_id')){

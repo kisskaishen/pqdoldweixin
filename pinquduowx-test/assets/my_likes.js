@@ -55,7 +55,7 @@ new Vue({
             })*/
             /*$.ajax({
                 type:'get',
-                url:'https://api.hn.pinquduo.cn/api_2_0_2/GroupBuy/danList/userid/'+user_id,
+                url:'https://api.hn.pinquduo.cn/api_3_0_1/GroupBuy/danList/userid/'+user_id,
                 //获取数据
                 // dataType:'jsonp',
                 // jsonp: 'jsoncallback',
@@ -128,7 +128,7 @@ new Vue({
             })
             /*$.ajax({
                 type:'GET',
-                url:'https://api.hn.pinquduo.cn/api_2_0_2/Raisepic/raise_pic',
+                url:'https://api.hn.pinquduo.cn/api_3_0_1/Raisepic/raise_pic',
                 data:{
                     user_id:user_id,
                     prom_id:prom_id,

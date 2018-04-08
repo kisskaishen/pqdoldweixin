@@ -58,7 +58,7 @@ if(locurl.indexOf("?")>-1&&!(locurl.indexOf("&")>-1)){
 };
 var data_={};
 $.ajax({
-	type:'POST',
+	type:'post',
 	url:'https://testapi.pinquduo.cn/api_3_0_1/Goods/getDetaile?goods_id='+goods_id+'&user_id='+user_id+'&ajax_get=1&version=2.0.0',//获取数据
 	dataType:'jsonp',
 	jsonp: 'jsoncallback',
@@ -97,6 +97,7 @@ $.ajax({
                 });
                 console.log('1111');
                 console.log(data_);
+                console.log(2324);
                 var share_config = {
                     title: data_.result.prom_price+'元'+data_.result.goods_name, // 分享标题
                     desc: data_.result.goods_remark, // 分享描述
@@ -186,6 +187,7 @@ $.ajax({
                     group_buy:'',
                     spec_key:'',
                     goodsPic:data_.result.spec_goods_price[0].img || '',//商品图片
+                    spec_key:''
                 }
             },
             mounted: function(goods_id,user_id){
@@ -243,15 +245,23 @@ $.ajax({
                 var select_groups = $('.select-box .select-group');
                 function spec_goods(){
                 	var spec_price = self_.data.spec_goods_price;
-                	var spec_key='';
+                    var spec_key='';
+                	var spec_key2='';
                 	select_groups.each(function(i){
                 		if(select_groups.eq(i).attr('select_spec_id')){
-                			spec_key += (select_groups.eq(i).attr('select_spec_id')+'_');
+                            spec_key += (select_groups.eq(i).attr('select_spec_id')+'_');
+                			spec_key2 = spec_key.split("_").reverse().join("_");
                 		};
                 	});
                 	spec_key = spec_key.substr(0, spec_key.length - 1);
+                    spec_key2 = spec_key2.substr(1,spec_key2.length)
                 	for(var i=0,len=spec_price.length;i<len;i++){
-                		if(spec_key==spec_price[i].key){
+                		if(spec_key==spec_price[i].key || spec_key2 ==spec_price[i].key){
+                            if (spec_key==spec_price[i].key) {
+                                self_.spec_key = spec_key
+                            } else {
+                                self_.spec_key = spec_key2
+                            }
                             self_.goodsPic = spec_price[i].img
                 			if(hasprom){
                 				self_.price = spec_price[i].prom_price;
@@ -416,12 +426,12 @@ $.ajax({
                          //    },1000);
                          //    return false;
                         // };
-                        select_groups.each(function(i){
-                        	if(select_groups.eq(i).attr('select_spec_id')){
-                        		spec_key += (select_groups.eq(i).attr('select_spec_id')+'_');
-                        	};
-                        });
-                        spec_key = spec_key.substr(0, spec_key.length - 1);
+                        // select_groups.each(function(i){
+                        // 	if(select_groups.eq(i).attr('select_spec_id')){
+                        // 		spec_key += (select_groups.eq(i).attr('select_spec_id')+'_');
+                        // 	};
+                        // });
+                        // spec_key = spec_key.substr(0, spec_key.length - 1);
                         //alert(spec_key);
                         if(!hasprom){
                             is_prom = 0;
@@ -434,10 +444,10 @@ $.ajax({
                         if(prom_type == 0){
                             is_prom = 1;
                             type_ = 0;
-                            location.href="topay.html?"+'goods_id='+goods_id+'&user_id='+user_id+'&store_id='+store_id+'&num='+self_.buy_count+'&spec_key='+spec_key+'&is_prom='+is_prom+'&type='+type_+'&prom_id='+prom_id;
+                            location.href="topay.html?"+'goods_id='+goods_id+'&user_id='+user_id+'&store_id='+store_id+'&num='+self_.buy_count+'&spec_key='+self_.spec_key+'&is_prom='+is_prom+'&type='+type_+'&prom_id='+prom_id;
                             return false;
                         };
-                        location.href="topay.html?"+'goods_id='+goods_id+'&user_id='+user_id+'&store_id='+store_id+'&num='+self_.buy_count+'&spec_key='+spec_key+'&is_prom='+is_prom+'&type='+type_;
+                        location.href="topay.html?"+'goods_id='+goods_id+'&user_id='+user_id+'&store_id='+store_id+'&num='+self_.buy_count+'&spec_key='+self_.spec_key+'&is_prom='+is_prom+'&type='+type_;
                         return false;
                     });
                 };

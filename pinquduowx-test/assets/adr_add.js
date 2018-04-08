@@ -81,6 +81,7 @@ $.ajax({
 		    }
 		};
 
+
 		wx.ready(function(){
 			//分享朋友圈
 			wx.onMenuShareTimeline(share_config);

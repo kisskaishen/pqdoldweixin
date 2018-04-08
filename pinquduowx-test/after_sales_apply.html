@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+	    <meta name="wap-font-scale" content="no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <title>退货-拼趣多</title>
+	    <link rel="stylesheet" href="css/swiper.min.css?v=96b66e4018">
+	    <link rel="stylesheet" href="css/base.css?v=1896446d28">
+	    <link rel="stylesheet" href="css/page.css?v=2de5f936b4">
+	    <link rel="stylesheet" href="css/dialog.css?v=3531a7a373">
+	    <!--qq/微信 功能性api-->
+	    <script src="dist/jweixin-1.0.0.js?v=41ad021d4c53" data-api="wx"></script>
+	    <script src="dist/qqShare.js?v=41d85faaad5c" data-api="qq"></script>
+	    <style type="text/css">
+	    	.top,.application-item {
+	    		background-color: #fff;
+	    		padding: 0px 20px 10px;
+	    	}
+	    	.top .tuikuantop {
+	    		display: flex;
+	    		justify-content: flex-start;;
+	    		align-items: flex-start;;
+	    		align-content: flex-start;
+	    	}
+	    	.tuikuantop > div {
+	    		flex: 1;
+
+	    	}
+	    	.tuikuantop > div img {
+	    		display: block;
+	    		width: 68px;
+	    		height: 68px;
+	    	}
+	    	.tuikuantop > p {
+	    		flex: 3;
+	    		padding-left: 10px;
+	    	}
+	    	.input-box {
+	    		background-color: #fdfdfd !important;
+	    	}
+	    </style>
+	</head>
+	<body>
+
+	<div id="loading-template"></div>
+	<div class="wrap" id="wrap" style="overflow: hidden;">
+		<main class="main bg-white">
+			<div class="main-body" id="main-body">
+				<div class="account-container fs12" style="background-color: #eee;">
+					<div class="refund-application" style="padding: 0;">
+						<div class="top application-item" style="margin:10px 0;">
+							<p class="heading fs13">退款商品</p>
+							<div class="tuikuantop">
+								<div><img :src="goods_img" alt="退款商品图片"></div>
+								<p>{{goods_name}}</p>
+							</div>
+						</div>
+						<div class="application-item tl" style="display: flex;padding-top: 10px;">
+							<div class="heading fs13"><i class="red1">*</i>退款方式</div>
+							<div class="box-body" style="flex: 1">
+								<select v-if="isget=='1'" name="refund-type" id="refund-type" placeholder="" style="background-color: #fdfdfd;width: 100%;height: 100%;border: none;font-size: 14px;padding-left: 10px;background:url(../images/down-arrow.png) no-repeat right center /6%;">
+									<option value="1">退款退货</option>
+									<option value="2">我要换货</option>
+								</select>
+								<select v-if="isget=='0'" name="refund-type" id="refund-type" placeholder="" style="background-color: #fdfdfd;width: 100%;height: 100%;border: none;font-size: 14px;padding-left: 10px;background:url(../images/down-arrow.png) no-repeat right center /6%;">
+									<option value="1">退款</option>
+								</select>
+							<!-- 	<select name="refund-reason" id="refund-reason" placeholder="" style="background-color: #fdfdfd;width: 100%;height: 100%;border: none;font-size: 14px;padding-left: 10px;background:url(../images/down-arrow.png) no-repeat right center /6%;">
+									<option value="退款">退款</option>
+								</select> -->
+						<!-- 			<div class="clearfix option checked">
+										<span class="title fl">我要换货</span>
+										<i class="fr check-icon"></i>
+									</div>
+									<div class="clearfix option">
+										<span class="title fl">我要退货</span>
+										<i class="fr check-icon"></i>
+									</div> -->
+								
+							</div>
+						</div>
+						<div class="application-item tl tuikuanMoney">
+							<div class="heading fs13">
+								<i class="red1">*</i>退款额度(元)
+								<span class="gray1 fs12" id="max-refund-desc">(最高可退款￥{{order_amount}})</span>
+							</div>
+							<div class="box-body">
+								<div class="input-box">
+									<input type="text" :value="order_amount" :data-maxMoney="order_amount" id="refund-amount" name="refund-amount" placeholder="请输入退款金额">
+								</div>
+							</div>
+						</div>
+						<div class="application-item tl tuikuanliyou" style="display: flex;padding-top: 10px">
+							<div class="heading fs13">
+								<i class="red1">*</i>退款理由
+							</div>
+							<div class="box-body" style="flex: 1;">
+								<div class="select-box" style="background-color: #fdfdfd;padding: 0 0 0 10px;">
+									<select name="refund-reason" id="refund-reason" placeholder="" style="background-color: #fdfdfd;">
+										<option value="请选择退款原因">请选择退款原因</option>
+										<option value="卖家发错货">卖家发错货</option>
+										<option value="尺寸拍错.不喜欢.效果差">尺寸拍错.不喜欢.效果差</option>
+										<option value="假冒品牌">假冒品牌</option>
+										<option value="收到商品少件或破损">收到商品少件或破损</option>
+										<option value="大小尺寸与商品描述不符">大小尺寸与商品描述不符</option>
+										<option value="材料.面料与商品描述不符">材料.面料与商品描述不符</option>
+										<option value="颜色.款式.图案与描述不符">颜色.款式.图案与描述不符</option>
+										<option value="质量问题">质量问题</option>
+										<option value="其它原因">其它原因</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="application-item tl">
+							<div class="heading fs13">
+								<i class="red1">*</i>退款说明
+							</div>
+							<div class="box-body">
+								<div class="textarea-box" style="background-color: #fdfdfd;">
+									<textarea name="refund-desc" id="refund-desc" placeholder="请输入问题可增加退款/退货的成功几率。" style="background-color: #fdfdfd"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="application-item tl">
+							<div class="heading fs13">
+								<i class="red1">*</i>上传凭证
+								<span class="gray1 fs12">(最多三张)</span>
+							</div>
+							<div class="box-body">
+								<div class="upload-images clearfix" id="upload-images">
+								</div>
+								<div class="file-btn" id="upload-file-btn">
+									<input id="refund-images" type="file"  class="file" accept="image/png;image/jpg;image/jpeg" name="refund-images">
+								</div>
+							</div>
+							<div>
+								<p>最多不超过3张图</p>
+								<p>照片大小不超过5M，支持png、jpg</p>
+							</div>
+						</div>
+						<!-- <div class="application-item tl">
+							<div class="heading fs13">
+								<i class="red1">*</i>联系方式
+							</div>
+							<div class="box-body">
+								<div class="input-box">
+									<input type="text" id="refund-contact" value="">
+								</div>
+							</div>
+						</div>
+						<div class="application-item tl">
+							<div class="heading fs13">
+								<i class="red1">*</i>退款须知		
+							</div>
+							<div class="box-body">
+								<p class="gray1">请按照提示关注维权进度和超时提醒并提供相应凭证。</p>
+							</div>
+						</div> -->
+						<div class="full-btn-item mt20">
+							<a href="javascript:void(0);" id="submit-refund" class="full-btn tap fs16">提交申请</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="hint-dialog" id="hint-dialog">
+    			<p class="fs14 tc"></p>
+			</div>	
+		</main>		
+	</div>
+	<script type="text/javascript" src="dist/after_sales_apply.js?v=3e31ff8d38b0f59934f0`"></script>
+	</body>
+</html>

@@ -84,7 +84,7 @@ $.ajax({
 		    desc: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城', // 分享描述
 		    shareUrl: share_url,
 		    link: share_url, // 分享链接
-		    imgUrl: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
+		    imgUrl: 'https://testapi.pinquduo.cn/api_2_0_2/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
 		    type: '', // 分享类型,music、video或link，不填默认为link
 		    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 		    success: function () { 
@@ -124,7 +124,7 @@ $.ajax({
 setShareInfo({
     title: '拼趣多商城',
     summary: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城',
-    pic: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
+    pic: 'https://testapi.pinquduo.cn/api_2_0_2/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
     url: share_url
 });
 
@@ -218,7 +218,7 @@ new Vue({
 			var self_ = this;
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getOrder'+location.search+'&ajax_get=1',//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getOrder'+location.search+'&ajax_get=1',//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -262,7 +262,7 @@ new Vue({
 			var self_ = this;
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getOrder'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&ajax_get=1',//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getOrder'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&ajax_get=1',//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -289,7 +289,7 @@ new Vue({
 			var self_ = this;
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getUserAddressList?user_id='+user_id+'&ajax_get=1',//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getUserAddressList?user_id='+user_id+'&ajax_get=1',//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -317,7 +317,7 @@ new Vue({
 			var coupon_type = prom_type!=2?1:2;
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getCoupon?user_id='+user_id+'&store_id='+store_id+'&goods_id='+goods_id+'&num='+self_.buy_count+'&type='+coupon_type+'&ajax_get=1',//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getCoupon?user_id='+user_id+'&store_id='+store_id+'&goods_id='+goods_id+'&num='+self_.buy_count+'&type='+coupon_type+'&ajax_get=1',//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,

@@ -6,8 +6,8 @@ module.exports = {
     devtool: false,
     // 入口文件地址，不需要写完，会自动查找
     entry: {
-        // //首页
-        // home: './assets/home.js',
+        // // //首页
+        home: './assets/home.js',
         // //排行榜
         // ranking: './assets/ranking.js',
         // //免单拼
@@ -39,7 +39,7 @@ module.exports = {
         // //限时抢购
         // special_timed: './assets/special_timed.js',
         // //参团详情
-        // regiment: './assets/regiment.js',
+        regiment: './assets/regiment.js',
         // // 家居优品
         // homeProducts:'./assets/homeProducts.js',
         // // 品牌清仓
@@ -55,7 +55,7 @@ module.exports = {
         // //我的订单
         // goods_order: './assets/goods_order.js',
         // //订单详情
-        order_detail: './assets/order_detail.js',
+        // order_detail: './assets/order_detail.js',
         // //物流详情
         // logistics_detail: './assets/logistics_detail.js',
         // //我的拼团
@@ -81,7 +81,7 @@ module.exports = {
         // //客服
         // customer: './assets/customer.js',
         // // 为我点赞
-        // likes:'./assets/likes.js',
+        likes:'./assets/likes.js',
         // // // 为我助力详情
         // my_likes: './assets/my_likes.js',
         // // //趣多严选

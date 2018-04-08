@@ -86,7 +86,7 @@ $.ajax({
 		    desc: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城', // 分享描述
 		    shareUrl: share_url,
 		    link: share_url, // 分享链接
-		    imgUrl: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
+		    imgUrl: 'https://testapi.pinquduo.cn/api_2_0_2/Template/pc/pinquduo/Static/images/pqdlogo.jpg', // 分享图标
 		    type: '', // 分享类型,music、video或link，不填默认为link
 		    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 		    success: function () { 
@@ -126,7 +126,7 @@ $.ajax({
 setShareInfo({
     title: '拼趣多商城',
     summary: '拼起来，购乐趣！一个以团购为主的社交娱乐购物商城',
-    pic: 'https://testapi.pinquduo.cn/api_3_0_1/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
+    pic: 'https://testapi.pinquduo.cn/api_2_0_2/Template/pc/pinquduo/Static/images/pqdlogo.jpg',
     url: share_url
 });
 
@@ -224,7 +224,7 @@ new Vue({
 		//请求页面数据
 		get_data: function(){
 			var self_ = this;
-			var url = sign.signUrl('https://testapi.pinquduo.cn/api_3_0_1/api/goods/getOrder'+location.search+'&ajax_get=1');
+			var url = sign.signUrl('https://testapi.pinquduo.cn/api_2_0_2/api/goods/getOrder'+location.search+'&ajax_get=1');
 			$.ajax({
 				type:'POST',
 				url: url,//获取数据
@@ -269,7 +269,7 @@ new Vue({
 		//修改购买数量重新获取优惠券（刷新页面数据）
 		refresh_coupon:function(){
 			var self_ = this;
-			var url = sign.signUrl('https://testapi.pinquduo.cn/api_3_0_1/api/goods/getOrder'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&ajax_get=1');
+			var url = sign.signUrl('https://testapi.pinquduo.cn/api_2_0_2/api/goods/getOrder'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&ajax_get=1');
 			$.ajax({
 				type:'POST',
 				url: url,//获取数据
@@ -303,7 +303,7 @@ new Vue({
 			});
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getUserAddressList?' + qs,//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getUserAddressList?' + qs,//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -340,7 +340,7 @@ new Vue({
 			});
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/api/goods/getCoupon?' + qs,//获取数据
+				url:'https://testapi.pinquduo.cn/api_2_0_2/api/goods/getCoupon?' + qs,//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -419,9 +419,9 @@ new Vue({
 			var address_id = self_.data.user.address_id;
 			if(self_.data.goods.prom==0&&prom_type==1){
 				//免单拼开团
-				var payScriptUrl='https://testapi.pinquduo.cn/api_3_0_1/api/goods/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&prom='+self_.prom_count+'&free='+self_.free_count+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1';
+				var payScriptUrl='https://testapi.pinquduo.cn/api_2_0_2/api/goods/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&prom='+self_.prom_count+'&free='+self_.free_count+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1';
 			}else{
-				var payScriptUrl='https://testapi.pinquduo.cn/api_3_0_1/api/goods/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1';
+				var payScriptUrl='https://testapi.pinquduo.cn/api_2_0_2/api/goods/getBuy'+location.search.replace('&num='+buy_count,'&num='+self_.buy_count)+'&address_id='+address_id+'&openid='+openid+'&code='+self_.pay_oauth+'&ajax_get=1';
 			};
 
 			//使用优惠券

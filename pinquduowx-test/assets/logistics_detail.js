@@ -31,7 +31,6 @@ var loading_dialog = new Vue({
 //获取order_id
 var order_id = urlSearch('order_id');
 var wuliu_img = cookie.get('goods_wuliu_img')
-var user_id = cookie.get('user_id')
 
 console.log('order_id='+order_id);
 
@@ -120,7 +119,6 @@ new Vue({
 			wuliu_info: {},
 			wuliu_img:wuliu_img,
 			wuliu_detail: [],
-			wuliu_order_info: {},
 			nodata: false
 		}
 	},
@@ -135,16 +133,16 @@ new Vue({
 			var self_ = this;
 			self_.wuliu_data = [];
 		    $.ajax({
-				type:'get',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_delivery_detail?order_id='+order_id+'&user_id='+user_id,//获取数据
-				dataType:'json',
+				type:'POST',
+				url:'https://testapi.pinquduo.cn/api_3_0_1/goods/getCourier'+'?order_id='+order_id+'&ajax_get=1',//获取数据
+				dataType:'jsonp',
+				jsonp: 'jsoncallback',
 				async:false,
-				success:function(res){
-					console.log(res)
-					self_.wuliu_info = res.result.logistics;
-					self_.wuliu_order_info = res.result.order_info;
-					self_.wuliu_detail = res.result.logistics.express_info;
-					if(!res.result.logistics.logistics_name){
+				success:function(data){
+					console.log(data);
+					self_.wuliu_info = data.result.logistics;
+					self_.wuliu_detail = data.result.date;
+					if(!data.result.logistics.logistics_name){
 						self_.nodata = true;
 					};
 					$('#loading-dialog').hide();

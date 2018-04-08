@@ -521,11 +521,11 @@
                                 </span>
                                 </span>
                             </div>
-                            <div v-if="item.store_count==0" style="display: flex;flex-wrap: nowrap;align-items:center;justify-content:space-between;margin-top:.88rem;">
+                            <div v-if="item.store_count==0" style="display: flex;flex-wrap: nowrap;align-items:center;justify-content:space-between;">
                                 <span class="red1" style="font-size: 20px;font-weight: 600;font-family: PingFangSC-Semibold, sans-serif;
 ">￥{{item.prom_price}}</span>
-                                <span style="text-decoration:line-through;color: #ccc;font-size: 12px;margin-left: -.6rem;margin-top:.08rem;">￥{{item.shop_price}}</span>
-                                <span style="background-color:#ccc;font-size: 14px;text-align: center;color: white;border-radius: .06rem;height: .5rem;width: 1.7rem;display: inline-block;text-align: center;line-height:.5rem;display: flex;align-items: center;justify-content: space-around;padding:0 .38rem"><span v-if="" style="vertical-align:middle; "  >已售罄</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="" style="height: .18rem;vertical-align:middle;">
+                                <span style="text-decoration:line-through;color: #ccc;font-size: 12px;margin-left: -12px;margin-top:8px;">￥{{item.shop_price}}</span>
+                                <span style="background-color:#ccc;font-size: 14px;padding:4px 12px; text-align: center;color: white;border-radius: 4px;display: inline-block;text-align: center;display: flex;align-items: center;justify-content: space-around;"><span v-if="" style="vertical-align:middle; "  >已售罄</span>&nbsp;<img src="images/icon_right_arrows@2x.png" alt="" style="height: 10px;vertical-align:middle;">
                                 </span>
                             </div>
                         </dd>
@@ -538,7 +538,10 @@
     <div id="share_dialog" style="position: fixed;top: 0;left: 0;z-index: 9999;background-color:rgba(0,0,0,.8);width: 100%;height: 100%;display: none;justify-content: center;" v-cloak>
         <div style="width: 300px;">
             <p v-if="terminal=='wx'" style="font-size: 22px;color: #fff;text-align: center;margin-bottom:20px;margin-top:80px;">长按保存图片，分享给好友</p>
-            <img :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 0 auto;width:300px;height: 466px;border-radius: 10px;">
+            <img v-if="terminal=='wx'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 0 auto;width:300px;height: 400px;border-radius: 10px;">
+            <i v-if="terminal=='wx'" @click="closeImg" style="position: absolute;display: block;width: 30px;height: 30px;border-radius: 50%;color: #fff;border: 1px solid #fff;right: 10px;top: 112px;font-size: 24px;text-align: center;">x</i>
+            <img v-if="terminal=='i'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 50px auto 0;width:300px;height: 360px;border-radius: 10px;">
+            <img v-if="terminal=='a'"  :src="imgUrl" alt="" style="font-size: 22px;color: #fff;text-align: center;margin: 40px auto 0;width:300px;height: 360px;border-radius: 10px;">
         </div>
 
        <!--  <div v-if="terminal=='wx'" style="background-color:#fff;position: fixed;bottom: 0;left:0;width: 100% ;height: 2.8rem;align-items: center;padding:0.1rem 2.4rem 0 2.4rem;font-size: .26rem">
@@ -584,7 +587,7 @@
         </div>
     </div>
     <!--规格选择-->
-    <div id="spec_dialog_bg" v-if="specShow">
+    <div id="spec_dialog_bg" v-if="specShow" style="display: none;">
         <div class="spec_dialog">
             <div class="spec_goods">
                 <div class="goods_img">
@@ -594,8 +597,11 @@
                     <p>{{goodsList[goods_info].goods_name}}</p>
                     <span>{{goodsList[goods_info].prom_price}}</span>
                 </div>
-                <div class="close" @click="closeSpecDiolog">X</div>
+                <div class="close" v-if="terminal=='wx'" @click="closeSpecDiolog">X</div>
+                <div class="close" v-if="terminal=='i'" onclick="isScrollEnabled(true)" onclick="window.webview.isScrollEnabled(false)" @click="closeSpecDiolog">X</div>
+                <div class="close" v-if="terminal=='a'" onclick="window.webview.isScrollEnabled(false)" @click="closeSpecDiolog">X</div>
             </div>
+        
             <div class="spec_spec">
                 <div class="spec" >
                     <p>{{specData[0].title}}</p>
@@ -690,13 +696,13 @@
                 <span>
                     选择收货地址
                 </span>
-                    <span v-if="terminal=='wx'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()">
+                <span v-if="terminal=='wx'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()">
                     <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
                 </span>
-                    <span v-if="terminal=='i'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()" onclick="isScrollEnabled(true)" onclick="window.webview.isScrollEnabled(false)">
+                <span v-if="terminal=='i'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()" onclick="isScrollEnabled(true)" onclick="window.webview.isScrollEnabled(false)">
                     <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
                 </span>
-                    <span v-if="terminal=='a'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()"  onclick="window.webview.isScrollEnabled(false)">
+                <span v-if="terminal=='a'" style="width: 20px;height: 20px;display: flex;justify-content: center;align-items: center" @click="selectAddClose()"  onclick="window.webview.isScrollEnabled(false)">
                     <img src="images/delete_little@2x.png" alt="" style="height: 10px;width: 10px;">
                 </span>
                 </p>
@@ -728,7 +734,7 @@
     <div v-if="terminal=='a'" onclick="window.webview.isScrollEnabled(false)" style="display: none;background-color:rgba(0,0,0,0);position: fixed;top: 0;left: 0;z-index: 999999999;width: 100%;height: 100%"  id="uploadClose" ></div>
 
 
-    <div id="layoutCode" :class="{showLayout:groupId}" v-if="groupId">
+    <div id="layoutCode" :class="{showLayout:groupId}" v-if="groupId" style="display: none;">
         <div style="height: 330px;width: 310px;background-color:#fff;border-radius:10px;display: flex;flex-direction: column;align-items: center;margin-top:110px;padding: 0 20px">
             <span style="width: 100%;height:1.08rem;font-size:24px;color: .34rem;font-weight: bold;text-align: center;line-height:1.08rem;background-image:url('./images/装饰.png');background-size: 100% auto;background-repeat: no-repeat;background-position: center 20%;">新人验证问题</span>
             <span style="height: 1rem;width: 100%" @click="refleshCode">
@@ -759,6 +765,6 @@
 </div>
 
 <!-- <script src="dist/likes.js"></script> -->
-<script src="dist/likes.js?v=519bd58ce7998a230f05"></script>
+<script src="dist/likes.js?v=85ba3b7aa00864e53b53"></script>
 </body>
 </html>

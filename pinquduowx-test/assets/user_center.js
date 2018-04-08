@@ -1,3 +1,6 @@
+import oauth_login from '../assets/oauth_login.js';
+oauth_login("page_name='user_center");
+
 
 import $ from 'webpack-zepto';
 import Vue from 'vue';
@@ -5,6 +8,8 @@ import Vue from 'vue';
 import cookie from './cookie.js';
 
 import urlSearch from '../assets/urlSearch.js';
+// import md5Sign from '../assets/md5Sign.js';
+import md5 from 'js-md5'
 
 //引入设置视图适配
 import set_viewport from '../assets/fontSize.js';
@@ -286,7 +291,7 @@ new Vue({
 		go_login: function(url,mobile,yzm) {
 			var self_ = this;
 			$.ajax({
-				type:'POST',
+				type:'get',
 				url:url+'&mobile='+mobile+'&code='+yzm,//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
@@ -325,11 +330,16 @@ new Vue({
         // 获取验证码
 		get_yzm: function(mobile){
 			var self_ = this;
+			var qs = md5('mobile='+mobile+'&sig=pinquduo_sing');
 			$.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/user/getCode?version=2.0.0&ajax_get=1&mobile='+mobile,//获取数据
-				dataType:'jsonp',
-				jsonp: 'jsoncallback',
+				url:'https://testapi.pinquduo.cn/api_3_0_1/user/getCode',//获取数据
+				dataType:'json',
+				data:{
+					mobile:mobile,
+					sig:qs
+				},
+				// jsonp: 'jsoncallback',
 				async:true,
 				success:function(data){
 					//console.log(data);
@@ -341,7 +351,7 @@ new Vue({
 							return;
 						};
 						//console.log(mobile+" "+yzm);
-						self_.go_login('https://testapi.pinquduo.cn/api_3_0_1/api/user/confirm?ajax_get=1',mobile,yzm);
+						self_.go_login('https://testapi.pinquduo.cn/api_3_0_1/user/confirm?ajax_get=1',mobile,yzm);
 					});
 				},
 				error: function(xhr,type){
@@ -355,7 +365,7 @@ new Vue({
 			if(cookie.get('user_id')){
 				console.log('user_id='+cookie.get('user_id'));
 				$.ajax({
-					type:'POST',
+					type:'get',
 					url:'https://testapi.pinquduo.cn/api_3_0_1/user/getRefresh?version=2.0.0&ajax_get=1&user_id='+cookie.get('user_id'),
 					dataType:'jsonp',
 					jsonp: 'jsoncallback',

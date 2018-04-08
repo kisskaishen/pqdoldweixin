@@ -129,7 +129,7 @@ namespace wechat;
 	});
 	$.ajax({
 		type:'POST',
-		url:'https://testapi.pinquduo.cn/api_2_0_2/user/thirdLogin?'+ qs,
+		url:'https://z.pinquduo.cn/api_2_0_2/user/thirdLogin?'+ qs,
 		dataType:'jsonp',
 		jsonp: 'jsoncallback',
 		async:true,

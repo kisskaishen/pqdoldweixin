@@ -210,13 +210,13 @@ setShareInfo({
 });
 
 $.ajax({
-	type:'POST',
-	url:'https://testapi.pinquduo.cn/api_3_0_1/user/get_Detaile_for_Order'+'?user_id='+user_id+'&page='+1+'&pagesize='+6+'&order_id='+order_id+'&ajax_get=1',//获取数据
-	dataType:'jsonp',
-	jsonp: 'jsoncallback',
+	type:'get',
+	url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_detail'+'?user_id='+user_id+'&page='+1+'&pagesize='+6+'&order_id='+order_id+'&ajax_get=1',//获取数据
+	dataType:'json',
+	// jsonp: 'jsoncallback',
 	async:true,
 	success:function(data){
-		// console.log(data);
+		console.log(data.result);
         // console.log(data.result.order_type == 3);
         // console.log(data.result.order_type == 4 && data.result.goodsInfo.is_special != 8 && data.result.is_oneself != 2);
         // console.log(data.result.order_type == 15 && data.result.goodsInfo.is_special != 8 && data.result.is_oneself != 2);
@@ -234,18 +234,13 @@ $.ajax({
 					day:'',
                     // 小时
                     hour:'',
-					// 用户信息
-					user:{},
+
 					//订单信息
 					goodsInfo:{},
-					//按钮
-					btn:[],
-					//成团时间
-					prom_time:'',
-					//下单时间
-					add_time:'',
+	
 					//猜你喜欢
-					like:[],
+					like_info:'',
+					likeList:[],
 					//订单类型
 					order_type: false,
 					//user_id
@@ -253,7 +248,7 @@ $.ajax({
 					//订单id
 					order_id: order_id,
 					//店铺信息
-					store_info: {},
+					store_info: {},		// 店铺信息
 					//订单商品信息
 					goods_info: {},
 					//推荐商品数据/猜你喜欢
@@ -276,6 +271,10 @@ $.ajax({
                     oauth_pay:'weixin',
                     qq:false,
                     ali:true,
+                    group_info:{},			// 拼团信息
+                    order_info:{},			// 订单信息
+                    btn_info:{},			// 按钮信息
+                    showChoose:false
 				}
 			},
 			mounted: function(){
@@ -284,16 +283,21 @@ $.ajax({
 				if (goods_id&&user_id!=oldUserId) {
 					location.href = 'https://wx.pinquduo.cn/goods_detail.html?goods_id='+goods_id
 				}
-				//初始化数据
-				self_.data=data.result;
-				self_.like=self_.data.like.items;
-                // console.log(self_.like);
-                self_.user=self_.data.user;
-                self_.goodsInfo=data.goodsInfo;
-                var timed_time = parseInt(self_.data.automatic_time) - parseInt(Date.now()/1000);
+                console.log('得到data');
+
+                self_.data=data.result;				// 总数据
+                self_.store_info = data.result.store_info    		// 商家信息
+                self_.order_info = data.result.order_info;			// 订单信息，包括个人信息
+                self_.group_info = data.result.group_info			// 拼团信息
+                self_.btn_info = data.result.show_operate_icon			// 按钮信息
+                console.log(self_.order_info)
+
+                var timed_time = parseInt(self_.order_info.count_down_time)
+                // var timed_time = parseInt(self_.order_info.count_down_time) - parseInt(Date.now()/1000);
+                console.log(self_.order_info.count_down_time)
+                console.log('这里是时间：'+timed_time)
+
                 if(timed_time>0){
-                    // console.log(timed_time);
-                    // console.log(1);
                     var day = Math.floor(timed_time/86400)%30;
                     self_.day = day<10?'0'+day : day
                     var h = Math.floor(timed_time/3600)%24;
@@ -301,174 +305,18 @@ $.ajax({
                 }else{
                     $('.timed').html('已自动确认收货');
                 }
-				// 判断订单状态
-                switch (parseInt(self_.data.order_type)){
-					case 1 :
-						self_.text='待支付';
-						break;
-                    case 2 :
-                        self_.text='待发货';
-                        break;
-                    case 4 :
-                        self_.text='交易完成';
-                        break;
-                    case 5 :
-                        self_.text='交易已取消';
-                        break;
-                    case 6 :
-                        self_.text='等待卖家换货';
-                        break;
-                    case 7 :
-                        self_.text='卖家已换货';
-                        break;
-                    case 8 :
-                        self_.text='等待卖家退款';
-                        break;
-                    case 9 :
-                        self_.text='卖家已退款';
-                        break;
-                    case 10 :
-                        self_.text='未付款';
-                        break;
-					case 11 :
-						self_.text='拼团中，差'+self_.data.prom_mens+'人';
-						break;
-                    case 12 :
-                        self_.text='待退款';
-                        break;
-                    case 13 :
-                        self_.text='已退款';
-                        break;
-                    case 14 :
-                        self_.text='待发货';
-                        break;
-                    case 3 :
-					case 15 :
-                        self_.text='待收货';
-                        break;
-					case 16 :
-						self_.text='卖家拒绝退货';
-						break;
-					default:;
-                }
-                switch (parseInt(self_.data.order_type)){
-                    case 1 :
-                    case 2 :
-                    case 3 :
-                    case 5 :
-                    case 10 :
-                        self_.btn=[];
-                        break;
-                    case 4 :
-                    	if(data.result.prom>0){
-							if(data.result.goodsInfo.is_special==8||data.result.goodsInfo.is_special==6){
-                                // console.log(data.prom_id);
-                                self_.btn=[
-									{
-										title:'查看团详情',
-										url:'prom_regiment.html?prom_id='+data.result.prom_id
-									}
-								]
-							}else{
-                                self_.btn=[
-									{
-                                        title:'查看团详情',
-                                        url:'prom_regiment.html?prom_id='+data.result.prom_id
+                console.log('day and hour')
+                console.log(self_.day)
+                console.log(self_.hour)
+                self_.getOtherGoods();
 
-									},
-									{
-										title:'申请退货',
-										url:'after_sales_apply.html?order_id='+data.result.order_id+'&order_amount='+self_.data.order_amount
-									}
-                                ]
-							}
-						}else{
-                            self_.btn=[
-                                {
-                                    title:'申请退货',
-                                    url:'after_sales_apply.html?order_id='+data.result.order_id+'&order_amount='+self_.data.order_amount
-                                }
-                            ]
-						}
-                        break;
-                    case 6 :
-                    case 7 :
-                    case 8 :
-                    	if(data.prom>0){
-                            self_.btn=[
-                                {
-                                    title:'查看团详情',
-                                    url:'prom_regiment.html?prom_id='+data.result.prom_id
-                                }
-                            ]
-						}else{
-                    		self_.btn=[];
-						}
-                        break;
-                    case 9 :
-                        if(data.prom>0){
-                            self_.btn=[
-                                {
-                                    title:'查看团详情',
-                                    url:'prom_regiment.html?prom_id='+data.result.prom_id
-                                }
-                            ]
-						}else{
-                            self_.btn=[
-                                {
-                                    title:'查看团详情',
-                                    url:'prom_regiment.html?prom_id='+data.result.prom_id
-                                },
-								{
-									title:'钱款去向',
-                                    url:'money_direction.html?order_id='+data.result.order_id
-								}
-                            ]
-						}
-                        break;
-                    case 13 :
-                        self_.btn=[
-                            {
-                                title:'查看团详情',
-                                url:'prom_regiment.html?prom_id='+data.result.prom_id
-                            },
-                            {
-                                title:'钱款去向',
-                                url:'money_direction.html?order_id='+data.result.order_id
-                            }
-                        ]
-                        break;
-                    case 11 :
-                    case 12 :
-                    case 14 :
-                    case 15 :
-                        self_.btn=[
-                            {
-                                title:'查看团详情',
-                                url:'prom_regiment.html?prom_id='+data.result.prom_id
-                            }
-                        ]
-                        break;
-                    case 16 :
-                        break;
-                    default:
-                    	break;
-                }
-                // console.log(self_.btn);
-                // 下单时间
-                var pay_time = parseInt(self_.data.add_time)*1000;
-				self_.add_time=formatDate(new Date(pay_time))
-                //成团时间
-                if(self_.data.successful_time){
-                    var promed_time = parseInt(self_.data.successful_time)*1000;
-					self_.prom_time =formatDate(new Date(promed_time));
-                };
+                
                 //执行上拉加载
 	        	self_.$nextTick(function(){
-	        		// if(self_.like.items.length<self_.pagesize){
-	        		// 	$('#more-hint').html('没有更多数据了');
-	        		// 	return false;
-	        		// };
+	        		if(self_.likeList.length<self_.pagesize){
+	        			$('#more-hint').html('没有更多数据了');
+	        			return false;
+	        		};
 	        		self_.up_load();
 	        	});
 	        	// 支付功能
@@ -479,7 +327,6 @@ $.ajax({
                 }else {
                     console.log('weixin')
                 }
-                console.log('111');
                 var oauth = {
                     //判断微信用户登录
                     isWeiXin: function () {
@@ -504,13 +351,37 @@ $.ajax({
                 }
 			},
 			methods: {
+				// 显示选择弹框
+				showChooseDiv: function() {
+					this.showChoose = true
+				},
+				// 获取推荐商品列表
+				getOtherGoods: function() {
+					var self_ = this
+					$.ajax({
+						type:'get',
+						url:'https://testapi.pinquduo.cn/api_3_0_1/user/recommend_goods?goods_id='+self_.order_info.goods_id+'&page='+self_.page+'&pagesize='+self_.pagesize,//获取数据
+						dataType:'json',
+						// jsonp: 'jsoncallback',
+						async:false,
+						success:function(data){
+							console.log(data);
+							self_.like_info = data.result
+							self_.likeList = data.result.items
+							
+						},
+						error: function(xhr,type){
+						    console.log('推荐商品列表Ajax error!');
+						}
+					});
+				},
 				//延长收货
 				delay_receiving: function(){
 					var self_ = this;
 					self_.dialog_hint = '是否延长收货时间？每笔订单只能延迟一次哦~';
 					self_.order_dialog(function(){
 						$.ajax({
-							type:'POST',
+							type:'get',
 							url:'https://testapi.pinquduo.cn/api_3_0_1/user/getIncreaseGoodsTime'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
 							dataType:'jsonp',
 							jsonp: 'jsoncallback',
@@ -532,7 +403,7 @@ $.ajax({
 								hint_timer=setTimeout(function(){
 						        	$('#hint-dialog').hide();
 						        },1000);
-							    console.log('Ajax error!');
+							    console.log('延长收货Ajax error!');
 							}
 						});
 					});
@@ -543,7 +414,7 @@ $.ajax({
 					self_.dialog_hint = '提交后该订单状态不可更改，要确认收货么？';
 					self_.order_dialog(function(){
 						$.ajax({
-							type:'POST',
+							type:'get',
 							url:'https://testapi.pinquduo.cn/api_3_0_1/user/orderConfirm'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
 							dataType:'jsonp',
 							jsonp: 'jsoncallback',
@@ -556,10 +427,10 @@ $.ajax({
 								hint_timer=setTimeout(function(){
 						        	$('#hint-dialog').hide();
 						        },1000);
-								location.href = "goods_order.html?id=5";
+								location.reload();
 							},
 							error: function(xhr,type){
-							    console.log('Ajax error!');
+							    console.log('确认收货Ajax error!');
 							}
 						});
 					});
@@ -581,6 +452,30 @@ $.ajax({
 					});
 					cancel_btn.unbind("click").click(close_dialog);
 					mask.unbind("click").click(close_dialog);
+				},
+				// 提醒发货
+				tip_wuliu:function() {
+					var self_ = this;
+					$.ajax({
+						type:'get',
+						url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_remind'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
+						dataType:'jsonp',
+						jsonp: 'jsoncallback',
+						async:true,
+						success:function(data){
+							console.log(data);
+							self_.order_hint = '已提醒发货';
+							$('#hint-dialog').show();
+							clearTimeout(hint_timer);
+							hint_timer=setTimeout(function(){
+					        	$('#hint-dialog').hide();
+					        	location.reload();
+					        },1000);
+						},
+						error: function(xhr,type){
+						    console.log('醒发货Ajax error!');
+						}
+					});
 				},
 				//立即支付
 				pay_order: function(){
@@ -667,7 +562,7 @@ $.ajax({
                         },
                         error: function(xhr, type) {
                             //alert("Error:" + xhr+", type=" +type);
-                            // console.log(type);
+                            console.log('/立即支付chucuo');
                         }
                     });
                     return false;
@@ -678,7 +573,7 @@ $.ajax({
 					self_.dialog_hint = '确定取消订单？';
 					self_.order_dialog(function(){
 						$.ajax({
-							type:'POST',
+							type:'get',
 							url:'https://testapi.pinquduo.cn/api_3_0_1/user/cancelOrder'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
 							dataType:'jsonp',
 							jsonp: 'jsoncallback',
@@ -694,7 +589,7 @@ $.ajax({
 						        },1000);
 							},
 							error: function(xhr,type){
-							    console.log('Ajax error!');
+							    console.log('取消订单Ajax error!');
 							}
 						});
 					});	
@@ -713,28 +608,7 @@ $.ajax({
 						data: self_,
 						callback: function(){
 							self_.page += 1;
-							// $('#loading-dialog').show();
-							$.ajax({
-								type:'POST',
-								url:'https://testapi.pinquduo.cn/api_3_0_1/user/get_Detaile_for_Order'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&order_id='+order_id+'&ajax_get=1',//获取数据
-								dataType:'jsonp',
-								jsonp: 'jsoncallback',
-								async:true,
-								success:function(data){
-									console.log(data);
-									// $('#loading-dialog').hide();
-									// var load_items = data.result.isGroup!=null?data.result.isGroup.goods.items:data.result.is_order.like.items;
-                                    self_.like = self_.like.concat(data.result.like.items);
-									if(load_items.length<self_.pagesize){
-										$('#more-hint').html('没有更多数据了');
-                                        $(window).unbind('scroll');
-										// console.log('done='+self_.done);
-									}
-								},
-								error: function(xhr,type){
-								    console.log('Ajax error!');
-								}
-							});
+							self_.getOtherGoods()
 						}
 					});
 				},
@@ -764,7 +638,7 @@ $.ajax({
 		});
 	},
 	error: function(xhr,type){
-	    console.log('Ajax error!');
+	    console.log('order_detail 的 Ajax error请求出错!');
 	},
 
 });

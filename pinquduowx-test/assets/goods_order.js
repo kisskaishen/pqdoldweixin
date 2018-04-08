@@ -22,7 +22,6 @@ set_active();
 import pullup_load from '../assets/pullup_load.js';
 
 import urlSearch from '../assets/urlSearch.js';
-import {post} from '../config/http'
 
 //引入loading 动画
 import loading from '../components/loading_ani.vue';
@@ -176,7 +175,7 @@ new Vue({
 			self_.isloadmore = true;
 		    $.ajax({
 				type:'POST',
-				url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_list'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&type='+index+'&ajax_get=1&version=2.0.0',//获取数据
+				url:'https://testapi.pinquduo.cn/api_3_0_1/user/getOrderList'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&type='+index+'&ajax_get=1&version=2.0.0',//获取数据
 				dataType:'jsonp',
 				jsonp: 'jsoncallback',
 				async:false,
@@ -221,7 +220,7 @@ new Vue({
 					$('#loading-dialog').show();
 					$.ajax({
 						type:'POST',
-						url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_list'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&type='+index+'&ajax_get=1',//获取数据
+						url:'https://testapi.pinquduo.cn/api_3_0_1/user/getOrderList'+'?user_id='+user_id+'&page='+self_.page+'&pagesize='+self_.pagesize+'&type='+index+'&ajax_get=1',//获取数据
 						dataType:'jsonp',
 						jsonp: 'jsoncallback',
 						async:true,
@@ -294,37 +293,24 @@ new Vue({
          //    // });
 		// },
 		//取消订单
-		cancel_order: function(val){
+		cancel_order: function(goodsInfo){
 			var self_ = this;
 			self_.dialog_hint = '确定取消订单？';
 			self_.order_dialog(function(){
-				// $.ajax({
-				// 	type:'POST',
-				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/order_service_detail'+'?user_id='+user_id+'&order_id='+goodsInfo.order_id,//获取数据
-				// 	dataType:'jsonp',
-				// 	jsonp: 'jsoncallback',
-				// 	async:true,
-				// 	success:function(data){
-				// 		console.log(data);
-				// 		self_.get_order(self_.nav_id);
-				// 	},
-				// 	error: function(xhr,type){
-				// 	    console.log('Ajax error!');
-				// 	}
-				post('/user/order_service_detail',{
-					user_id:user_id,
-					order_id:val
-				})
-					.then(res=>{
-						if (res.data.status == '1') {
-							location.reload();
-						} else {
-							alert(res.data.msg)
-						}
-					})
-					.catch(err=>{
-						console.log(err)
-					})
+				$.ajax({
+					type:'POST',
+					url:'https://testapi.pinquduo.cn/api_3_0_1/user/cancelOrder'+'?user_id='+user_id+'&order_id='+goodsInfo.order_id+'&ajax_get=1&version=2.0.0',//获取数据
+					dataType:'jsonp',
+					jsonp: 'jsoncallback',
+					async:true,
+					success:function(data){
+						console.log(data);
+						self_.get_order(self_.nav_id);
+					},
+					error: function(xhr,type){
+					    console.log('Ajax error!');
+					}
+				});
 			});	
 		},
 		//延长收货
@@ -332,56 +318,32 @@ new Vue({
 			var self_ = this;
 			self_.dialog_hint = '是否延长收货时间？每笔订单只能延迟一次哦~';
 			self_.order_dialog(function(){
-				// $.ajax({
-				// 	type:'POST',
-				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/getIncreaseGoodsTime'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
-				// 	dataType:'jsonp',
-				// 	jsonp: 'jsoncallback',
-				// 	async:false,
-				// 	success:function(data){
-				// 		console.log(data);
-				// 		self_.order_hint = '已延长收货';
-				// 		$('#hint-dialog').show();
-				// 		clearTimeout(hint_timer);
-				// 		hint_timer=setTimeout(function(){
-				//         	$('#hint-dialog').hide();
-				//         },1000);
+				$.ajax({
+					type:'POST',
+					url:'https://testapi.pinquduo.cn/api_3_0_1/api/user/getIncreaseGoodsTime'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
+					dataType:'jsonp',
+					jsonp: 'jsoncallback',
+					async:false,
+					success:function(data){
+						console.log(data);
+						self_.order_hint = '已延长收货';
+						$('#hint-dialog').show();
+						clearTimeout(hint_timer);
+						hint_timer=setTimeout(function(){
+				        	$('#hint-dialog').hide();
+				        },1000);
 						
-				// 	},
-				// 	error: function(xhr,type){
-				// 		self_.order_hint = '您已延长收货了哦~';
-				// 		$('#hint-dialog').show();
-				// 		clearTimeout(hint_timer);
-				// 		hint_timer=setTimeout(function(){
-				//         	$('#hint-dialog').hide();
-				//         },1000);
-				// 	    console.log('Ajax error!');
-				// 	}
-				// });
-				post('/user/getIncreaseGoodsTime',{
-					user_id:user_id,
-					order_id:order_id
-				})
-					.then(res=>{
-						if (res.data.status == '1') {
-							self_.order_hint = res.data.msg;
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-						} else {
-							self_.order_hint = res.data.msg+'~';
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-						}
-					})
-					.catch(err=>{
-						console.log(err)
-					})
+					},
+					error: function(xhr,type){
+						self_.order_hint = '您已延长收货了哦~';
+						$('#hint-dialog').show();
+						clearTimeout(hint_timer);
+						hint_timer=setTimeout(function(){
+				        	$('#hint-dialog').hide();
+				        },1000);
+					    console.log('Ajax error!');
+					}
+				});
 			});
 		},
 		//确认收货
@@ -389,87 +351,27 @@ new Vue({
 			var self_ = this;
 			self_.dialog_hint = '提交后该订单状态不可更改，要确认收货么？';
 			self_.order_dialog(function(){
-				// $.ajax({
-				// 	type:'POST',
-				// 	url:'https://testapi.pinquduo.cn/api_3_0_1/user/orderConfirm'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
-				// 	dataType:'jsonp',
-				// 	jsonp: 'jsoncallback',
-				// 	async:false,
-				// 	success:function(data){
-				// 		console.log(data);
-				// 		self_.order_hint = '已确认收货';
-				// 		$('#hint-dialog').show();
-				// 		clearTimeout(hint_timer);
-				// 		hint_timer=setTimeout(function(){
-				//         	$('#hint-dialog').hide();
-				//         },1000);
-				//         self_.get_order(tab_id);
-				// 	},
-				// 	error: function(xhr,type){
-				// 	    console.log('Ajax error!');
-				// 	}
-				// });
-				post('/user/orderConfirm',{
-					user_id:user_id,
-					order_id:order_id
-				})
-					.then(res=>{
-						console.log(res)
-						if (res.data.status == '1') {
-							self_.order_hint = res.data.msg;
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-					        setTimeout(()=>{
-					       		self_.get_order(tab_id);
-					        },1400)
-						} else {
-							self_.order_hint = res.data.msg;
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-						}
-					})
-					.catch(err=>{
-						console.log(err)
-					})
+				$.ajax({
+					type:'POST',
+					url:'https://testapi.pinquduo.cn/api_3_0_1/user/orderConfirm'+'?user_id='+user_id+'&order_id='+order_id+'&ajax_get=1',//获取数据
+					dataType:'jsonp',
+					jsonp: 'jsoncallback',
+					async:false,
+					success:function(data){
+						console.log(data);
+						self_.order_hint = '已确认收货';
+						$('#hint-dialog').show();
+						clearTimeout(hint_timer);
+						hint_timer=setTimeout(function(){
+				        	$('#hint-dialog').hide();
+				        },1000);
+				        self_.get_order(tab_id);
+					},
+					error: function(xhr,type){
+					    console.log('Ajax error!');
+					}
+				});
 			});
-		},
-		// 提醒发货
-		remind(order_id) {
-			let self_ = this;
-			post('/user/order_remind',{
-				user_id:user_id,
-				order_id:order_id
-			})
-				.then(res=>{
-					console.log(res)
-					if (res.data.status == '1') {
-							self_.order_hint = '提醒成功';
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-					        setTimeout(()=>{
-					       		self_.get_order(tab_id);
-					        },1400)
-						} else {
-							self_.order_hint = '提醒成功';
-							$('#hint-dialog').show();
-							clearTimeout(hint_timer);
-							hint_timer=setTimeout(function(){
-					        	$('#hint-dialog').hide();
-					        },1000);
-						}
-				})
-				.catch(err=>{
-					console.log(err)
-				})
 		},
 		//订单操作弹窗
 		order_dialog: function(callback){

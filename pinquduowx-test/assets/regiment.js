@@ -1,8 +1,9 @@
 import urlSearch from '../assets/urlSearch.js';
+cookie.set('prom_id',urlSearch('prom_id'));
+
 //第三方登录
 import oauth_login from '../assets/oauth_login.js';
 oauth_login("page_name=prom_regiment");
-cookie.set('order_id',urlSearch('order_id'));
 
 import $ from 'webpack-zepto';
 import Vue from 'vue';
@@ -75,7 +76,9 @@ $.ajax({
         console.log('一进页面就加在的数据：')
         console.log(data);
         if (data.status != 1) {
-            location.href = 'https://www.pinquduo.cn'
+            alert('if 不等于1，跳转到https://wx.pinquduo.cn')
+            location.href = 'https://wx.pinquduo.cn'
+            alert('跳转成功了到首页')
         }
         $('#loading-dialog').hide();
         var data_ = data;

@@ -8,6 +8,8 @@ namespace wechat;
 	$secret = "d259ccee138067613a26971092c6e48d";
 	$code = $_GET["code"];
 
+
+
 	// "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdbc22996638a2c73&redirect_uri=https://wx.pinquduo.cn/wechat/login.php?page_name=home&response_type=code&scope=snsapi_userinfo&state=123&connect_redirect=1#wechat_redirect"
 	
 	
@@ -40,7 +42,6 @@ namespace wechat;
 	//打印用户信息
 	//print_r($userinfo_json);
 
-
 	//输出js json微信用户信息
 	echo "<script>
 			var weixin_userinfo = ".$userinfo_json.";
@@ -53,7 +54,7 @@ namespace wechat;
 <script type="text/javascript" src="../assets/md5.min.js"></script>
 <script type="text/javascript" src="../assets/md5Sign.js"></script>
 <script type="text/javascript">
-
+// alert('欢迎来到login的js模块')
 	function url_search(name){
 		var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);  
 	    if (!results)  
@@ -105,52 +106,75 @@ namespace wechat;
 		openid: weixin_userinfo.openid,
 		unionid: weixin_userinfo.unionid
 	});
-	$.ajax({
-		type:'POST',
-		url:'https://testapi.pinquduo.cn/api_3_0_1/user/thirdLogin?'+ qs,
-		dataType:'jsonp',
-		jsonp: 'jsoncallback',
-		async:true,
-		success:function(data){
-			console.log('这里是登陆成功后的信息');
-			console.log(data);
-			cookie.set('user_id',data.result.user_id,7);
-			//路由跳转
-			var page_name = url_search('page_name') || 'home';
-			switch(page_name){
-				case 'home':
-			  		location.href = '../index.html?v=004&';
+	
 
-			  	break;
-			  	case 'likes':
-                     location.href='../likes.html?v=01';
-                break;
-				case 'goods_order':
-			  		location.href = '../goods_order.html';
-			  	break;
-			  	case 'refund_difference':
-                	location.href = '../refund_difference1.html';
-                	break;
-			  	case 'goods_detail':
-			  	    location.href=unescape(cookie.get('href'))
-			  		//var goods_id = cookie.get('goods_id');
-			  		//location.href = '../goods_detail.html?goods_id='+goods_id;
-			  	break;
-			  	case 'prom_regiment':
-			  	    location.href=unescape(cookie.get('href'))
-			  		//var order_id = cookie.get('order_id');
-			  		//location.href = '../prom_regiment.html?order_id='+order_id;
-			  	break;
-			  	
-			  	case '':
-			  		location.href='../index.html?v=004&';
-			  	break;
-			};
-		},
-		error: function(xhr,type){
-		    console.log('Ajax error!');
-		}
-	});
+	// setTimeout(()=>{
+		// alert('woyaotiaozhuan')
+//			dataType:'jsonp',
+			//jsonp: 'jsoncallback',
+			//async:true,
+		$.ajax({
+			type:'get',
+			url:'https://z.pinquduo.cn/api_3_0_1/user/thirdLogin?'+ qs,
+			dataType:'json',
+			success:function(data){
+				if (data.status == '1') {
+					// alert('这里即将看到登陆成功后的信息');
+					console.log(data);
+					cookie.set('user_id',data.result.user_id,7)
+
+					let group_id = cookie.get('likes_groud_id_val')
+					//路由跳转
+					var page_name = url_search('page_name') || 'home';
+
+					switch(page_name){
+						case 'home':
+					  		location.href = 'https://wx.pinquduo.cn/index.html?v=004&';
+
+					  	break;
+					  	case 'user_center':
+					  		location.href = 'https://wx.pinquduo.cn/user_center.html';
+
+					  	break;
+					  	case 'likes':
+		                     location.href='https://wx.pinquduo.cn/likes.html?v=01';
+		                break;
+		                case 'likes_groud_id':
+		                     location.href='https://wx.pinquduo.cn/likes.html?group_id='+group_id+'';
+		                break;
+
+						case 'goods_order':
+					  		location.href = 'https://wx.pinquduo.cn/goods_order.html';
+					  	break;
+					  	case 'refund_difference':
+		                	location.href = 'https://wx.pinquduo.cn/refund_difference1.html';
+		                	break;
+					  	case 'goods_detail':
+					  	    // location.href=cookie.get('href')
+					  		var goods_id = cookie.get('goods_id');
+					  		location.href = 'https://wx.pinquduo.cn/goods_detail.html?goods_id='+goods_id;
+					  	break;
+					  	case 'prom_regiment':
+					  	// alert(123)
+					  	// alert(cookie.get('prom_id'))
+					  	    // location.href=cookie.get('href')
+					  		var prom_id = cookie.get('prom_id');
+					  		location.href = 'https://wx.pinquduo.cn/prom_regiment.html?prom_id='+prom_id;
+					  	break;
+					  	
+					  	case '':
+					  		location.href='https://wx.pinquduo.cn/index.html?v=004&';
+					  	break;
+					};
+				} else {
+					alert(data.msg+',退出请重新登录！')
+				}
+			},
+			error: function(xhr,type){
+			    console.log('Ajax error!');
+			}
+		});
+	// },800)
 
 	
 

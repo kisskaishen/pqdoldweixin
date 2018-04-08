@@ -32,7 +32,7 @@ module.exports = function(){
 		
 		$.ajax({
 			type:'POST',
-			url:'https://testapi.pinquduo.cn/api_3_0_1/user/TuiSong'+'?user_id='+user_id+'&ajax_get=1&version=2.0.0',//获取数据
+			url:'https://pinquduo.cn/api_3_0_1/user/TuiSong'+'?user_id='+user_id+'&ajax_get=1&version=2.0.0',//获取数据
 			dataType:'jsonp',
 			jsonp: 'jsoncallback',
 			async:false,

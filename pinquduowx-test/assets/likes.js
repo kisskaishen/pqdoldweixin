@@ -32,7 +32,6 @@ var selected_adr = {
     area: ''
 };
 var hint_timer = null;
-
 function isWeiXin() {
     var ua = window.navigator.userAgent.toLowerCase();
     console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
@@ -101,7 +100,7 @@ new Vue({
             area: '选择地区',
 
 
-            newCodeImg: 'https://testapi.pinquduo.cn/api_3_0_1/raisepic/captcha?user_id=' + user_id,          // 新人图形验证码
+            newCodeImg: 'https://testapi.pinquduo.cn/api_3_0_1/raisepic/captcha?user_id=' + this.user_id,          // 新人图形验证码
             code: '',
             groupId: group_id,            // 团id，true则显示新人验证，否则没有
             resMsg: '',
@@ -122,42 +121,40 @@ new Vue({
 
     mounted: function () {
 
-        // $('#hint-dialog').find('p').text('页面维护中，3s后返回首页');
-        // $('#hint-dialog').show();
-        //
-        // if(isWeiXin()){
-        //     setTimeout(()=>{
-        //         location.href = 'https://wx.pinquduo.cn'
-        //     },3000)
-        // }else{
-        //     let u = navigator.userAgent
-        //     if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
-        //         this.userInfoType = webview.getAppUserInfo().terminal
-        //         setTimeout(()=>{
-        //             webview.getHome()
-        //         },3000)
-        //     } else {
-        //         this.userInfoType = getAppUserInfo().terminal
-        //         setTimeout(()=>{
-        //             getHome()
-        //         },3000)
-        //     }
-        // }
-        //
-        // return;
 
         var self_ = this;
+
         var qs = sign.sign({
             page: self_.page,
             pagesize: self_.pagesize,
             ajax_get: 1,
             version: '2.0.2',
         });
+        if(isWeiXin()){
+
+        }else {
+            let u = navigator.userAgent
+            if (u.indexOf('iPhone') > -1 ) {
+                self_.userInfoType = getAppUserInfo().terminal
+                self_.terminal = getAppUserInfo().terminal
+                self_.user_id = getAppUserInfo().userId
+                if (!self_.user_id) {
+                    showAppLoginView()
+                }
+            } else {
+                self_.userInfoType = JSON.parse(webview.getAppUserInfo()).terminal
+                self_.terminal = JSON.parse(webview.getAppUserInfo()).terminal
+                self_.user_id = JSON.parse(webview.getAppUserInfo()).userId
+                if (!self_.user_id) {
+                    webview.showAppLoginView()
+                }
+            }
+        }
 
 
         // 页面信息包括列表和banner图片
         post('/index/getThe_raise', {
-            userid: user_id,
+            userid: self_.user_id,
         }).then(function (data) {
             data = data.data,
                 $('#loading-dialog').hide()
@@ -166,6 +163,11 @@ new Vue({
             hint_timer = setTimeout(function () {
                 $('#hint-dialog').hide();
             }, 1000);
+            if (self_.groupId) {
+                self_.show()
+            } else {
+                self_.hide()
+            }
         }).catch(function () {
             console.log('请求失败')
         })
@@ -208,11 +210,10 @@ new Vue({
                 .then(function(res){
                     if (res.data.status == '1') {
 
-                        console.log(res.data.result)
                         _this.specGoodsInfo = res.data.result
-                        console.log(_this.specGoodsInfo)
                         _this.specData = res.data.result.filter_spec
                         _this.currentIndexId = res.data.result.filter_spec[0].items[0].item_id
+                        $('#spec_dialog_bg').show()
                         if (res.data.result.filter_spec.length>1) {
                             _this.current2IndexId = res.data.result.filter_spec[1].items[0].item_id
                             _this.spec_key_obj = _this.currentIndexId +'_'+_this.current2IndexId
@@ -258,14 +259,14 @@ new Vue({
         },
         //获取地址列表
         get_Address: function () {
-            if (!user_id) {
+            if (!this.user_id) {
                 return;
             }
             ;
             var self_ = this;
             $('#loading-dialog').show();
             post('/goods/getUserAddressList', {
-                user_id: user_id
+                user_id: self_.user_id
             }).then(function (data) {
                 data = data.data
                 self_.data = data.result.address;
@@ -326,7 +327,7 @@ new Vue({
                 return
             }
             post('goods/addEidtAddress', {
-                user_id: user_id,
+                user_id: self_.user_id,
                 address_id: '',
                 address_base: '',
                 default: '',
@@ -378,7 +379,7 @@ new Vue({
             }
             post('/Purchase/getBuy', {
                 goods_id: self_.goodsList[self_.goods_info].goods_id,
-                user_id: user_id,
+                user_id: self_.user_id,
                 num: 1,
                 spec_key: self_.spec_key_obj,
                 // spec_key: self_.goodsList[self_.goods_info].spec_key,
@@ -418,7 +419,7 @@ new Vue({
                 type: 'POST',
                 url: 'https://wx.pinquduo.cn/wechat/qrcode.php',
                 data: {
-                    user_id: user_id,
+                    user_id: self_.user_id,
                     groupbuyid: id
                 },
                 // dataType:'jsonp',
@@ -437,7 +438,7 @@ new Vue({
             var self_ = this;
             this.url = "'" + this.qrcode + "'";
             get('/Raisepic/raise_pic', {
-                user_id: user_id,
+                user_id: self_.user_id,
                 prom_id: this.group_id,
                 Qr_code: this.qrcode,
             }).then(function (data) {
@@ -462,7 +463,7 @@ new Vue({
                 type: 'POST',
                 url: 'https://wx.pinquduo.cn/wechat/qrcode.php',
                 data: {
-                    user_id: user_id,
+                    user_id: self_.user_id,
                     groupbuyid: id
                 },
                 async: true,
@@ -479,7 +480,7 @@ new Vue({
             var self_ = this;
             $('#loading').css('display', 'flex')
             post('/Raisepic/raise_pic', {
-                user_id: user_id,
+                user_id: self_.user_id,
                 prom_id: prom_id,
                 Qr_code: this.qrcode,
             }).then(function (data) {
@@ -542,6 +543,14 @@ new Vue({
                 }
             };
         },
+        // app获取用户信息
+        // getAppUserInfo:function() {
+        //     console.log('getappuserinfo')
+        //     this.user_id = getAppUserInfo().user_id
+        // }
+        closeImg() {
+            $('#share_dialog').hide()
+        }
     },
     watch: {
         provinceId(val) {

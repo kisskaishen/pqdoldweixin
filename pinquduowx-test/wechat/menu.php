@@ -37,7 +37,7 @@ class class_weixin_adv
 //            $this->lasttime = time();
 //        }
         $wechatObj = new \wechat\WechatClass();
-        $this->access_token = $wechatObj->getAccessToken($appid, $appsecret);
+        $this->access_token = $wechatObj->getAccessToken($appid, $appsecret);        
 //   	$this->access_token = '7_9iV58abDPv0TpUiSSVruMQoJfzv2Z-cqFC9qHhvKGLirxjPNsQq0P0gZ69GqLITAaZVOYEDqcD_l1oCPI-ys3Ri0v-F3NGY4ddPGIWqxB53gJOUOcbePId27QKFWdMPh8O9v90zc1Y_ap1s_DKYgAAAWDR';
     }
 
@@ -155,7 +155,6 @@ $data = '{
            "type":"view",
            "name":"进入商城",
            "url":"https://wx.pinquduo.cn"
-           
       },
       {
            "name":"联系客服",
@@ -168,7 +167,7 @@ $data = '{
             {
                "type":"view",
                "name":"退补差价",
-               "url":"http://wx.pinquduo.cn/refund_difference1.html"
+               "url":"https://wx.pinquduo.cn/refund_difference1.html"
             },
             {
                "type":"click",

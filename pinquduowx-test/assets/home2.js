@@ -28,7 +28,7 @@ new Vue({
             var self_ = this;
             $.ajax({
                 type: 'GET',
-                url: 'https://pinquduo.cn/api_2_0_2/index/getexplore?ajax_get=1&version=2.0.0', //获取首页数据
+                url: 'https://pinquduo.cn/api_3_0_1/index/getexplore?ajax_get=1&version=2.0.0', //获取首页数据
                 dataType: 'jsonp',
                 jsonp: 'jsoncallback',
                 async: true,
